@@ -1,0 +1,46 @@
+<form method="post" action="" onsubmit="return checkPass();">
+    <h4 class="center-align bold">Register</h4>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <label for="username"><b>Username</b></label>
+            <input type="text" name="username" required id="email">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <label for="psw"><b>Password</b></label>
+            <input type="password" name="psw" required id="password" required> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <span id="retype_error" class="error"></span>
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input type="password" name="password" name="psw-repeat" required id="retype" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <label for="role"><b>Role</b></label>
+            <br>
+            <select class='browser-default' name="role" id="">
+                    <option value="admin">MKT coordinator</option>
+                    <option value="admin">Admin</option>
+                    <option value="admin">Role3</option>
+                    <option value="admin">Role4</option>
+                    <option value="admin">Role5</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4 center-align">
+            <button type="submit" class="btn">Register</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <p>Already have an account? <a href="/auth/login">Sign in</a>.</p>
+        </div>
+    </div>
+</form>
