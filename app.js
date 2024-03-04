@@ -8,8 +8,18 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 
-
 var app = express();
+
+//Mongoose
+var mongoose = require('mongoose');
+var uri = "mongodb://localhost:27017/EnterpriseWebDev";
+mongoose.connect(uri) 
+  .then(()=> console.log('connect to db succeed'))
+  .catch((err) => console.log('Error: ' + err));
+
+//Body parser
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

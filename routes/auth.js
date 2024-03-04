@@ -47,13 +47,13 @@ router.post('/login', async (req, res) =>{
                 req.session.username = user.username;
                 req.session.role = user.role;
                 if(req.session.role == "admin"){
-                    res.redirect('/admin')
+                    res.redirect('/')
                 } else if (req.session.role == "user"){
-                    res.redirect('/user')
+                    res.redirect('/')
                 } else if (req.session.role == "mkt"){
-                    res.redirect('/mtk')
+                    res.redirect('/')
                 } else if (req.session.role == "role4"){
-                    res.redirect('/role4')
+                    res.redirect('/')
                 }else{
                     res.redirect('/')
                 }
