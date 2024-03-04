@@ -44,18 +44,20 @@ router.post('/login', async (req, res) =>{
         if (user){
             var hash = bcrypt.compareSync(userLogin.password, user.password)
             if(hash) {
-                //res.send("<h1>Login successful</h1>")
                 req.session.username = user.username;
                 req.session.role = user.role;
                 if(req.session.role == "admin"){
                     res.redirect('/admin')
-                } else if (req.session.role == "coach"){
-                    res.redirect('/coach')
+                } else if (req.session.role == "user"){
+                    res.redirect('/user')
+                } else if (req.session.role == "mkt"){
+                    res.redirect('/mtk')
+                } else if (req.session.role == "role4"){
+                    res.redirect('/role4')
                 }else{
                     res.redirect('/')
                 }
             } else {
-                //res.send("<h1>Login Failed</h1>")
                 res.redirect('/auth/login');
             }   
         }
