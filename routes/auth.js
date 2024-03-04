@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var UserModel = require('../models/UserModel.js');
+var UserModel = require('../models/UserModel');
 
 var bcrypt = require('bcryptjs');
 const { hash } = require('bcrypt');
 var salt = 8; 
 
 router.get('/register', (req, res) => {
-    res.render('auth/register');
+    res.render('auth/register', {layout: 'loginLayout' });
 })
 
 router.post('/register', async (req, res) =>{
@@ -22,9 +22,15 @@ router.post('/register', async (req, res) =>{
         await UserModel.create(user);
         res.redirect('/auth/login'); 
     } catch (err) {
-        res.send(err);
-        console.log('add failed. ' + err)
-    }
+        if (err.name === 'ValidationError') {
+            let InputErrors ={};
+            for (let field in err.errors) 
+                {
+                    InputErrors[field] = err.errors[field].message;
+                }
+                res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout'});
+            }
+        }
 })
 
 router.get('/login', (req, res) => {
@@ -41,7 +47,13 @@ router.post('/login', async (req, res) =>{
                 //res.send("<h1>Login successful</h1>")
                 req.session.username = user.username;
                 req.session.role = user.role;
-                res.redirect('/');
+                if(req.session.role == "admin"){
+                    res.redirect('/admin')
+                } else if (req.session.role == "coach"){
+                    res.redirect('/coach')
+                }else{
+                    res.redirect('/')
+                }
             } else {
                 //res.send("<h1>Login Failed</h1>")
                 res.redirect('/auth/login');
