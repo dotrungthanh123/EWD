@@ -1,5 +1,5 @@
 <form method="post" action="" onsubmit="return checkPass();">
-    <h4 class="center-align bold">Register</h4>
+    <h4 class="center-align bold">Create a new account</h4>
     <div class="row">
         <div class="input-field col s12 m4 offset-m4">
             <label for="username"><b>Username</b></label>
@@ -23,24 +23,30 @@
         <div class="input-field col s12 m4 offset-m4">
             <label for="role"><b>Role</b></label>
             <br>
-            <select class='browser-default' name="role" id="">
-                    <option value="admin">MKT coordinator</option>
-                    <option value="admin">Admin</option>
-                    <option value="admin">Role3</option>
-                    <option value="admin">Role4</option>
-                    <option value="admin">Role5</option>
-
+            <select name="role" id="role">
+                <option value="mktManager">MKT Manager</option>
+                <optgroup label="MKT Coordinator">
+                    <option value="mktCoordinatorIT">MKT Coordinator - IT</option>
+                    <option value="mktCoordinatorDesign">MKT Coordinator - Design</option>
+                    <option value="mktCoordinatorBusiness">MKT Coordinator - Business</option>
+                </optgroup>
+                <optgroup label="Student">
+                    <option value="studentIT">Student - IT</option>
+                    <option value="studentDesign">Student - Design</option>
+                    <option value="studentBusiness">Student - Business</option>
+                </optgroup>
+                <option value="admin">Admin</option>
+                <optgroup label="Guest">
+                    <option value="guestIT">Guest - IT</option>
+                    <option value="guestDesign">Guest - Design</option>
+                    <option value="guestBusiness">Guest - Business</option>
+                </optgroup>
             </select>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12 m4 offset-m4 center-align">
-            <button type="submit" class="btn">Register</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12 m4 offset-m4">
-            <p>Already have an account? <a href="/auth/login">Sign in</a>.</p>
+            <button type="submit" class="btn">Create</button>
         </div>
     </div>
 </form>
