@@ -78,6 +78,13 @@ const checkGuestBusinessSession = (req, res, next) => {
     }
 };
 
+const checkMktManagerSession = (req, res, next) => {
+    if (req.session.username && req.session.role === 'mktManager') {
+        next();
+    } else {
+        res.redirect('/auth/login');
+    }
+};
 
 module.exports = {
     checkLoginSession,
