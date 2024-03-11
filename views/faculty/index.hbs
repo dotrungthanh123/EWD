@@ -1,0 +1,26 @@
+<h1>Faculty List</h1>
+<div class="row">
+   <a class="btn" href="/faculty/add">Add faculty</a>
+</div>
+<table>
+   <tr>
+      <th>Faculty name</th>
+      <th>Faculty description</th>
+      <th>Menu</th>
+   </tr>
+   {{#each facultyList }}
+   <tr>
+      <td>
+         <a href="/faculty/detail/{{_id}}">
+            {{ name }}
+         </a>
+      </td>
+      <td>{{ description }}</td>
+      <td>
+         <a class="btn orange" href="/category/edit/{{_id}}">Edit</a>
+         <a class="btn brown" href="/category/delete/{{_id}}"
+            onclick="return confirm('Do you want to delete this category ?')" ;>Delete</a>
+      </td>
+   </tr>
+   {{/each}}
+</table>

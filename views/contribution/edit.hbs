@@ -1,0 +1,16 @@
+<form action="" method="post">
+   <h1>Edit contribution</h1>
+   Name: <input type="text" name="name" required value="{{ contribution.name }}">
+   <br><br>
+   Description: <input type="text" name="description" required value="{{ contribution.description }}">
+   <br><br>
+   Image: <input type="url" name="image" required value="{{ contribution.image }}">
+   <br><br>
+   <img src="{{ contribution.image }}" alt="" width="120" height="120">
+   <br><br>
+   Docs: <input type="file" name="docs" required>
+   <br><br>
+   <a href="{{ contribution.docs }}" target="_blank">{{ contribution.docs }}</a>
+   <br><br>
+   <input class="btn" type="submit" value="Edit">
+</form>

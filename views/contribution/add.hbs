@@ -1,0 +1,28 @@
+<form action="" method="post" enctype="multipart/form-data">
+  <h1>Add new article</h1>
+  Name: <input type="text" name="name" id="" required>
+  <br><br>
+  Description: <input type="text" name="description" id="" required>
+
+{{#if InputErrors.name}}
+<div class="error">
+  {{InputErrors.name}}
+</div>
+{{/if}}
+
+  <br><br>
+  Image: <input type="file" name="image" id="" required>
+  <br><br>
+  Docs: <input type="file" name="docs" id="" required>
+  <br><br>
+  Faculty:
+  <select name="faculty" id="">
+    {{#each facultyList }}
+    <option value="{{_id}}">
+      {{ name }}
+    </option>
+    {{/each}}
+  </select>
+  <br><br>
+  <input class="btn" type="submit" value="Add">
+</form>
