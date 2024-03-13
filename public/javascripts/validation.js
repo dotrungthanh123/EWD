@@ -9,4 +9,4 @@ function checkPass(){
         error.innerHTML="";
         return true;
     }
-}
+};
