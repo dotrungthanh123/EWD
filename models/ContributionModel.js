@@ -5,7 +5,8 @@ var ContributionSchema = mongoose.Schema(
          type: String,
          required: true
       },
-      image: String,
+      image: String, // Store the image file name as a string
+      docs: String,  // Store the document file name as a string
       description: String,
       faculty: {           
          type: mongoose.SchemaTypes.ObjectId,
@@ -15,5 +16,4 @@ var ContributionSchema = mongoose.Schema(
 )
 var ContributionModel = mongoose.model("contribution", ContributionSchema);
 module.exports = ContributionModel;
-
 

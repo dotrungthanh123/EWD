@@ -3,7 +3,6 @@ var router = express.Router();
 var UserModel = require('../models/UserModel');
 
 var bcrypt = require('bcryptjs');
-const { hash } = require('bcrypt');
 var salt = 8; 
 
 router.get('/register', (req, res) => {
@@ -44,9 +43,31 @@ router.post('/login', async (req, res) =>{
         if (user){
             var hash = bcrypt.compareSync(userLogin.password, user.password)
             if(hash) {
+                
                 req.session.username = user.username;
                 req.session.role = user.role;
                 if(req.session.role == "admin"){
+                    res.redirect('/contribution/add')
+                // } else if (req.session.role == "studentIT"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "studentDesign"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "studentBusiness"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "mktCoordinatorIT"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "mktcoordinatorDesign"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "mktcoordinatorBusiness"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "mktmanager"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "guestIT"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "guestDesign"){
+                //     res.redirect('/')
+                // } else if (req.session.role == "guestBusiness"){
+                //     res.redirect('/')
                     res.redirect('/contribution/add')
                 } else if (req.session.role == "studentIT"){
                     res.redirect('/')
@@ -72,7 +93,8 @@ router.post('/login', async (req, res) =>{
                     res.redirect('/')
                 }
             } else {
-                res.redirect('/auth/login');
+                // res.redirect('/auth/login');
+                res.send("nigga");
             }   
         }
     } catch (err) {
@@ -81,7 +103,7 @@ router.post('/login', async (req, res) =>{
 })
 
 router.get('/logout', (req, res) =>{
-    req.session.destroy();
+    // req.session.destroy();
     res.redirect('/auth/login');
 })
 

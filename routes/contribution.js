@@ -19,10 +19,16 @@ var multer = require('multer');
 
 var prefix = Date.now();
 
-const storage1 = multer.diskStorage(
+const storage = multer.diskStorage(
    {
       destination: (req, file, cb) => {
-         cb(null, './public/images/'); //set image upload location
+         if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+            cb(null, './public/images/'); //set image upload location
+         } else if (file.mimetype == 'application/msword' || file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            cb(null, './public/docs/'); //set docs upload location
+         } else {
+            console.log(file.mimetype);
+         }
       },
       filename: (req, file, cb) => {
          let fileName = prefix + file.originalname; //set final file name
@@ -31,33 +37,20 @@ const storage1 = multer.diskStorage(
    }
 );
 
-const storage2 = multer.diskStorage(
-   {
-      destination: (req, file, cb) => {
-         cb(null, './public/docs/'); //set docs upload location
-      },
-      filename: (req, file, cb) => {
-         let fileName = prefix + file.originalname; //set final file name
-         cb(null, fileName);
-      }
-   }
-);
 
-const upload = multer({ 
-   storage: multer.diskStorage({}) // This is just to initialize multer. We'll configure storage later.
-});
+const upload = multer({ storage: storage });
 
 const uploadFields = upload.fields([
-   { name: 'image', maxCount: 5 }, // Allow up to 5 images
+   { name: 'image', maxCount: 1 }, // Allow up to 1 images
    { name: 'docs', maxCount: 1 }   // Allow only 1 document
 ]);
 
-router.get('/', checkMultipleSession(['student', 'mktmanager', 'mktcoordinator']), async (req, res) => {
+router.get('/', async (req, res) => {
    var contributionList = await ContributionModel.find({}).populate('faculty');
-   if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
+   //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
       res.render('contribution/index', { contributionList });
-   else
-      res.render('contribution/indexUser', { contributionList });
+   // else
+   //    res.render('contribution/indexUser', { contributionList });
 });
 
 router.get('/add', async (req, res) => {
@@ -68,13 +61,12 @@ router.get('/add', async (req, res) => {
 router.post('/add', uploadFields, async (req, res) => {
    try {
       var contribution = req.body;
-      if (req.files['image']) {
-         contribution.images = req.files['image'].map(file => prefix + "_" + file.originalname);
-      }
-      if (req.files['docs']) {
-         contribution.docs = req.files['docs'].map(file => prefix + "_" + file.originalname);
-      }
+      console.log('im here');
+      contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
+         contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
+      console.log('not yet');
       await ContributionModel.create(contribution);
+      console.log('now is the time');
       res.redirect('/contribution');
    }
    catch (err) {
@@ -84,6 +76,7 @@ router.post('/add', uploadFields, async (req, res) => {
             InputErrors[field] = err.errors[field].message;
          }
          res.render('contribution/add', { InputErrors, contribution });
+         console.log(err);
       }
    }
 })
