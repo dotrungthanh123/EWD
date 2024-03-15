@@ -6,9 +6,8 @@ const checkLoginSession = (req, res, next) => {
     }
 }
 
-<<<<<<< Updated upstream
 module.exports = checkLoginSession;
-=======
+
 const checkMultipleSession = (allowedRoles) => (req, res, next) => {
     if (req.session.username && allowedRoles.includes(req.session.role)) {
        next();
@@ -111,4 +110,3 @@ module.exports = {
     checkGuestBusinessSession,
     checkMultipleSession
 };
->>>>>>> Stashed changes
