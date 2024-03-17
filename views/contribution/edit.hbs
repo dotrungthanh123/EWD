@@ -4,13 +4,13 @@
    <br><br>
    Description: <input type="text" name="description" required value="{{ contribution.description }}">
    <br><br>
-   Image: <input type="url" name="image" required value="{{ contribution.image }}">
+   Image: <input type="file" name="image" required value="{{ contribution.image }}">
    <br><br>
    <img src="{{ contribution.image }}" alt="" width="120" height="120">
    <br><br>
-   Docs: <input type="file" name="docs" required>
+   Docs: <input type="file" name="docs" required value="">
    <br><br>
-   <a href="{{ contribution.docs }}" target="_blank">{{ contribution.docs }}</a>
+   <h6>{{ contribution.docs }}</h6>
    <br><br>
-   <input class="btn" type="submit" value="Edit">
+   <input class="btn" type="submit" value="Save">
 </form>

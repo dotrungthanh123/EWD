@@ -26,11 +26,11 @@
       <td>
          <img src="/images/{{ image }}" width="100" height="100">
       </td>
-      <td>{{ docs }}</td>
+      <td><a href="/docs/{{ docs }}" download="{{ docs }}">{{ docs }}</a></td>
       <td>{{ category.name }}</td>
       <td>
-         <a class="btn orange" href="/product/edit/{{ _id }}">Edit</a>
-         <a class="btn brown" href="/product/delete/{{_id}}"
+         <a class="btn orange" href="/contribution/edit/{{ _id }}">Edit</a>
+         <a class="btn brown" href="/contribution/delete/{{_id}}"
             onclick="return confirm('Do you want to delete this article ?')" ;>Delete</a>
       </td>
    </tr>

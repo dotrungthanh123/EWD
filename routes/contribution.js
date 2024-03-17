@@ -65,6 +65,7 @@ router.post('/add', uploadFields, async (req, res) => {
       contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
          contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
       console.log('not yet');
+      
       await ContributionModel.create(contribution);
       console.log('now is the time');
       res.redirect('/contribution');
