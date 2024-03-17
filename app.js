@@ -10,6 +10,17 @@ var authRouter = require('./routes/auth');
 
 var app = express();
 
+var session = require('express-session');
+//set session timeout 
+const timeout = 1000 * 60 * 60 * 24;
+//config session middleware
+app.use(session({
+    secret: "alien_is_existed_or_not_it_is_still_a_secret",
+    saveUninitialized: false,
+    cookie: { maxAge: timeout },
+    resave: false
+}));
+
 //Mongoose
 var mongoose = require('mongoose');
 var uri = "mongodb://localhost:27017/EnterpriseWebDev";
@@ -34,7 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
