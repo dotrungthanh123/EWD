@@ -31,44 +31,76 @@ router.post('/register', async (req, res) =>{
                 res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout'});
             }
         }
-})
+});
 
 router.get('/login', (req, res) => {
     res.render('auth/login', {layout: 'loginLayout' })
-})
+}); 
 
-router.post('/login', async (req, res) =>{
-    try{ 
-        var userLogin = req.body;
-        var user = await UserModel.findOne({ username : userLogin.username})
-        if (user){
-            var hash = bcrypt.compareSync(userLogin.password, user.password)
-            if(hash) {
-                req.session.username = user.username;
-                req.session.role = user.role;
-                if(req.session.role == "admin"){
-                    res.redirect('/')
-                } else if (req.session.role == "user"){
-                    res.redirect('/')
-                } else if (req.session.role == "mkt"){
-                    res.redirect('/')
-                } else if (req.session.role == "role4"){
-                    res.redirect('/')
-                }else{
-                    res.redirect('/')
-                }
-            } else {
-                res.redirect('/auth/login');
-            }   
+router.post('/login', async (req, res) => {
+    try {
+        var { username, password } = req.body;
+        var user = await UserModel.findOne({ username });
+        if (!user) {
+            return res.render('auth/login', { 
+                error: 'Invalid username or password',
+            });
+        }
+        var isPasswordValid = bcrypt.compareSync(password, user.password);
+        if (!isPasswordValid) {
+            return res.render('auth/login', { 
+                error: 'Invalid username or password',
+            });
+        }
+        req.session.username = user.username;
+        req.session.role = user.role;
+        switch (user.role) {
+            case "mktManager":
+                res.redirect('/mkt-manager-dashboard');
+                break;
+            case "mktCoordinatorIT":
+                res.redirect('/mkt-coordinator-it-dashboard');
+                break;
+            case "mktCoordinatorDesign":
+                res.redirect('/mkt-coordinator-design-dashboard');
+                break;
+            case "mktCoordinatorBusiness":
+                res.redirect('/mkt-coordinator-business-dashboard');
+                break;
+            case "studentIT":
+                res.redirect('/student-it-dashboard');
+                break;
+            case "studentDesign":
+                res.redirect('/student-design-dashboard');
+                break;
+            case "studentBusiness":
+                res.redirect('/student-business-dashboard');
+                break;
+            case "admin":
+                res.redirect('/admin-dashboard');
+                break;
+            case "guestIT":
+                res.redirect('/guest-it-dashboard');
+                break;
+            case "guestDesign":
+                res.redirect('/guest-design-dashboard');
+                break;
+            case "guestBusiness":
+                res.redirect('/guest-business-dashboard');
+                break;
+            default:
+                res.redirect('/');
+                break;
         }
     } catch (err) {
-        res.send(err)
+        console.error('Login Error: ', err);
+        res.status(500).send('Server error occurred during login');
     }
-})
+});
 
 router.get('/logout', (req, res) =>{
     req.session.destroy();
     res.redirect('/auth/login');
-})
+});
 
 module.exports = router;
