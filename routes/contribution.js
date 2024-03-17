@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
 const FacultyModel = require('../models/FacultyModel');
-const {formidable} = require('formidable')
+const { formidable } = require('formidable')
 const { checkMktManagerSession,
    checkMktCoordinatorITSession,
    checkMktCoordinatorDesignSession,
@@ -15,41 +15,10 @@ const { checkMktManagerSession,
    checkGuestBusinessSession,
    checkMultipleSession } = require('../middlewares/auth');
 
-
-var multer = require('multer');
-
-var prefix = Date.now();
-
-const storage = multer.diskStorage(
-   {
-      destination: (req, file, cb) => {
-         if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
-            cb(null, './public/images/'); //set image upload location
-         } else if (file.mimetype == 'application/msword' || file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            cb(null, './public/docs/'); //set docs upload location
-         } else {
-            console.log(file.mimetype);
-         }
-      },
-      filename: (req, file, cb) => {
-         let fileName = prefix + file.originalname; //set final file name
-         cb(null, fileName);
-      }
-   }
-);
-
-
-const upload = multer({ storage: storage });
-
-const uploadFields = upload.fields([
-   { name: 'image', maxCount: 1 }, // Allow up to 1 images
-   { name: 'docs', maxCount: 1 }   // Allow only 1 document
-]);
-
 router.get('/', async (req, res) => {
    var contributionList = await ContributionModel.find({}).populate('faculty');
    //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
-      res.render('contribution/index', { contributionList });
+   res.render('contribution/index', { contributionList });
    // else
    //    res.render('contribution/indexUser', { contributionList });
 });
@@ -60,49 +29,24 @@ router.get('/add', async (req, res) => {
 })
 
 router.post('/add', async (req, res) => {
-   // try {
-      // var contribution = req.body;
-      // console.log('im here');
-      // contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
-      //    contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
-      // console.log('not yet');
-      
-      // await ContributionModel.create(contribution);
-      // console.log('now is the time');
-      // res.redirect('/contribution');
-   // }
-   // catch (err) {
-   //    if (err.name === 'ValidationError') {
-   //       let InputErrors = {};
-   //       for (let field in err.errors) {
-   //          InputErrors[field] = err.errors[field].message;
-   //       }
-   //       res.render('contribution/add', { InputErrors, contribution });
-   //       console.log(err);
-   //    }
-   // }
-
-   // START: DO TRUNG THANH
-
    const form = formidable({
       uploadDir: './uploads',
       multiples: true,
-  })
-  form.parse(req, async (err, fields, files) => {
+   })
+
+   // Shit only runs when there is file uploaded and a res.end() inside it
+   form.parse(req, async (err, fields, files) => {
       if (err) return err;
       await ContributionModel.create({
-         name: req.body.name,
-         description: req.body.description,
-         path: [].push(
-            files['userfile'].map((userfile) => {
-               userfile['filepath']
-            })
-         )
+         name: fields.name[0],
+         description: fields.description[0],
+         path: files.userfile.map((userfile) => userfile.filepath)
       });
-      res.redirect('/contribution');
-  });
 
-   // END: DO TRUNG THANH
+      // need to put this here dont know why
+      res.redirect('/contribution');
+   });
+
 })
 
 router.get('/edit/:id', async (req, res) => {

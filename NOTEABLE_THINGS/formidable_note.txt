@@ -1,0 +1,5 @@
+form.parse(req, async (err, fields, files) => {
+
+In the callback function:
+    files contain every files
+    fields contain every other text fields => DONT NEED ANY OTHER PARSER

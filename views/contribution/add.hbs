@@ -4,20 +4,7 @@
   <br><br>
   Description: <input type="text" name="description" id="" required>
 
-  {{#if InputErrors.name}}
-  <div class="error">
-    {{InputErrors.name}}
-  </div>
-  {{/if}}
-
-  <br><br>
-  {{!-- Image: <input type="file" name="image" id="">
-  <br><br>
-  Docs: <input type="file" name="docs" id=""> --}}
-
-  {{!-- START: DO TRUNG THANH --}}
   <div class="hero">
-    <form action="create" method="post" enctype="multipart/form-data">
       <label for="userfile" id="drop-area">
         <input type="file" id="userfile" name="userfile" hidden multiple>
 
@@ -29,32 +16,11 @@
 
         <br>
 
-        <input type="submit" value="submit">
-
         <p id="num-uploaded"></p>
 
       </label>
-    </form>
   </div>
-  {{!-- END: DO TRUNG THANH --}}
-
   <br><br>
-  Faculty:
-  <select name="faculty" id="">
-    {{#each facultyList }}
-    <option value="{{_id}}">
-      {{ name }}
-    </option>
-    {{/each}}
-  </select>
-  <br><br>
-  {{!-- <div class="row">
-    <div class="col s12 m4 offset-m4 center-align">
-      <label>
-        <input type="checkbox" name="terms_of_service" required>
-        <span>I agree to the <a href="/terms_of_service_page" target="_blank">Terms of Service</a></span>
-      </label>
-    </div>
-  </div> --}}
+  
   <input class="btn" type="submit" value="Add">
 </form>
