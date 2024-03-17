@@ -12,7 +12,6 @@ var contributionRouter = require('./routes/contribution');
 
 var app = express();
 
-
 //Mongoose
 var mongoose = require('mongoose');
 var uri = "mongodb://localhost:27017/EnterpriseWebDev";

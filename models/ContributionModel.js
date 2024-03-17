@@ -3,14 +3,16 @@ var ContributionSchema = mongoose.Schema(
    {
       name: {
          type: String,
-         required: true
+         // required: true
       },
-      image: String, // Store the image file name as a string
-      docs: String,  // Store the document file name as a string
+      path:[{
+         type: String
+      }],  // Store the document file name as a string
       description: String,
       faculty: {           
          type: mongoose.SchemaTypes.ObjectId,
-         ref: 'faculties'  
+         ref: 'faculties',
+         default: null  
       }
    }
 )

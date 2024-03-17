@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var ContributionModel = require('../models/ContributionModel');
-var FacultyModel = require('../models/FacultyModel');
+const express = require('express');
+const router = express.Router();
+const ContributionModel = require('../models/ContributionModel');
+const FacultyModel = require('../models/FacultyModel');
+const {formidable} = require('formidable')
 const { checkMktManagerSession,
    checkMktCoordinatorITSession,
    checkMktCoordinatorDesignSession,
@@ -58,28 +59,50 @@ router.get('/add', async (req, res) => {
    res.render('contribution/add', { facultyList });
 })
 
-router.post('/add', uploadFields, async (req, res) => {
-   try {
-      var contribution = req.body;
-      console.log('im here');
-      contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
-         contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
-      console.log('not yet');
+router.post('/add', async (req, res) => {
+   // try {
+      // var contribution = req.body;
+      // console.log('im here');
+      // contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
+      //    contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
+      // console.log('not yet');
       
-      await ContributionModel.create(contribution);
-      console.log('now is the time');
+      // await ContributionModel.create(contribution);
+      // console.log('now is the time');
+      // res.redirect('/contribution');
+   // }
+   // catch (err) {
+   //    if (err.name === 'ValidationError') {
+   //       let InputErrors = {};
+   //       for (let field in err.errors) {
+   //          InputErrors[field] = err.errors[field].message;
+   //       }
+   //       res.render('contribution/add', { InputErrors, contribution });
+   //       console.log(err);
+   //    }
+   // }
+
+   // START: DO TRUNG THANH
+
+   const form = formidable({
+      uploadDir: './uploads',
+      multiples: true,
+  })
+  form.parse(req, async (err, fields, files) => {
+      if (err) return err;
+      await ContributionModel.create({
+         name: req.body.name,
+         description: req.body.description,
+         path: [].push(
+            files['userfile'].map((userfile) => {
+               userfile['filepath']
+            })
+         )
+      });
       res.redirect('/contribution');
-   }
-   catch (err) {
-      if (err.name === 'ValidationError') {
-         let InputErrors = {};
-         for (let field in err.errors) {
-            InputErrors[field] = err.errors[field].message;
-         }
-         res.render('contribution/add', { InputErrors, contribution });
-         console.log(err);
-      }
-   }
+  });
+
+   // END: DO TRUNG THANH
 })
 
 router.get('/edit/:id', async (req, res) => {

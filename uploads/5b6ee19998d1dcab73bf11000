@@ -1,0 +1,2 @@
+Change script in skin prefab
+Change code in player, enum is changed -> modify variable used to store skin state
