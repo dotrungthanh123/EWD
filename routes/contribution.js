@@ -28,25 +28,40 @@ router.get('/add', async (req, res) => {
    res.render('contribution/add', { facultyList });
 })
 
-router.post('/add', async (req, res) => {
+const formMiddleWare = (req, res, next) => {
    const form = formidable({
       uploadDir: './uploads',
       multiples: true,
-   })
-
-   // Shit only runs when there is file uploaded and a res.end() inside it
-   form.parse(req, async (err, fields, files) => {
-      if (err) return err;
-      await ContributionModel.create({
-         name: fields.name[0],
-         description: fields.description[0],
-         path: files.userfile.map((userfile) => userfile.filepath)
-      });
-
-      // need to put this here dont know why
-      res.redirect('/contribution');
+      allowEmptyFiles: true,
+      minFileSize: 0,
+      filter: (part) => {
+         // TEMPORARY TO PASS EMPTY FILE
+         return part.originalFilename !== ""
+      }
    });
 
+   form.parse(req, (err, fields, files) => {
+      if (err) {
+         next(err);
+         return;
+      }
+      req.fields = fields;
+      req.files = files;
+      res.writeHead(200, {
+         "Content-Type": "application/json",
+       });
+       res.end(JSON.stringify({fields,files,}));
+      // next();
+   });
+};
+
+router.post('/add', formMiddleWare, async (req, res) => {
+   await ContributionModel.create({
+      name: req.fields.name[0],
+      description: req.fields.description[0],
+      path: req.files.userfile.map((userfile) => userfile.filepath)
+   });
+   res.redirect('/contribution')
 })
 
 router.get('/edit/:id', async (req, res) => {
