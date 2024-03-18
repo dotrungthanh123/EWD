@@ -14,6 +14,8 @@ const { checkMktManagerSession,
    checkGuestDesignSession,
    checkGuestBusinessSession,
    checkMultipleSession } = require('../middlewares/auth');
+const admZip = require('adm-zip');
+const AdmZip = require('adm-zip');
 
 router.get('/', async (req, res) => {
    var contributionList = await ContributionModel.find({}).populate('faculty');
@@ -23,6 +25,27 @@ router.get('/', async (req, res) => {
    //    res.render('contribution/indexUser', { contributionList });
 });
 
+router.get('/download/:id', async (req, res) => {
+   var zip = new AdmZip()
+   var id = req.params.id;
+   var contribution = await ContributionModel.findById(id);
+
+   // add local file
+   var paths = contribution.path
+   for (index in paths) {
+      zip.addLocalFile('./public/uploads/' + paths[index])
+   }
+   // get everything as a buffer
+   var zipFileContents = zip.toBuffer();
+   const fileName = 'contribution.zip';
+   const fileType = 'application/zip';
+   res.writeHead(200, {
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Content-Type': fileType,
+   })
+   return res.end(zipFileContents);
+})
+
 router.get('/add', async (req, res) => {
    var facultyList = await FacultyModel.find({});
    res.render('contribution/add', { facultyList });
@@ -30,14 +53,13 @@ router.get('/add', async (req, res) => {
 
 const formMiddleWare = (req, res, next) => {
    const form = formidable({
-      uploadDir: './uploads',
+      uploadDir: './public/uploads',
       multiples: true,
       allowEmptyFiles: true,
       minFileSize: 0,
-      filter: (part) => {
-         // TEMPORARY TO PASS EMPTY FILE
-         return part.originalFilename !== ""
-      }
+      maxFileSize: 15 * 1024 * 1024, // 15mb
+      keepExtensions: true,
+      filter: (part) => part.originalFilename !== ""
    });
 
    form.parse(req, (err, fields, files) => {
@@ -47,20 +69,17 @@ const formMiddleWare = (req, res, next) => {
       }
       req.fields = fields;
       req.files = files;
-      res.writeHead(200, {
-         "Content-Type": "application/json",
-       });
-       res.end(JSON.stringify({fields,files,}));
-      // next();
+      next();
    });
 };
 
 router.post('/add', formMiddleWare, async (req, res) => {
-   await ContributionModel.create({
+   const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
-      path: req.files.userfile.map((userfile) => userfile.filepath)
-   });
+      path: req.files.userfile.map((userfile) => userfile.newFilename)
+   }
+   await ContributionModel.create(contribution);
    res.redirect('/contribution')
 })
 
@@ -70,10 +89,14 @@ router.get('/edit/:id', async (req, res) => {
    res.render('contribution/edit', { contribution });
 })
 
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', formMiddleWare, async (req, res) => {
    var id = req.params.id;
-   var data = req.body;
-   await ContributionModel.findByIdAndUpdate(id, data);
+   const contribution = {
+      name: req.fields.name[0],
+      description: req.fields.description[0],
+      path: req.files.userfile.map((userfile) => userfile.newFilename)
+   }
+   await ContributionModel.findByIdAndUpdate(id, contribution);
    res.redirect('/contribution');
 })
 

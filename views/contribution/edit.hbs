@@ -1,16 +1,25 @@
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
    <h1>Edit contribution</h1>
    Name: <input type="text" name="name" required value="{{ contribution.name }}">
    <br><br>
    Description: <input type="text" name="description" required value="{{ contribution.description }}">
-   <br><br>
-   Image: <input type="file" name="image" required value="{{ contribution.image }}">
-   <br><br>
-   <img src="{{ contribution.image }}" alt="" width="120" height="120">
-   <br><br>
-   Docs: <input type="file" name="docs" required value="">
-   <br><br>
-   <h6>{{ contribution.docs }}</h6>
-   <br><br>
+
+   <div class="hero">
+      <label for="userfile" id="drop-area">
+        <input type="file" id="userfile" name="userfile" hidden multiple>
+
+        <div id="img-view">
+          <img src="/images/icon.jpg">
+          <p>Drag and drop or click here <br> to upload file</p>
+          <span>Upload any files from desktop</span>
+        </div>
+
+        <br>
+
+        <p id="num-uploaded"></p>
+
+      </label>
+  </div>
+
    <input class="btn" type="submit" value="Save">
 </form>

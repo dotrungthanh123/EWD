@@ -18,4 +18,3 @@ var ContributionSchema = mongoose.Schema(
 )
 var ContributionModel = mongoose.model("contribution", ContributionSchema);
 module.exports = ContributionModel;
-
