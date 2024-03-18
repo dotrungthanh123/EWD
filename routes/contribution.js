@@ -19,10 +19,10 @@ const AdmZip = require('adm-zip');
 
 router.get('/', async (req, res) => {
    var contributionList = await ContributionModel.find({}).populate('faculty');
-   //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
+   if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    res.render('contribution/index', { contributionList });
-   // else
-   //    res.render('contribution/indexUser', { contributionList });
+   else
+      res.render('contribution/indexUser', { contributionList });
 });
 
 router.get('/download/:id', async (req, res) => {

@@ -1,29 +1,19 @@
 var mongoose = require('mongoose');
-var UserSchema = mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    facultyID: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Faculty',
-        default: null
-    },
-    roleID: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Role',
-        default: null
+var UserSchema =mongoose.Schema({
+        username: {
+            type: String,
+            unique: true,
+            required: true
+        },
+        password: {
+            type: String,
+            required: true
+        },
+        role: {
+            type: String,
+            required: true 
+        }
     }
-}
 );
-var UserModel = mongoose.model('User', UserSchema);
+var UserModel = mongoose.model('users', UserSchema);
 module.exports = UserModel;
