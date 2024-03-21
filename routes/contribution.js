@@ -58,28 +58,70 @@ router.get('/add', async (req, res) => {
    res.render('contribution/add', { facultyList });
 })
 
-router.post('/add', uploadFields, async (req, res) => {
-   try {
-      var contribution = req.body;
-      console.log('im here');
-      contribution.image = prefix + req.files['image'][0].originalname; // Get the first image file name
-         contribution.docs = prefix + req.files['docs'][0].originalname; // Get the first document file name
-      console.log('not yet');
-      
-      await ContributionModel.create(contribution);
-      console.log('now is the time');
-      res.redirect('/contribution');
-   }
-   catch (err) {
-      if (err.name === 'ValidationError') {
-         let InputErrors = {};
-         for (let field in err.errors) {
-            InputErrors[field] = err.errors[field].message;
-         }
-         res.render('contribution/add', { InputErrors, contribution });
-         console.log(err);
+const formMiddleWare = (req, res, next) => {
+   const form = formidable({
+      uploadDir: './public/uploads',
+      multiples: true,
+      allowEmptyFiles: true,
+      minFileSize: 0,
+      maxFileSize: 15 * 1024 * 1024, // 15mb
+      keepExtensions: true,
+      filter: (part) => part.originalFilename !== ""
+   });
+
+   form.parse(req, (err, fields, files) => {
+      if (err) {
+         next(err);
+         return;
       }
+      req.fields = fields;
+      req.files = files;
+      next();
+   });
+};
+
+router.post('/add', formMiddleWare, async (req, res) => {
+   const contribution = {
+      name: req.fields.name[0],
+      description: req.fields.description[0],
+      path: req.files.userfile.map((userfile) => userfile.newFilename)
    }
+   await ContributionModel.create(contribution);
+
+   const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+         user: 'ringotowntest@gmail.com',
+         pass: 'akaj nngk lcyk ldnl',
+      },
+   });
+   if (req.session.role == "studentIT") {
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: 'anhndgch210098@fpt.edu.vn',
+         subject: 'New Submission IT',
+         text: `You are receiving this because your student have submitted a new contribution,
+               please check out within 14 days of receiving this email!`,
+         };
+      } else if (req.session.role == "studentDesign") {
+         const mailOptions = {
+            from: 'ringotowntest@gmail.com',
+            to: 'itszombie2016@gmail.com',
+            subject: 'New Submission Design',
+            text: `You are receiving this because your student have submitted a new contribution,
+                  please check out within 14 days of receiving this email!`,
+         };
+      } else if (req.session.role == "studentBusiness") {
+         const mailOptions = {
+            from: 'ringotowntest@gmail.com',
+            to: 'itszombie2019@gmail.com',
+            subject: 'New Submission Business',
+            text: `You are receiving this because your student have submitted a new contribution,
+                  please check out within 14 days of receiving this email!`,
+         };
+      }
+
+   res.redirect('/contribution')
 })
 
 router.get('/edit/:id', async (req, res) => {
