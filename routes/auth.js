@@ -48,27 +48,6 @@ router.post('/login', async (req, res) =>{
                 req.session.role = user.role;
                 if(req.session.role == "admin"){
                     res.redirect('/contribution/add')
-                // } else if (req.session.role == "studentIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "studentDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "studentBusiness"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktCoordinatorIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktcoordinatorDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktcoordinatorBusiness"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktmanager"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestBusiness"){
-                //     res.redirect('/')
-                    res.redirect('/contribution/add')
                 } else if (req.session.role == "studentIT"){
                     res.redirect('/')
                 } else if (req.session.role == "studentDesign"){
