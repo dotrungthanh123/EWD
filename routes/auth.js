@@ -46,6 +46,7 @@ router.post('/login', async (req, res) =>{
                 
                 req.session.username = user.username;
                 req.session.role = user.role;
+                req.session.user = user
                 if(req.session.role == "admin"){
                     // res.redirect('/contribution/add')
                 // } else if (req.session.role == "studentIT"){

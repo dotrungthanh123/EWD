@@ -18,7 +18,7 @@ const admZip = require('adm-zip');
 const AdmZip = require('adm-zip');
 
 router.get('/', async (req, res) => {
-   var contributionList = await ContributionModel.find({}).populate('faculty');
+   var contributionList = await ContributionModel.find({});
    if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    res.render('contribution/index', { contributionList });
    else
@@ -77,7 +77,8 @@ router.post('/add', formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
-      path: req.files.userfile.map((userfile) => userfile.newFilename)
+      path: req.files.userfile.map((userfile) => userfile.newFilename),
+      user: req.session.user
    }
    await ContributionModel.create(contribution);
    res.redirect('/contribution')

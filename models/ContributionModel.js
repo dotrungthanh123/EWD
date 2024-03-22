@@ -9,12 +9,12 @@ var ContributionSchema = mongoose.Schema(
          type: String
       }],  // Store the document file name as a string
       description: String,
-      faculty: {           
+      user: {           
          type: mongoose.SchemaTypes.ObjectId,
-         ref: 'faculties',
+         ref: 'User',
          default: null  
       }
    }
 )
-var ContributionModel = mongoose.model("contribution", ContributionSchema);
+var ContributionModel = mongoose.model("Contribution", ContributionSchema);
 module.exports = ContributionModel;
