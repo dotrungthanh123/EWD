@@ -18,6 +18,7 @@ router.post('/register', async (req, res) =>{
             username: userRegistration.username,
             password: hashPassword,
             role: userRegistration.role,
+            faculty: userRegistration.faculty
         }
         await UserModel.create(user);
         res.redirect('/auth/login'); 
