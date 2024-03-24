@@ -52,7 +52,6 @@ app.use('/contribution', contributionRouter);
 app.use('/faculty', facultyRouter);
 app.use('/event', eventRouter);
 
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
