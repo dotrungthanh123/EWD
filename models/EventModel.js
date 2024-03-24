@@ -11,15 +11,6 @@ var EventSchema = mongoose.Schema(
       finalClosureDate: {
         type: String,
       },
-      openDate: {
-         type: String,
-      },
-      description: {
-         type: String
-      },
-      image: {
-         type: String
-      }
    }
 );
 

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 //Schema: structure of collection
-var FacultySchema = mongoose.Schema(
+var CategorySchema = mongoose.Schema(
    {
       name: {
          type: String,
@@ -8,5 +8,5 @@ var FacultySchema = mongoose.Schema(
       }
    }
 );
-var FacultyModel = mongoose.model("Faculty", FacultySchema);
-module.exports = FacultyModel;
+var CategoryModel = mongoose.model("Category", Category);
+module.exports = CategoryModel;
