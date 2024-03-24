@@ -3,26 +3,34 @@ const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
 const FacultyModel = require('../models/FacultyModel');
 const { formidable } = require('formidable')
-const { checkMktManagerSession,
-   checkMktCoordinatorITSession,
-   checkMktCoordinatorDesignSession,
-   checkMktCoordinatorBusinessSession,
-   checkStudentITSession,
-   checkStudentDesignSession,
-   checkStudentBusinessSession,
-   checkGuestITSession,
-   checkGuestDesignSession,
-   checkGuestBusinessSession,
-   checkMultipleSession } = require('../middlewares/auth');
-const admZip = require('adm-zip');
 const AdmZip = require('adm-zip');
 
 router.get('/', async (req, res) => {
-   var contributionList = await ContributionModel.find({});
-   if (req.session.role == "admin" || req.session.role == "mktcoordinator")
-   res.render('contribution/index', { contributionList });
-   else
-      res.render('contribution/indexUser', { contributionList });
+   // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
+   // Suck not because design suck, is mongodb that suck
+
+   // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
+
+
+   var contributionList = ContributionModel.find()
+   // .populate({
+   //    path: 'userID',
+   //    match: {
+   //       facultyID: req.session.user.facultyID
+   //    }
+   // }).then((contributions) => {
+   //    // contributions = contributions.filter((contribution) => {
+   //    //    return contribution.userID.facultyID;
+   //    // })
+   // }).catch((err) => {
+   //    console.log(err);
+   // })
+
+   // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
+   // res.render('contribution/index', { contributionList });
+   // else
+   //    res.render('contribution/indexUser', { contributionList });
+   res.render('contribution/index', { contributionList })
 });
 
 router.get('/download/:id', async (req, res) => {
@@ -35,6 +43,7 @@ router.get('/download/:id', async (req, res) => {
    for (index in paths) {
       zip.addLocalFile('./public/uploads/' + paths[index])
    }
+
    // get everything as a buffer
    var zipFileContents = zip.toBuffer();
    const fileName = 'contribution.zip';
@@ -78,7 +87,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile.map((userfile) => userfile.newFilename),
-      user: req.session.user
+      userID: req.session.user._id,
    }
    await ContributionModel.create(contribution);
    res.redirect('/contribution')

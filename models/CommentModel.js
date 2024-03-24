@@ -9,14 +9,14 @@ var CommentSchema = mongoose.Schema(
         },
 
         // The comment that this replies to
-        commentID: {
+        replyComment: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment',
             default: null,
         },
         
         // The user that posts the comment
-        userID: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             default: null,

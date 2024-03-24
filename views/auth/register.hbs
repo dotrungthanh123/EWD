@@ -1,5 +1,5 @@
 <form method="post" action="" onsubmit="return checkPass();">
-    <h4 class="center-align bold">Register</h4>
+    <h4 class="center-align bold">Create a new account</h4>
     <div class="row">
         <div class="input-field col s12 m4 offset-m4">
             <label for="username"><b>Username</b></label>
@@ -24,35 +24,32 @@
             <label for="role"><b>Role</b></label>
             <br>
             <select name="role" id="role">
-                <option value="admin">Admin</option>
-                <option value="mktManager">MKT Manager</option>
-                <optgroup label="MKT Coordinator">
-                    <option value="mktCoordinatorIT">MKT Coordinator - IT</option>
-                    <option value="mktCoordinatorDesign">MKT Coordinator - Design</option>
-                    <option value="mktCoordinatorBusiness">MKT Coordinator - Business</option>
+                <optgroup label="Role">
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Coordinator">Coordinator</option>
+                    <option value="Student">Student</option>
+                    <option value="Guest">Guest</option>
                 </optgroup>
-                <optgroup label="Student">
-                    <option value="studentIT">Student - IT</option>
-                    <option value="studentDesign">Student - Design</option>
-                    <option value="studentBusiness">Student - Business</option>
-                </optgroup>
-                
-                <optgroup label="Guest">
-                    <option value="guestIT">Guest - IT</option>
-                    <option value="guestDesign">Guest - Design</option>
-                    <option value="guestBusiness">Guest - Business</option>
+            </select>
+        </div>
+    </div>
+        <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <label for="role"><b>Faculty</b></label>
+            <br>
+            <select name="faculy" id="faculty">
+                <optgroup label="IT Faculty">
+                    <option value="it">IT</option>
+                    <option value="des">Design</option>
+                    <option value="bus">Business</option>
                 </optgroup>
             </select>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12 m4 offset-m4 center-align">
-            <button type="submit" class="btn">Register</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12 m4 offset-m4">
-            <p>Already have an account? <a href="/auth/login">Sign in</a>.</p>
+            <button type="submit" class="btn">Create</button>
         </div>
     </div>
 </form>

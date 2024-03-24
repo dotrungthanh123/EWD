@@ -1,109 +1,111 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
+var mongoose = require('mongoose')
 
 var bcrypt = require('bcryptjs');
-var salt = 8; 
+var salt = 8;
 
 router.get('/register', (req, res) => {
-    res.render('auth/register', {layout: 'loginLayout' });
+    res.render('auth/register', { layout: 'loginLayout' });
 })
 
-router.post('/register', async (req, res) =>{
+router.post('/register', async (req, res) => {
     try {
         var userRegistration = req.body;
         var hashPassword = bcrypt.hashSync(userRegistration.password, salt);
         var user = {
             username: userRegistration.username,
             password: hashPassword,
-            role: userRegistration.role,
+            // role: userRegistration.role,
+            facultyID: new mongoose.Types.ObjectId('660081abd6d71368b2353401')
         }
         await UserModel.create(user);
-        res.redirect('/auth/login'); 
+        res.redirect('/auth/login');
     } catch (err) {
         if (err.name === 'ValidationError') {
-            let InputErrors ={};
-            for (let field in err.errors) 
-                {
-                    InputErrors[field] = err.errors[field].message;
-                }
-                res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout'});
+            let InputErrors = {};
+            for (let field in err.errors) {
+                InputErrors[field] = err.errors[field].message;
             }
+            res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout' });
         }
+    }
 })
 
 router.get('/login', (req, res) => {
-    res.render('auth/login', {layout: 'loginLayout' })
+    res.render('auth/login', { layout: 'loginLayout' })
 })
 
-router.post('/login', async (req, res) =>{
-    try{ 
+router.post('/login', async (req, res) => {
+    try {
         var userLogin = req.body;
-        var user = await UserModel.findOne({ username : userLogin.username})
-        if (user){
+        var user = await UserModel.findOne({ username: userLogin.username })
+        if (user) {
             var hash = bcrypt.compareSync(userLogin.password, user.password)
-            if(hash) {
-                
+            if (hash) {
+
                 req.session.username = user.username;
-                req.session.role = user.role;
+                // req.session.role = user.role;
                 req.session.user = user
-                if(req.session.role == "admin"){
+
+                if (req.session.role == "admin") {
                     // res.redirect('/contribution/add')
-                // } else if (req.session.role == "studentIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "studentDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "studentBusiness"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktCoordinatorIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktcoordinatorDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktcoordinatorBusiness"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "mktmanager"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestIT"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestDesign"){
-                //     res.redirect('/')
-                // } else if (req.session.role == "guestBusiness"){
-                //     res.redirect('/')
+                    // } else if (req.session.role == "studentIT"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "studentDesign"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "studentBusiness"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "mktCoordinatorIT"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "mktcoordinatorDesign"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "mktcoordinatorBusiness"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "mktmanager"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "guestIT"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "guestDesign"){
+                    //     res.redirect('/')
+                    // } else if (req.session.role == "guestBusiness"){
+                    //     res.redirect('/')
                     res.redirect('/contribution/add')
-                } else if (req.session.role == "studentIT"){
+                } else if (req.session.role == "studentIT") {
                     res.redirect('/')
-                } else if (req.session.role == "studentDesign"){
+                } else if (req.session.role == "studentDesign") {
                     res.redirect('/')
-                } else if (req.session.role == "studentBusiness"){
+                } else if (req.session.role == "studentBusiness") {
                     res.redirect('/')
-                } else if (req.session.role == "mktCoordinatorIT"){
+                } else if (req.session.role == "mktCoordinatorIT") {
                     res.redirect('/')
-                } else if (req.session.role == "mktcoordinatorDesign"){
+                } else if (req.session.role == "mktcoordinatorDesign") {
                     res.redirect('/')
-                } else if (req.session.role == "mktcoordinatorBusiness"){
+                } else if (req.session.role == "mktcoordinatorBusiness") {
                     res.redirect('/')
-                } else if (req.session.role == "mktmanager"){
+                } else if (req.session.role == "mktmanager") {
                     res.redirect('/')
-                } else if (req.session.role == "guestIT"){
+                } else if (req.session.role == "guestIT") {
                     res.redirect('/')
-                } else if (req.session.role == "guestDesign"){
+                } else if (req.session.role == "guestDesign") {
                     res.redirect('/')
-                } else if (req.session.role == "guestBusiness"){
+                } else if (req.session.role == "guestBusiness") {
                     res.redirect('/')
-                }else{
+                } else {
                     res.redirect('/')
                 }
             } else {
                 // res.redirect('/auth/login');
                 res.send("nigga");
-            }   
+            }
         }
     } catch (err) {
         res.send(err)
     }
 })
 
-router.get('/logout', (req, res) =>{
+router.get('/logout', (req, res) => {
     // req.session.destroy();
     res.redirect('/auth/login');
 })

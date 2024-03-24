@@ -21,15 +21,16 @@ app.use(session({
     secret: "alien_is_existed_or_not_it_is_still_a_secret",
     saveUninitialized: false,
     cookie: { maxAge: timeout },
-    resave: false
+    resave: false,
 }));
 
 //Mongoose
 var mongoose = require('mongoose');
 var uri = "mongodb://localhost:27017/EnterpriseWebDev";
-mongoose.connect(uri) 
+var con = mongoose.connect(uri) 
   .then(()=> console.log('connect to db succeed'))
   .catch((err) => console.log('Error: ' + err));
+
 
 //Body parser
 var bodyParser = require('body-parser');

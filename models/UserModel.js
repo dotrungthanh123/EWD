@@ -11,19 +11,16 @@ var UserSchema = mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
-        default: null
+        // required: true,
     },
-    roleID: {
+    role: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        default: null,
+        // required: true,
         ref: 'Role'
     },
-    facultyID: {
+    faculty: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        default: null,
+        // required: true,
         ref: 'Faculty'
     }
 }

@@ -9,12 +9,12 @@ var ContributionSchema = mongoose.Schema(
          type: String
       }],  // Store the document file name as a string
       description: String,
-      userID: {           
+      user: {           
          type: mongoose.Schema.Types.ObjectId,
          ref: 'User',
          default: null  
       },
-      eventID: {
+      event: {
          type: mongoose.Schema.Types.ObjectId,
          ref: 'Event',
          default: null
