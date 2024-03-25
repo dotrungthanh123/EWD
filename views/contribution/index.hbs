@@ -1,8 +1,15 @@
-<h1>Contribution List</h1>
+<h1>
+{{#if publish}}
+   Publish Contributions
+{{else}}
+   Contribution List
+{{/if}}
+</h1>
 <div class="row">
    <a class="btn" href="/contribution/add">Add product</a>
    <a class="btn green" href="/contribution/sort/asc">Name ascending</a>
    <a class="btn lime" href="/contribution/sort/desc">Name descending</a>
+   <a class="btn lime" href="/contribution/showPublish">Show contributions for publish</a>
 </div>
 <div class="row">
    <form class="col m5" action="/contribution/search" method="post">
@@ -25,6 +32,7 @@
       <td>
          <a class="btn orange" href="/contribution/edit/{{ _id }}">Edit</a>
          <a class="btn orange" href="/contribution/download/{{ _id }}">Download</a>
+         <a class="btn orange" href="/contribution/publish/{{ _id }}">Publish</a>
       </td>
    </tr>
    {{/each}}

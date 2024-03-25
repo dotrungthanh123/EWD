@@ -5,26 +5,29 @@ const FacultyModel = require('../models/FacultyModel');
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 
+var contribtionList = []
+
 router.get('/', async (req, res) => {
    // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
    // Suck not because design suck, is mongodb that suck
 
    // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
 
-
-   var contributionList = await ContributionModel.find()
+   // Must login else undefine faculty in session
+   // Need code to prevent viewing without login
+   contributionList = await ContributionModel.find()
       .populate('user')
       .then((contributions) =>
          contributions
          .filter((contribution) => {
-            return contribution.user.faculty.equals(req.session.user.faculty);
+            // Display all when not login for testing, should be false on right side
+            return req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true;
          })
       )
       .catch((err) => {
          console.log(err);
       })
 
-   console.log(contributionList)
 
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
@@ -62,6 +65,8 @@ router.get('/add', async (req, res) => {
 })
 
 const formMiddleWare = (req, res, next) => {
+   fileTypes = ['image/jpeg', 'image/png', 'image/gif']
+
    const form = formidable({
       uploadDir: './public/uploads',
       multiples: true,
@@ -69,7 +74,9 @@ const formMiddleWare = (req, res, next) => {
       minFileSize: 0,
       maxFileSize: 15 * 1024 * 1024, // 15mb
       keepExtensions: true,
-      filter: (part) => part.originalFilename !== ""
+      filter: (part) => {
+         console.log(part.mimetype);
+         return part.originalFilename !== ""}
    });
 
    form.parse(req, (err, fields, files) => {
@@ -98,6 +105,24 @@ router.get('/edit/:id', async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
    res.render('contribution/edit', { contribution });
+})
+
+router.get('/publish/:id', async (req, res) => {
+   var id = req.params.id;
+   var contribution = await ContributionModel.findById(id)
+   contribution.publish = true
+   contribution.save()
+   res.redirect('/contribution')
+})
+
+router.get('/showPublish', async (req, res) => {
+   var publishContributions = []
+   
+   for (index in contributionList) {
+      if (contributionList[index].publish) publishContributions.push(contributionList[index])
+   }
+
+   res.render('contribution/index', {contributionList: publishContributions, publish: true})
 })
 
 router.post('/edit/:id', formMiddleWare, async (req, res) => {
