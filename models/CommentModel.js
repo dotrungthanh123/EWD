@@ -20,8 +20,10 @@ var CommentSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             default: null,
+        },
+        date: {
+            type: string
         }
-        
     }
 );
 var CommentModel = mongoose.model("Comment", CommentSchema);
