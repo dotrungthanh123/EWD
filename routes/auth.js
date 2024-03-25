@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
             username: userRegistration.username,
             password: hashPassword,
             // role: userRegistration.role,
-            faculty: (await FacultyModel.findOne({name: 'Art'}).exec())._id
+            faculty: (await FacultyModel.findOne({name: 'IT'}).exec())._id
         }
 
         await UserModel.create(user);

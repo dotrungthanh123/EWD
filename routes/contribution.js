@@ -33,8 +33,7 @@ router.get('/', async (req, res) => {
    // res.render('contribution/index', { contributionList });
    // else
    //    res.render('contribution/indexUser', { contributionList });
-
-   res.render('contribution/index', { contributionList })
+   res.render('contribution/index', { contributionList})
 });
 
 router.get('/download/:id', async (req, res) => {
@@ -65,7 +64,7 @@ router.get('/add', async (req, res) => {
 })
 
 const formMiddleWare = (req, res, next) => {
-   fileTypes = ['image/jpeg', 'image/png', 'image/gif']
+   fileTypes = ['image/jpeg', 'image/png', 'image/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
    const form = formidable({
       uploadDir: './public/uploads',
@@ -74,10 +73,7 @@ const formMiddleWare = (req, res, next) => {
       minFileSize: 0,
       maxFileSize: 15 * 1024 * 1024, // 15mb
       keepExtensions: true,
-      filter: (part) => {
-         console.log(part.mimetype);
-         return part.originalFilename !== ""}
-   });
+      filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)})
 
    form.parse(req, (err, fields, files) => {
       if (err) {
@@ -94,7 +90,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
-      path: req.files.userfile.map((userfile) => userfile.newFilename),
+      path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
       user: req.session.user._id,
    }
    await ContributionModel.create(contribution);
