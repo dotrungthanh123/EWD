@@ -12,24 +12,25 @@ router.get('/', async (req, res) => {
    // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
 
 
-   var contributionList = ContributionModel.find()
-   // .populate({
-   //    path: 'userID',
-   //    match: {
-   //       facultyID: req.session.user.facultyID
-   //    }
-   // }).then((contributions) => {
-   //    // contributions = contributions.filter((contribution) => {
-   //    //    return contribution.userID.facultyID;
-   //    // })
-   // }).catch((err) => {
-   //    console.log(err);
-   // })
+   var contributionList = await ContributionModel.find()
+      .populate('user')
+      .then((contributions) =>
+         contributions
+         .filter((contribution) => {
+            return contribution.user.faculty.equals(req.session.user.faculty);
+         })
+      )
+      .catch((err) => {
+         console.log(err);
+      })
+
+   console.log(contributionList)
 
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
    // else
    //    res.render('contribution/indexUser', { contributionList });
+
    res.render('contribution/index', { contributionList })
 });
 
@@ -87,7 +88,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile.map((userfile) => userfile.newFilename),
-      userID: req.session.user._id,
+      user: req.session.user._id,
    }
    await ContributionModel.create(contribution);
    res.redirect('/contribution')

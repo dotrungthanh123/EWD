@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
-var mongoose = require('mongoose')
+var FacultyModel = require('../models/FacultyModel')
 
 var bcrypt = require('bcryptjs');
+const ContributionModel = require('../models/ContributionModel');
 var salt = 8;
 
 router.get('/register', (req, res) => {
@@ -18,8 +19,9 @@ router.post('/register', async (req, res) => {
             username: userRegistration.username,
             password: hashPassword,
             // role: userRegistration.role,
-            facultyID: new mongoose.Types.ObjectId('660081abd6d71368b2353401')
+            faculty: (await FacultyModel.findOne({name: 'Art'}).exec())._id
         }
+
         await UserModel.create(user);
         res.redirect('/auth/login');
     } catch (err) {
