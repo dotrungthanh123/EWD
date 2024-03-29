@@ -11,6 +11,7 @@ var facultyRouter = require('./routes/faculty');
 var contributionRouter = require('./routes/contribution');
 var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
+var studentRouter = require('./routes/student')
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use('/contribution', contributionRouter);
 app.use('/faculty', facultyRouter);
 app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
+app.use('/student', studentRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
