@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
-const FacultyModel = require('../models/FacultyModel');
+const CategoryModel = require('../models/CategoryModel');
+const FacultyModel = require('../models/FacultyModel')
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 
@@ -17,6 +18,7 @@ router.get('/', async (req, res) => {
    // Need code to prevent viewing without login
    contributionList = await ContributionModel.find()
       .populate('user')
+      .populate('category')
       .then((contributions) =>
          contributions
          .filter((contribution) => {
@@ -59,8 +61,8 @@ router.get('/download/:id', async (req, res) => {
 })
 
 router.get('/add', async (req, res) => {
-   var facultyList = await FacultyModel.find({});
-   res.render('contribution/add', { facultyList });
+   var categoryList = await CategoryModel.find();
+   res.render('contribution/add', { categoryList });
 })
 
 const formMiddleWare = (req, res, next) => {
@@ -87,10 +89,13 @@ const formMiddleWare = (req, res, next) => {
 };
 
 router.post('/add', formMiddleWare, async (req, res) => {
+   // Currently choose only one category, should be multiple
+
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
+      category: [req.fields.category[0]],
       user: req.session.user._id,
    }
    await ContributionModel.create(contribution);

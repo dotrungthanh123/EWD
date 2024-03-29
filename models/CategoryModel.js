@@ -8,5 +8,5 @@ var CategorySchema = mongoose.Schema(
       }
    }
 );
-var CategoryModel = mongoose.model("Category", Category);
+var CategoryModel = mongoose.model("Category", CategorySchema);
 module.exports = CategoryModel;
