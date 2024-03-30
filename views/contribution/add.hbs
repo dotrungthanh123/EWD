@@ -1,0 +1,32 @@
+<form action="" method="post" enctype="multipart/form-data">
+  <h1>Add new article</h1>
+  Name: <input type="text" name="name" id="" required>
+  <br><br>
+  Description: <input type="text" name="description" id="" required>
+
+  <div class="hero">
+    <label for="userfile" id="drop-area">
+      <input type="file" id="userfile" name="userfile" hidden multiple>
+
+      <div id="img-view">
+        <img src="/images/icon.jpg">
+        <p>Drag and drop or click here <br> to upload file</p>
+        <span>Upload any files from desktop</span>
+      </div>
+
+      <br>
+
+      <p id="num-uploaded"></p>
+
+    </label>
+  </div>
+  <br><br>
+
+  <select name="category">
+      {{#each categoryList}}
+        <option value="{{this._id}}">{{this.name}}</option>
+      {{/each}}
+  </select>
+
+  <input class="btn" type="submit" value="Add">
+</form>

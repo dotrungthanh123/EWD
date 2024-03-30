@@ -1,0 +1,12 @@
+<form action="" method="post">
+   <h1>Edit contribution</h1>
+   Name: <input type="text" name="name" required value="{{ event.name }}">
+   <br><br>
+   First Closure Date: <input type="date" name="firstClosureDate" required value="{{ event.firstClosureDate }}">
+   <br><br>
+   Final Closure Date: <input type="date" name="finalClosureDate" required value="{{ event.finalClosureDate }}">
+   <br><br>
+   Open Date: <input type="date" name="openDate" required value="{{ event.openDate }}">
+   <br><br>
+   <input class="btn" type="submit" value="Save">
+</form>
