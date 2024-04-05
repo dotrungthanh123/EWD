@@ -16,7 +16,7 @@
         <div class="input-field col s12 m4 offset-m4">
             <span id="retype_error" class="error"></span>
             <label for="psw-repeat"><b>Repeat Password</b></label>
-            <input type="password" name="password" name="psw-repeat" required id="retype" required>
+            <input type="password" name="psw-repeat" required id="retype" required>
         </div>
     </div>
     <div class="row">
@@ -25,24 +25,21 @@
             <br>
             <select name="role" id="role">
                 <optgroup label="Role">
-                    <option value="Admin">Admin</option>
-                    <option value="Manager">Manager</option>
-                    <option value="Coordinator">Coordinator</option>
-                    <option value="Student">Student</option>
-                    <option value="Guest">Guest</option>
+                    {{#each roleList}}
+                    <option value="{{this.name}}">{{this.name}}</option>
+                    {{/each}}
                 </optgroup>
             </select>
         </div>
-    </div>
-        <div class="row">
+    <div class="row">
         <div class="input-field col s12 m4 offset-m4">
-            <label for="role"><b>Faculty</b></label>
+            <label for="faculty"><b>Faculty</b></label>
             <br>
-            <select name="faculy" id="faculty">
-                <optgroup label="IT Faculty">
-                    <option value="it">IT</option>
-                    <option value="des">Design</option>
-                    <option value="bus">Business</option>
+            <select name="faculty" id="faculty">
+                <optgroup label="Faculty">
+                    {{#each facultyList}}
+                    <option value="{{this.name}}">{{this.name}}</option>
+                    {{/each}}
                 </optgroup>
             </select>
         </div>

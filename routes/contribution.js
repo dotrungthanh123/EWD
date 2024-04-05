@@ -8,14 +8,7 @@ const AdmZip = require('adm-zip');
 
 var contribtionList = []
 
-router.get('/', async (req, res) => {
-   // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
-   // Suck not because design suck, is mongodb that suck
-
-   // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
-
-   // Must login else undefine faculty in session
-   // Need code to prevent viewing without login
+const getContribution = async () => {
    contributionList = await ContributionModel.find()
       .populate('user')
       .populate('category')
@@ -29,7 +22,18 @@ router.get('/', async (req, res) => {
       .catch((err) => {
          console.log(err);
       })
+}
 
+router.get('/', async (req, res) => {
+   // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
+   // Suck not because design suck, is mongodb that suck
+
+   // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
+
+   // Must login else undefine faculty in session
+   // Need code to prevent viewing without login
+   
+   getContribution()
 
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
@@ -45,6 +49,16 @@ router.get('/download/:id', async (req, res) => {
 
    // add local file
    var paths = contribution.path
+
+   // If empty paths, redirect to contribution index
+   if (paths.length == 0) {
+      // if contributionList has not been filled, fill it
+      if (contributionList.length == 0) {
+         getContribution()
+      }
+      res.redirect("/contribution/index", {contributionList})
+   }
+   
    for (index in paths) {
       zip.addLocalFile('./public/uploads/' + paths[index])
    }
@@ -95,7 +109,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
-      category: [req.fields.category[0]],
+      category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
    }
    await ContributionModel.create(contribution);

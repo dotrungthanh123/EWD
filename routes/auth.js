@@ -2,38 +2,44 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
 var FacultyModel = require('../models/FacultyModel')
+var RoleModel = require('../models/RoleModel')
 
-var bcrypt = require('bcryptjs');
-const ContributionModel = require('../models/ContributionModel');
+
+var bcrypt = require('bcrypt');
+var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
 
-router.get('/register', (req, res) => {
-    res.render('auth/register', { layout: 'loginLayout' });
-})
+router.get('/register', async (req, res) => {
+    try {
+        var roleList = await RoleModel.find({});
+        var facultyList = await FacultyModel.find({});
+        
+        res.render('auth/register', { roleList, facultyList });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error loading registration form");
+    }
+});
 
 router.post('/register', async (req, res) => {
     try {
         var userRegistration = req.body;
-        var hashPassword = bcrypt.hashSync(userRegistration.password, salt);
+        var role = await RoleModel.findOne({ name: userRegistration.role });
+        var faculty = await FacultyModel.findOne({ name: userRegistration.faculty });
+        var hash = bcrypt.hashSync(userRegistration.psw, salt);
         var user = {
             username: userRegistration.username,
-            password: hashPassword,
-            // role: userRegistration.role,
-            faculty: (await FacultyModel.findOne({name: 'IT'}).exec())._id
+            password: hash,
+            role: role._id,
+            faculty: faculty._id
         }
-
         await UserModel.create(user);
         res.redirect('/auth/login');
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            let InputErrors = {};
-            for (let field in err.errors) {
-                InputErrors[field] = err.errors[field].message;
-            }
-            res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout' });
-        }
+        console.error(err);
+        res.status(500).send('Error during registration');
     }
-})
+});
 
 router.get('/login', (req, res) => {
     res.render('auth/login', { layout: 'loginLayout' })
