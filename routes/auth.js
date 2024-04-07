@@ -84,7 +84,8 @@ router.post('/login', async (req, res) => {
                     res.redirect('/')
                 }
             } else {
-                res.redirect('/auth/login');
+                // res.redirect('/auth/login');
+                res.send("nigga");
             }
         }
     } catch (err) {
