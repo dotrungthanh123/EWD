@@ -6,7 +6,7 @@ const FacultyModel = require('../models/FacultyModel')
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 
-var contribtionList = []
+var contributionList = []
 
 const getContribution = async () => {
    contributionList = await ContributionModel.find()
