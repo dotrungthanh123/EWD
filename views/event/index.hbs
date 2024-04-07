@@ -27,11 +27,10 @@
    {{/each}}
 </table>
 
-<section class="about-section text-center" id="about">
    <div class="container">
       <div id='calendar'></div>
    </div>
-</section>
+
 
 <script>
    document.addEventListener('DOMContentLoaded', function() {
@@ -41,16 +40,15 @@
             initialDate: new Date(),
             headerToolbar: {
                left: 'prev,next today',
-               center:'title',
-               right: 'dayGridMonth, timeGridWeek, timeGridDay'
-               } 
+               center: 'title',
+               right: 'dayGridMonth, timeGridWeek, timeGridDay', 
+            }, 
             eventSources: [
                {
                   url: '/event/eventData',
                   color: 'white',
                   textColor: 'black' 
                }
-            
             ]
       });
       calendar.render();

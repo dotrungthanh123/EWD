@@ -15,6 +15,7 @@
     "express": "^4.18.3",
     "express-session": "^1.18.0",
     "formidable": "^3.5.1",
+    "fullcalendar": "^6.1.11",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
     "mongodb": "^6.5.0",

@@ -38,11 +38,10 @@ router.post('/add', async (req, res) => {
 router.get('/eventData', async (req, res) => {
     try {
         var events = await EventModel.find({});
-        // Map the data to the desired format
         var eventData = events.map(evt => ({
-            name: evt.name,
-            firstClosureDate: evt.firstClosureDate,
-            finalClosureDate: evt.finalClosureDate
+            title: evt.name,
+            start: new Date(evt.firstClosureDate),
+            end: new Date(evt.finalClosureDate)
         }));
 
         res.json(eventData);
