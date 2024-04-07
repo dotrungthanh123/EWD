@@ -35,6 +35,23 @@ router.post('/add', async (req, res) => {
     res.redirect('/event')
 })
 
+router.get('/eventData', async (req, res) => {
+    try {
+        var events = await EventModel.find({});
+        // Map the data to the desired format
+        var eventData = events.map(evt => ({
+            name: evt.name,
+            firstClosureDate: evt.firstClosureDate,
+            finalClosureDate: evt.finalClosureDate
+        }));
+
+        res.json(eventData);
+    } catch (error) {
+        console.error('Error fetching class data:', error);
+        res.status(500).json({ message: 'Error fetching class data' });
+    }
+});
+
 router.get('/edit/:id', async (req, res) => {
     var id = req.params.id;
     var event = await EventModel.findById(id);
