@@ -22,7 +22,8 @@ var CommentSchema = mongoose.Schema(
             default: null,
         },
         date: {
-            type: string
+            type: Date,
+            default: Date.now 
         }
     }
 );

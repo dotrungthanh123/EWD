@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Contribution</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container text-white">
+        <h2 class="text-center mt-4">Comment!!!</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label">Comment:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" name="comment" required>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <div class="col-sm-10 mt-5">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        body {
+            padding-top: 10rem;
+            padding-bottom: 4.2rem;
+            background-color: hsl(250, 25%, 19%)
+        }
+
+        .custom-file {
+            background-color: hsl(235, 22%, 30%);
+        }
+
+        .form-control {
+            background-color: hsl(235, 22%, 30%);
+            border: 0cap;
+            color: white;
+        }
+
+        .form-control:focus {
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</body>
+
+</html>
