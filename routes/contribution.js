@@ -138,6 +138,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
       category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
+      comment: []
    }
    await ContributionModel.create(contribution);
    res.redirect('/contribution')
@@ -206,29 +207,30 @@ router.get('/comment/:id', async (req, res) =>{
    res.render('contribution/comment', { contribution });
 })
 
-// router.post('/comment/:id', async (req, res) => {
-//    try {
-//       const id = req.params.id;
-//       const contribution = await ContributionModel.findById(id);
+router.post('/comment/:id', async (req, res) => {
+   try {
+      const id = req.params.id;
+      const contribution = await ContributionModel.findById(id);
 
-//       const { comment } = req.body;
+      const body = req.body;
+      console.log(body.comment);
 
-//       const newComment = new CommentModel({
-//          content: comment,
-//          user: req.session.user._id, // Assuming user information is stored in req.session.user
-//          date: new Date()
-//       });
+      const newComment = {
+         content: body.comment,
+         user: req.session.user._id, // Assuming user information is stored in req.session.user
+         date: new Date()
+      };
 
-//       await newComment.save();
+      await console.log(CommentModel.create(newComment));
 
-//       contribution.comment.push(newComment);
-//       await contribution.save();
+      contribution.comment.push(newComment);
+      await contribution.save();
 
-//       res.redirect(`/contribution`);
-//    } catch (err) {
-//       console.error("Error saving comment:", err);
-//       res.status(500).send("Error saving comment");
-//    }
-// });
+      res.redirect(`/contribution`);
+   } catch (err) {
+      console.error("Error saving comment:", err);
+      res.status(500).send("Error saving comment");
+   }
+});
 
 module.exports = router;

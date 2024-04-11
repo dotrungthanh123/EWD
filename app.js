@@ -28,7 +28,7 @@ app.use(session({
 
 //Mongoose
 var mongoose = require('mongoose');
-var uri = "mongodb://localhost:27017/EnterpriseWebDev";
+var uri = "mongodb://0.0.0.0:27017/EnterpriseWebDev";
 var con = mongoose.connect(uri) 
   .then(()=> console.log('connect to db succeed'))
   .catch((err) => console.log('Error: ' + err));
