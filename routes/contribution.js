@@ -201,29 +201,42 @@ router.get('/sort/desc', async (req, res) => {
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/comment/:id', async (req, res) =>{
-   var id = req.params.id;
-   var contribution = await ContributionModel.findById(id);
-   res.render('contribution/comment', { contribution });
-})
+// router.get('/comment/:id', async (req, res) =>{
+//    var id = req.params.id;
+//    var contribution = await ContributionModel.findById(id);
+//    res.render('contribution/comment', { contribution });
+// })
+
+router.get('/comment/:id', async (req, res) => {
+   try {
+      const id = req.params.id;
+      const contribution = await ContributionModel.findById(id).populate('comment');
+      res.render('contribution/comment', { contribution });
+   } catch (err) {
+      console.error("Error fetching comments:", err);
+      res.status(500).send("Error fetching comments");
+   }
+});
 
 router.post('/comment/:id', async (req, res) => {
    try {
       const id = req.params.id;
       const contribution = await ContributionModel.findById(id);
 
-      const body = req.body;
-      console.log(body.comment);
-
+      // Create a new comment object
       const newComment = {
-         content: body.comment,
+         content: req.body.comment,
          user: req.session.user._id, // Assuming user information is stored in req.session.user
          date: new Date()
       };
 
-      await console.log(CommentModel.create(newComment));
+      // Save the new comment to the database
+      const savedComment = await CommentModel.create(newComment);
 
-      contribution.comment.push(newComment);
+      // Push the ObjectId reference of the saved comment into contribution's comment array
+      contribution.comment.push(savedComment._id);
+
+      // Save the contribution with the updated comment array
       await contribution.save();
 
       res.redirect(`/contribution`);
@@ -232,5 +245,6 @@ router.post('/comment/:id', async (req, res) => {
       res.status(500).send("Error saving comment");
    }
 });
+
 
 module.exports = router;
