@@ -1,0 +1,4 @@
+<h1>{{ contribution.name }}</h1>
+{{#unless contribution.anonymous}}
+    <a href="/student/detail/{{ contribution.user._id }}">{{ contribution.user.name }}</a>
+{{/unless}}

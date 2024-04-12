@@ -5,12 +5,15 @@ const CategoryModel = require('../models/CategoryModel');
 const FacultyModel = require('../models/FacultyModel')
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
-const fs = require('fs')
+const fs = require('fs');
+const { ObjectId } = require('mongodb');
+const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
 
 var contributionList = []
+var eventList = []
 
-const getContribution = async () => {
+const getContribution = async (req) => {
    contributionList = await ContributionModel.find()
       .populate('user')
       .populate('category')
@@ -26,6 +29,10 @@ const getContribution = async () => {
       })
 }
 
+const getEvent = async () => {
+   eventList = await eventList.find()
+}
+
 router.get('/', async (req, res) => {
    // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
    // Suck not because design suck, is mongodb that suck
@@ -34,8 +41,8 @@ router.get('/', async (req, res) => {
 
    // Must login else undefine faculty in session
    // Need code to prevent viewing without login
-   
-   getContribution()
+
+   await getContribution(req)
 
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
@@ -58,9 +65,9 @@ router.get('/download/:id', async (req, res) => {
       if (contributionList.length == 0) {
          getContribution()
       }
-      res.redirect("/contribution/index", {contributionList})
+      res.redirect("/contribution/index", { contributionList })
    }
-   
+
    for (index in paths) {
       zip.addLocalFile('./public/uploads/' + paths[index])
    }
@@ -122,7 +129,9 @@ router.post('/add', formMiddleWare, async (req, res) => {
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
       category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
-      date: new Date(2023, 12, 1),
+      date: Date.now(),
+      anonymous: req.fields.anonymous[0].length == 0 ? true : false,
+      viewer: []
    }
 
    await ContributionModel.create(contribution);
@@ -168,6 +177,11 @@ router.get('/delete/:id', async (req, res) => {
    var id = req.params.id;
    await ContributionModel.findByIdAndDelete(id);
    res.redirect('/contribution');
+})
+
+// Comment on contribution
+router.post('/comment/:id', async (req, res) => {
+
 })
 
 router.post('/search', async (req, res) => {
@@ -223,13 +237,25 @@ router.get('/exportcsv', async (req, res, next) => {
    })
 });
 
-router.post('/filterDate', async (req, res) => {
-   let contributionList = await ContributionModel.find().then(contributions => contributions
-      .filter(contribution => 
-         {
-            return new Date(contribution.date) > new Date(req.body.startDate) && new Date(contribution.date) < new Date(req.body.endDate)
-         }))
+router.get('/detail/:id', async (req, res) => {
+   const id = req.params.id
+   let contribution = await ContributionModel.findById(id).populate('user')
+   if (!contribution.viewer.includes(req.session.user._id)) {
+      contribution.viewer.push(req.session.user._id)
+   }
+   await ContributionModel.findByIdAndUpdate(id, contribution)
+   res.render("contribution/detail", { contribution })
+})
 
+router.post('/filterDate', async (req, res) => {
+   var startDate = new Date(req.body.startDate)
+   startDate.setDate(startDate.getDate() - 1)
+   var endDate = new Date(req.body.endDate)
+   endDate.setDate(endDate.getDate() + 1)
+   let contributionList = await ContributionModel.find().then(contributions => contributions
+      .filter(contribution => {
+         return new Date(contribution.date) > startDate && new Date(contribution.date) < endDate
+      }))
 
    res.render('contribution/index', { contributionList })
 })

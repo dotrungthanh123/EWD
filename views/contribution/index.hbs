@@ -32,10 +32,11 @@
       <th>Contribution description</th>
       <th>Contribution category</th>
       <th>Menu</th>
+      <th>View</th>
    </tr>
    {{#each contributionList }}
    <tr>
-      <td>{{ name }}</td>
+      <td><a href="/contribution/detail/{{ _id }}">{{ name }}</a></td>
       <td>{{ description }}</td>
       {{#each category}}
          <td><a class="btn orange" href="/category/detail/{{ _id }}">{{ name }}</a></td>
@@ -45,6 +46,7 @@
          <a class="btn orange" href="/contribution/download/{{ _id }}">Download</a>
          <a class="btn orange" href="/contribution/publish/{{ _id }}">Publish</a>
       </td>
+      <td>{{ viewer.length }}</td>
    </tr>
    {{/each}}
 </table>
