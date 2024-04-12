@@ -2,28 +2,40 @@ const express = require('express');
 const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
 const CategoryModel = require('../models/CategoryModel');
-const FacultyModel = require('../models/FacultyModel')
+const ReactionModel = require('../models/ReactionModel')
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 const fs = require('fs')
 const stringify = require('csv-stringify').stringify
+const mongoose = require('mongoose')
 
 var contributionList = []
 
-const getContribution = async () => {
+const getContribution = async req => {
    contributionList = await ContributionModel.find()
       .populate('user')
       .populate('category')
-      .then((contributions) =>
-         contributions
-            .filter((contribution) => {
+      .then(async contributions =>
+         await contributions
                // Display all when not login for testing, should be false on right side
-               return req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true;
-            })
+            .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
       )
       .catch((err) => {
          console.log(err);
       })
+
+   contributionList.map(async contribution => {
+      let reactionList = await ReactionModel.find().then(
+         list => list.filter(react => react._id.contribution.equals(contribution._id) && react.state != 0)
+      )
+
+      likeList = reactionList.filter(react => react.state == 1)
+      dislikeList = reactionList.filter(react => react.state == 2)
+
+      contribution.like = likeList.length
+      contribution.dislike = dislikeList.length
+      return contribution
+   })
 }
 
 router.get('/', async (req, res) => {
@@ -35,7 +47,7 @@ router.get('/', async (req, res) => {
    // Must login else undefine faculty in session
    // Need code to prevent viewing without login
    
-   getContribution()
+   await getContribution(req)
 
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
@@ -123,6 +135,7 @@ router.post('/add', formMiddleWare, async (req, res) => {
       category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
       date: new Date(2023, 12, 1),
+      viewer: []
    }
 
    await ContributionModel.create(contribution);
@@ -168,6 +181,11 @@ router.get('/delete/:id', async (req, res) => {
    var id = req.params.id;
    await ContributionModel.findByIdAndDelete(id);
    res.redirect('/contribution');
+})
+
+// Comment on contribution
+router.post('/comment/:id', async (req, res) => {
+
 })
 
 router.post('/search', async (req, res) => {
@@ -223,6 +241,16 @@ router.get('/exportcsv', async (req, res, next) => {
    })
 });
 
+router.get('/detail/:id', async (req, res) => {
+   const id = req.params.id
+   let contribution = await ContributionModel.findById(id)
+   if (!contribution.viewer.includes(id)) {
+      contribution.viewer.push(session.user.id)
+   }
+   await ContributionModel.findByIdAndUpdate(id, contribution)
+   res.render("contribution/detail", {contribution})
+})
+
 router.post('/filterDate', async (req, res) => {
    let contributionList = await ContributionModel.find().then(contributions => contributions
       .filter(contribution => 
@@ -232,6 +260,58 @@ router.post('/filterDate', async (req, res) => {
 
 
    res.render('contribution/index', { contributionList })
+})
+
+router.get('/like/:id', async (req, res) => {
+   const id = req.params.id
+
+   let reactId = {
+      user: new mongoose.Types.ObjectId(req.session.user._id),
+      contribution: new mongoose.Types.ObjectId(id),
+   }
+
+   let react = await ReactionModel.findById(reactId)
+
+   if (!react) {
+      ReactionModel.create({
+         _id: reactId,
+         state: 1 
+      })
+   } else {
+      react.state = (react.state == 1) ? 0 : 1
+      await ReactionModel.findByIdAndUpdate(reactId, {
+         _id: reactId,
+         state: react.state,
+      })
+   }
+
+   res.redirect('/contribution');
+})
+
+router.get('/dislike/:id', async (req, res) => {
+   const id = req.params.id
+
+   let reactId = {
+      user: new mongoose.Types.ObjectId(req.session.user._id),
+      contribution: new mongoose.Types.ObjectId(id),
+   }
+
+   let react = await ReactionModel.findById(reactId)
+   
+   if (!react) {
+      ReactionModel.create({
+         _id: reactId,
+         state: 2 
+      })
+   } else {
+      react.state = (react.state == 2) ? 0 : 2
+      await ReactionModel.findByIdAndUpdate(reactId, {
+         _id: reactId,
+         state: react.state,
+      })
+   }
+
+   res.redirect('/contribution');
 })
 
 module.exports = router;
