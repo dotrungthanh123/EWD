@@ -32,10 +32,11 @@
       <th>Contribution description</th>
       <th>Contribution category</th>
       <th>Menu</th>
+      <th>View</th>
    </tr>
    {{#each contributionList }}
    <tr>
-      <td>{{ name }}</td>
+      <td><a href="/contribution/detail/{{ _id }}">{{ name }}</a></td>
       <td>{{ description }}</td>
       {{#each category}}
          <td><a class="btn orange" href="/category/detail/{{ _id }}">{{ name }}</a></td>
@@ -47,6 +48,7 @@
          <a class="btn orange" href="/contribution/like/{{ _id }}">Like {{ like }}</a>
          <a class="btn orange" href="/contribution/dislike/{{ _id }}">Dislike {{ dislike }}</a>
       </td>
+      <td>{{ viewer.length }}</td>
    </tr>
    {{/each}}
 </table>

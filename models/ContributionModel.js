@@ -47,6 +47,12 @@ var ContributionSchema = mongoose.Schema(
          type: mongoose.Schema.Types.ObjectId,
          ref: 'User',
       }]
+         ref: 'User'
+      }],
+      
+      anonymous: {
+         type: Boolean
+      }
    }
 )
 var ContributionModel = mongoose.model("Contribution", ContributionSchema);
