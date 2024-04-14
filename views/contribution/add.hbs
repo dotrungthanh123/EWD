@@ -47,6 +47,14 @@
                     <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                 </div>
             </div>
+
+            {{!-- Change to checkbox --}}
+            <div class="form-group row">
+                <label for="description" class="col-sm-2 col-form-label">Anonymous:</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="description" name="anonymous" rows="3" ></textarea>
+                </div>
+            </div>
             <div class="form-group row">
                 <label for="attachFiles" class="col-sm-2 col-form-label">Attach Files:</label>
                 <div class="col-sm-10">
@@ -60,7 +68,7 @@
             <div class="form-group row justify-content-end">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+                    <button type="reset" class="btn btn-secondary ml-2" onclick="onReset()">Reset</button>
                 </div>
             </div>
         </form>
@@ -119,6 +127,11 @@
         } else {
             filePreview.innerHTML = '';
         }
+    }
+
+    function onReset() {
+        const filePreview = document.getElementById('file-preview');
+        filePreview.innerHTML = ''
     }
 
 </Script>
