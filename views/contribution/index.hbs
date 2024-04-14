@@ -17,6 +17,15 @@
       placeholder="Search by contribution name" required>
    </form>
 </div>
+
+<form action="/contribution/filterDate" method="post">
+   <input type="date" name="startDate" required></input>
+   <input type="date" name="endDate" required></input>
+   <input type="submit" value="add">
+
+</form>
+
+
 <table class="table table-primary">
    <tr>
       <th>Contribution name</th>

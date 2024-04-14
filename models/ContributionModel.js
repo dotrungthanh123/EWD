@@ -40,7 +40,19 @@ var ContributionSchema = mongoose.Schema(
       category: [{
          type: mongoose.Schema.Types.ObjectId,
          ref: 'Category'
+      }],
+
+      // users that have viewed the contribution
+      viewer: [{
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'User',
       }]
+         ref: 'User'
+      }],
+      
+      anonymous: {
+         type: Boolean
+      }
    }
 )
 var ContributionModel = mongoose.model("Contribution", ContributionSchema);

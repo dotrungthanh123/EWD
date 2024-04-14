@@ -5,6 +5,8 @@ var EventSchema = mongoose.Schema(
       name: {
          type: String,
       },
+
+      // Change type to Date
       firstClosureDate: {
         type: String,
       },
