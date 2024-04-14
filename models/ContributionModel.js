@@ -46,8 +46,6 @@ var ContributionSchema = mongoose.Schema(
       viewer: [{
          type: mongoose.Schema.Types.ObjectId,
          ref: 'User',
-      }]
-         ref: 'User'
       }],
       
       anonymous: {

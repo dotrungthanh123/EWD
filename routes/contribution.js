@@ -9,7 +9,6 @@ const fs = require('fs');
 const { ObjectId } = require('mongodb');
 const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
-const mongoose = require('mongoose')
 
 var contributionList = []
 var eventList = []
