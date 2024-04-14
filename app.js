@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
-app.use('/contribution', contributionRouter);
+app.use('/contribution', contributionRouter.router);
 app.use('/faculty', facultyRouter);
 app.use('/event', eventRouter);
 app.use('/category', categoryRouter)

@@ -8,11 +8,19 @@ var EventSchema = mongoose.Schema(
 
       // Change type to Date
       firstClosureDate: {
-        type: String,
+        type: Date,
       },
       finalClosureDate: {
-        type: String,
+        type: Date,
       },
+
+      image: {
+         type: String
+      },
+
+      description: {
+         type: String
+      }
    }
 );
 

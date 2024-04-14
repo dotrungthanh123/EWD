@@ -323,4 +323,7 @@ router.get('/dislike/:id', async (req, res) => {
    res.redirect('/contribution');
 })
 
-module.exports = router;
+module.exports = { 
+   router: router,
+   formMiddleWare: formMiddleWare
+ }
