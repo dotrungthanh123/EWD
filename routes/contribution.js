@@ -3,6 +3,7 @@ const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
 const CategoryModel = require('../models/CategoryModel');
 const ReactionModel = require('../models/ReactionModel')
+const FacultyModel = require('../models/FacultyModel')
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 const fs = require('fs');
@@ -97,6 +98,20 @@ router.get('/download/:id', async (req, res) => {
 router.get('/add', async (req, res) => {
    var categoryList = await CategoryModel.find();
    res.render('contribution/add', { categoryList });
+})
+
+router.get('/statistics', async (req, res) => {
+   var facultyContributionCount = []
+   var facultyNames = await FacultyModel.find()
+   var contributions = await ContributionModel.find().populate('user')
+   var total = contributions.length
+   for (i = 0; i < facultyNames.length; i++) {
+      facultyContributionCount.push({
+         key: facultyNames[i].name,
+         value: contributions.filter(c => c.user.faculty.equals(facultyNames[i]._id)).length,
+      })
+   }
+   res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
 const formMiddleWare = (req, res, next) => {
