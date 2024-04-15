@@ -38,10 +38,19 @@ const checkGuestSession = (req, res, next) => {
     }
 };
 
+const checkAdminSession = (req, res, next) => {
+    if (req.session.username && req.session.role === 'admin') {
+        next();
+    } else {
+        res.redirect('/auth/login');
+    }
+};
+
 module.exports = {
     checkLoginSession,
     checkMktManagerSession,
     checkMktCoordinatorSession,
     checkStudentSession,
-    checkGuestSession
+    checkGuestSession,
+    checkAdminSession
 };

@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 
+const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
+
+
 var app = express();
 
 var session = require('express-session');
@@ -41,6 +44,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/contribution', checkLoginSession)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
