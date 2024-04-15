@@ -27,6 +27,7 @@ router.get('/add', async (req, res) => {
 })
 
 router.post('/add', formMiddleWare, async (req, res) => {
+    console.log(req.fields);
     await EventModel.create({
         name: req.fields.name[0],
         firstClosureDate: req.fields.firstClosureDate[0],

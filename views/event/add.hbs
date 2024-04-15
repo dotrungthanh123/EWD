@@ -60,11 +60,11 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="attachImages" class="col-sm-2 col-form-label">Attach Images:</label>
+                    <label for="image" class="col-sm-2 col-form-label">Attach Images:</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="attachImages" multiple
-                                onchange="previewImage()" name="image">
+                                onchange="" name="image">
                             <label class="custom-file-label" for="attachImages">Choose file(s)</label>
                         </div>
                         <div id="file-preview" class="form-control mt-1 "> </div>
@@ -108,60 +108,29 @@
         $("#footer").load("sharedhtmls/footer.html");
     });
 
-    function previewImage() {
-        const fileInput = document.getElementById('attachImages');
-        const imagePreview = document.getElementById('file-preview');
-
+    function previewFile() {
+        const fileInput = document.getElementById('attachFiles');
+        const filePreview = document.getElementById('file-preview');
         const files = fileInput.files;
+
         if (files.length > 0) {
-            const reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            reader.onload = function (e) {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = function () {
+            const file = files[0];
+            const previewContainer = document.createElement('div');
+            previewContainer.classList.add('preview-item');
 
-                    const MAX_WIDTH = 200;
-                    const MAX_HEIGHT = 150;
+            const iconElement = document.createElement('i');
+            iconElement.classList.add('fa', 'fa-file');
+            iconElement.style.fontSize = '24px';
 
-                    let width = img.width;
-                    let height = img.height;
+            const filenameSpan = document.createElement('span');
+            filenameSpan.textContent = " " + file.name;
 
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
+            previewContainer.appendChild(iconElement);
+            previewContainer.appendChild(filenameSpan);
 
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-
-                    img.width = width;
-                    img.height = height;
-
-                    // Create a container element for the image and its name
-                    const previewContainer = document.createElement('div');
-                    previewContainer.classList.add('preview-item');  // Consider adding CSS styling
-
-                    // Append the image to the container
-                    previewContainer.appendChild(img);
-
-                    // Create a span element for the image name (optional)
-                    const filenameSpan = document.createElement('span');
-                    filenameSpan.textContent = files[0].name;  // Set the filename
-
-                    // Add spacing using CSS (recommended)
-                    previewContainer.style.display = 'flex';
-                    previewContainer.style.alignItems = 'center';  // Vertically align image and name
-                    previewContainer.style.marginBottom = '10px';  // Add some space below the container (optional)
-
-                    // Append the filename span to the container (optional)
-                    previewContainer.appendChild(filenameSpan);
-
-                    imagePreview.appendChild(previewContainer);
-                };
-            };
+            filePreview.appendChild(previewContainer);
+        } else {
+            filePreview.innerHTML = '';
         }
     }
 
