@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -12,6 +13,18 @@
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -53,8 +66,8 @@
                             <input type="file" class="custom-file-input" id="attachImages" multiple
                                 onchange="previewImage()" name="image">
                             <label class="custom-file-label" for="attachImages">Choose file(s)</label>
-                            <div id="image-preview"> </div>
                         </div>
+                        <div id="file-preview" class="form-control mt-1 "> </div>
                     </div>
                 </div>
                 <div class="form-group row justify-content-end">
@@ -94,9 +107,10 @@
         });
         $("#footer").load("sharedhtmls/footer.html");
     });
+
     function previewImage() {
         const fileInput = document.getElementById('attachImages');
-        const imagePreview = document.getElementById('image-preview');
+        const imagePreview = document.getElementById('file-preview');
 
         const files = fileInput.files;
         if (files.length > 0) {
@@ -126,12 +140,31 @@
                     img.width = width;
                     img.height = height;
 
-                    // Append the resized image to the preview container
-                    imagePreview.appendChild(img);
+                    // Create a container element for the image and its name
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-item');  // Consider adding CSS styling
+
+                    // Append the image to the container
+                    previewContainer.appendChild(img);
+
+                    // Create a span element for the image name (optional)
+                    const filenameSpan = document.createElement('span');
+                    filenameSpan.textContent = files[0].name;  // Set the filename
+
+                    // Add spacing using CSS (recommended)
+                    previewContainer.style.display = 'flex';
+                    previewContainer.style.alignItems = 'center';  // Vertically align image and name
+                    previewContainer.style.marginBottom = '10px';  // Add some space below the container (optional)
+
+                    // Append the filename span to the container (optional)
+                    previewContainer.appendChild(filenameSpan);
+
+                    imagePreview.appendChild(previewContainer);
                 };
             };
         }
     }
+
 </Script>
 <style>
     body {
@@ -141,6 +174,12 @@
     }
 
     .custom-file {
+        background-color: hsl(235, 22%, 30%);
+    }
+
+    #file-preview {
+        height: 200px;
+        overflow-y: scroll;
         background-color: hsl(235, 22%, 30%);
     }
 
