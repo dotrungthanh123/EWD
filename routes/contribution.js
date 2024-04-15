@@ -100,20 +100,6 @@ router.get('/add', async (req, res) => {
    res.render('contribution/add', { categoryList });
 })
 
-router.get('/statistics', async (req, res) => {
-   var facultyContributionCount = []
-   var facultyNames = await FacultyModel.find()
-   var contributions = await ContributionModel.find().populate('user')
-   var total = contributions.length
-   for (i = 0; i < facultyNames.length; i++) {
-      facultyContributionCount.push({
-         key: facultyNames[i].name,
-         value: contributions.filter(c => c.user.faculty.equals(facultyNames[i]._id)).length,
-      })
-   }
-   res.render('contribution/statistics', {facultyContributionCount, total})
-})
-
 const formMiddleWare = (req, res, next) => {
    fileTypes = ['image/jpeg', 'image/png', 'image/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 

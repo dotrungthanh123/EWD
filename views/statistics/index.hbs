@@ -1,6 +1,8 @@
 <h1>Total: {{ total }} contributions</h1>
+<h1>Total: {{ studentCount }} students</h1>
 <ul>
     {{#each facultyContributionCount}}
     <li>{{ key }}: {{ value }} contributions</li>
+    <li>Publish: {{ percent }}%</li>
     {{/each}}
 </ul>
