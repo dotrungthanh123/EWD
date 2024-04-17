@@ -22,7 +22,8 @@ var UserSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         // required: true,
         ref: 'Faculty'
-    }
+    },
+    email: String
 }
 );
 var UserModel = mongoose.model('User', UserSchema);
