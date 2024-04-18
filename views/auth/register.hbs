@@ -32,6 +32,11 @@
                                 <label class="h2 font-weight-bold">Join Us!</label><br>
                                 <label class="font-size-16">Please fill up by your information</label>
                             </div>
+                            {{#if messages.error}}
+                            <div class="alert alert-danger" role="alert">
+                                {{messages.error}}
+                            </div>
+                            {{/if}}
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
                                     <input type="text" name="username" class="rounded form-control " id="email"
@@ -75,7 +80,7 @@
                                     <label class="form-check-label" for="rememberMe">I agree to</label>
                                     <a href="#">privacy policy & terms</a>
                                 </div>
-                           
+                        
                             <div class="col-md-10 text-center mx-auto mt-3">
                                 <button type="submit" id="login-btn"
                                     class="btn btn-block mybtn btn-dark tx-tfm">Sign Up</button>

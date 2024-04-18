@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var flash = require('express-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -32,7 +33,7 @@ app.use(session({
 
 //Mongoose
 var mongoose = require('mongoose');
-var uri = "mongodb://localhost:27017/EnterpriseWebDev";
+var uri = "mongodb://0.0.0.0:27017/EnterpriseWebDev";
 var con = mongoose.connect(uri) 
   .then(()=> console.log('connect to db succeed'))
   .catch((err) => console.log('Error: ' + err));
@@ -51,6 +52,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 app.use('/contribution', checkLoginSession)
 

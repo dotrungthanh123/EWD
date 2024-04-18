@@ -24,6 +24,13 @@ router.get('/register', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         var userRegistration = req.body;
+
+        const existingUser = await UserModel.findOne({ username: userRegistration.username });
+        if (existingUser) {
+            req.flash('error', 'Username already exists. Please choose a different username.');
+            return res.redirect('/auth/register'); 
+        }
+
         var role = await RoleModel.findOne({ name: userRegistration.role });
         var faculty = await FacultyModel.findOne({ name: userRegistration.faculty });
         var hash = bcrypt.hashSync(userRegistration.psw, salt);
@@ -36,17 +43,16 @@ router.post('/register', async (req, res) => {
         await UserModel.create(user);
         res.redirect('/auth/login');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Error during registration');
-        if (err.name === 'ValidationError') {
-            let InputErrors = {};
-            for (let field in err.errors) {
-                InputErrors[field] = err.errors[field].message;
-            }
-            res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout' });
+        if (err.code === 11000 && err.keyPattern && err.keyPattern.username === 1) {
+            req.flash('error', 'Username already exists. Please choose a different username.');
+            return res.redirect('/auth/register'); 
         }
+        console.error(err);
+        req.flash('error', 'Error during registration');
+        res.redirect('/auth/register'); 
     }
 });
+
 
 router.get('/login', (req, res) => {
     res.render('auth/login', {layout: 'loginLayout' })
