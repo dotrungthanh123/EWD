@@ -57,6 +57,18 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
+                                    <input type="text" name="name" class="rounded form-control " id="email"
+                                        aria-describedby="emailHelp" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9 mx-auto">
+                                    <input type="text" name="email" class="rounded form-control " id="email"
+                                        aria-describedby="emailHelp" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9 mx-auto">
                                     <select name="role" id="" class="form-control" style="color: #d2cccc;">
                                         {{#each roleList}}
                                             <option value="{{this.name}}">{{this.name}}</option>
