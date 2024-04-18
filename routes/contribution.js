@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ContributionModel = require('../models/ContributionModel');
+const AdvCommentModel = require('../models/AdvCommentModel');
 const CategoryModel = require('../models/CategoryModel');
 const ReactionModel = require('../models/ReactionModel')
 const FacultyModel = require('../models/FacultyModel')
@@ -226,6 +227,37 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
       req.status(500).send("Error saving comment");
    }
 })
+
+router.post('/advcomments', async (req, res) => {
+   const { contributionId, content } = req.body;
+   const userId = req.session.userId; // Assuming userId is stored in the session
+   try {
+      // Create the new comment
+      const newAdvComment = await AdvCommentModel.create({
+         content,
+         date: new Date(),
+         userId,
+         contributionId,
+      });
+      // Find the corresponding post and update its comments array
+      const post = await ContributionModel.findById(contributionId);
+      if (post) {
+         post.advcomments.push(newAdvComment._id);
+         await post.save();
+      } else {
+         console.error('Post not found');
+         return res.status(404).send('Post not found');
+      }
+
+      res.redirect('/post/posts');
+
+      // Log success message
+      console.log("Comment created successfully", newAdvComment);
+   } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+   }
+});
 
 router.post('/search', checkLoginSession, async (req, res) => {
    var keyword = req.body.keyword;

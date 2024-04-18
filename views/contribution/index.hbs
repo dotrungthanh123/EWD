@@ -104,8 +104,12 @@
                         <h3>Comments</h3>
                         <ul class="comments-list">
                         </ul>
-                        <form class="comment-form">
-                           <textarea id="comments" name="comment" placeholder="Leave a comment..."></textarea>
+                        <form method="post" class="comment-form" action="/contribution/advcomments">
+                           <input type="hidden" name="postId" value="{{ _id }}">
+                           <div class="mb-2 d-flex">
+                              <textarea name="content" placeholder="Add a comment..." class="form-control flex-grow-1 me-2" rows="2" required></textarea>
+                              <button type="submit" class="btn btn-primary btn-sm">Post</button>
+                           </div>
                         </form>
                      </div>
                   </article>

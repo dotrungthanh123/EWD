@@ -9,7 +9,7 @@ var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
 
 
-router.get('/register', async (req, res) => {
+router.get('/register', checkAdminSession, checkLoginSession, async (req, res) => {
     try {
         var roleList = await RoleModel.find({});
         var facultyList = await FacultyModel.find({});
