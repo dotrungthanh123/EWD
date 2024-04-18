@@ -7,13 +7,6 @@ var CommentSchema = mongoose.Schema(
             required: true,
             default: null
         },
-
-        // The comment that this replies to
-        replyComment: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Comment',
-            default: null,
-        },
         
         // The user that posts the comment
         user: {

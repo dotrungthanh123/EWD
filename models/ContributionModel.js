@@ -29,12 +29,15 @@ var ContributionSchema = mongoose.Schema(
          require: true,
          default: null
       },
-      comment: [
-         {
+      comment: {
+         type: Object,
+         content: String,
+         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Comment'
-         }
-      ],
+            ref: 'User'
+         },
+         date: Date
+      },
 
       // users can only filter for category after seeing the index (which means the contributions have already been filtered by faculty)
       category: [{
