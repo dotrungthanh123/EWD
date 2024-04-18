@@ -14,6 +14,9 @@ var categoryRouter = require('./routes/category')
 var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
 
+const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
+
+
 var app = express();
 
 var session = require('express-session');
@@ -48,6 +51,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/contribution', checkLoginSession)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

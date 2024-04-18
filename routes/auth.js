@@ -3,11 +3,11 @@ var router = express.Router();
 var UserModel = require('../models/UserModel');
 var FacultyModel = require('../models/FacultyModel')
 var RoleModel = require('../models/RoleModel')
-
-
+const {checkLoginSession, checkAdminSession} = require('../middlewares/auth');
 var bcrypt = require('bcrypt');
 var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
+
 
 router.get('/register', async (req, res) => {
     try {
@@ -38,7 +38,23 @@ router.post('/register', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Error during registration');
+        if (err.name === 'ValidationError') {
+            let InputErrors = {};
+            for (let field in err.errors) {
+                InputErrors[field] = err.errors[field].message;
+            }
+            res.render('auth/register', { InputErrors, userRegistration, layout: 'loginLayout' });
+        }
     }
+});
+
+router.get('/login', (req, res) => {
+    res.render('auth/login', {layout: 'loginLayout' })
+}); 
+
+router.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/auth/login');
 });
 
 router.get('/login', (req, res) => {

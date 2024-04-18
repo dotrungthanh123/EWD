@@ -2,16 +2,17 @@ var express = require('express');
 var router = express.Router();
 var FacultyModel = require('../models/FacultyModel');
 var ContributionModel = require('../models/ContributionModel');
+const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession } = require('../middlewares/auth');
 
 
-router.get('/', async (req, res) => {
+router.get('/', checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, async (req, res) => {
    //retrieve data from "faculties" collection
    var facultyList = await FacultyModel.find({});
    //render view and pass data
    res.render('faculty/index', { facultyList });
 });
 
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', checkAdminSession, async (req, res) => {
    //req.params: get value by url
    var id = req.params.id;
    await FacultyModel.findByIdAndDelete(id);
@@ -19,19 +20,19 @@ router.get('/delete/:id', async (req, res) => {
 })
 
 //render form for user to input
-router.get('/add', (req, res) => {
+router.get('/add', checkAdminSession, (req, res) => {
    res.render('faculty/add');
 })
 
 //receive form data and insert it to database
-router.post('/add', async (req, res) => {
+router.post('/add', checkAdminSession, async (req, res) => {
    //req.body: get value by form
    var faculty = req.body;
    await FacultyModel.create(faculty);
    res.redirect('/faculty');
 })
 
-router.get('/detail/:id', async (req, res) => {
+router.get('/detail/:id', checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, async (req, res) => {
    var id = req.params.id;
    var contributionList = await ContributionModel.find({ faculty: id }).populate('contribution');
    res.render('contribution/index', { contributionList })

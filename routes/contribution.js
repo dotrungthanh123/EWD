@@ -10,6 +10,7 @@ const fs = require('fs');
 const { ObjectId } = require('mongodb');
 const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
+const {checkLoginSession, checkAdminSession, checkStudentSession, checkMktCoordinatorSession, checkMktManagerSession} = require('../middlewares/auth');
 
 var contributionList = []
 var eventList = []
@@ -95,9 +96,23 @@ router.get('/download/:id', async (req, res) => {
    return res.end(zipFileContents);
 })
 
-router.get('/add', async (req, res) => {
+router.get('/add', checkStudentSession, async (req, res) => {
    var categoryList = await CategoryModel.find();
    res.render('contribution/add', { categoryList });
+})
+
+router.get('/statistics', async (req, res) => {
+   var facultyContributionCount = []
+   var facultyNames = await FacultyModel.find()
+   var contributions = await ContributionModel.find().populate('user')
+   var total = contributions.length
+   for (i = 0; i < facultyNames.length; i++) {
+      facultyContributionCount.push({
+         key: facultyNames[i].name,
+         value: contributions.filter(c => c.user.faculty.equals(facultyNames[i]._id)).length,
+      })
+   }
+   res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
 const formMiddleWare = (req, res, next) => {
@@ -134,7 +149,7 @@ function convertDateFormat(dateObj) {
    return `${year}/${pMonth}/${pDay}`
 }
 
-router.post('/add', formMiddleWare, async (req, res) => {
+router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
@@ -150,13 +165,13 @@ router.post('/add', formMiddleWare, async (req, res) => {
    res.redirect('/contribution')
 })
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', checkStudentSession, checkMktCoordinatorSession, async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
    res.render('contribution/edit', { contribution });
 })
 
-router.get('/publish/:id', async (req, res) => {
+router.get('/publish/:id', checkMktCoordinatorSession, async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id)
    contribution.publish = true
@@ -164,7 +179,7 @@ router.get('/publish/:id', async (req, res) => {
    res.redirect('/contribution')
 })
 
-router.get('/showPublish', async (req, res) => {
+router.get('/showPublish', checkLoginSession, async (req, res) => {
    var publishContributions = []
 
    for (index in contributionList) {
@@ -174,7 +189,7 @@ router.get('/showPublish', async (req, res) => {
    res.render('contribution/index', { contributionList: publishContributions, publish: true })
 })
 
-router.post('/edit/:id', formMiddleWare, async (req, res) => {
+router.post('/edit/:id', checkStudentSession, checkMktCoordinatorSession, formMiddleWare, async (req, res) => {
    var id = req.params.id;
    const contribution = {
       name: req.fields.name[0],
@@ -185,34 +200,34 @@ router.post('/edit/:id', formMiddleWare, async (req, res) => {
    res.redirect('/contribution');
 })
 
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', checkMktCoordinatorSession, async (req, res) => {
    var id = req.params.id;
    await ContributionModel.findByIdAndDelete(id);
    res.redirect('/contribution');
 })
 
 // Comment on contribution
-router.post('/comment/:id', async (req, res) => {
+router.post('/comment/:id', checkLoginSession, async (req, res) => {
 
 })
 
-router.post('/search', async (req, res) => {
+router.post('/search', checkLoginSession, async (req, res) => {
    var keyword = req.body.keyword;
    var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") });
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/sort/asc', async (req, res) => {
+router.get('/sort/asc', checkLoginSession, async (req, res) => {
    var contributionList = await ContributionModel.find().sort({ name: 1 }).populate('faculty');
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/sort/desc', async (req, res) => {
+router.get('/sort/desc', checkLoginSession, async (req, res) => {
    var contributionList = await ContributionModel.find().sort({ name: -1 }).populate('faculty');
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/exportcsv', async (req, res, next) => {
+router.get('/exportcsv', checkMktManagerSession, async (req, res, next) => {
 
    const contributions = await ContributionModel.find().lean()
       .populate({
@@ -249,7 +264,7 @@ router.get('/exportcsv', async (req, res, next) => {
    })
 });
 
-router.get('/detail/:id', async (req, res) => {
+router.get('/detail/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
    let contribution = await ContributionModel.findById(id).populate('user')
    if (!contribution.viewer.includes(req.session.user._id)) {
@@ -259,7 +274,7 @@ router.get('/detail/:id', async (req, res) => {
    res.render("contribution/detail", { contribution })
 })
 
-router.post('/filterDate', async (req, res) => {
+router.post('/filterDate', checkLoginSession, async (req, res) => {
    var startDate = new Date(req.body.startDate)
    startDate.setDate(startDate.getDate() - 1)
    var endDate = new Date(req.body.endDate)
@@ -272,7 +287,7 @@ router.post('/filterDate', async (req, res) => {
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/like/:id', async (req, res) => {
+router.get('/like/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
 
    let reactId = {
@@ -298,7 +313,7 @@ router.get('/like/:id', async (req, res) => {
    res.redirect('/contribution');
 })
 
-router.get('/dislike/:id', async (req, res) => {
+router.get('/dislike/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
 
    let reactId = {
@@ -327,4 +342,4 @@ router.get('/dislike/:id', async (req, res) => {
 module.exports = { 
    router: router,
    formMiddleWare: formMiddleWare
- }
+}
