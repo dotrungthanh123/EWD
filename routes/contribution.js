@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
    // Need code to prevent viewing without login
    
    await getContribution(req)
-
+   console.log(contributionList);
    // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
    // res.render('contribution/index', { contributionList });
    // else
@@ -96,7 +96,7 @@ router.get('/download/:id', async (req, res) => {
    return res.end(zipFileContents);
 })
 
-router.get('/add', checkStudentSession, async (req, res) => {
+router.get('/add', async (req, res) => {
    var categoryList = await CategoryModel.find();
    res.render('contribution/add', { categoryList });
 })
@@ -149,7 +149,7 @@ function convertDateFormat(dateObj) {
    return `${year}/${pMonth}/${pDay}`
 }
 
-router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
+router.post('/add', formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],

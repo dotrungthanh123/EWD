@@ -1,3 +1,5 @@
+const session = require("express-session");
+
 const checkLoginSession = (req, res, next) => {
     if (req.session.username) {
         next();
@@ -23,11 +25,12 @@ const checkMktCoordinatorSession = (req, res, next) => {
 };
 
 const checkStudentSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'student') {
-        next();
-    } else {
-        res.redirect('/auth/login');
-    }
+    // if (req.session.username && req.session.role === 'student') {
+    //     next();
+    // } else {
+    //     res.redirect('/auth/login');
+    //     console.log(req.session.role);
+    // }
 };
 
 const checkGuestSession = (req, res, next) => {
