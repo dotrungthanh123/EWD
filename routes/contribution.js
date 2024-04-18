@@ -191,9 +191,25 @@ router.get('/delete/:id', async (req, res) => {
    res.redirect('/contribution');
 })
 
-// Comment on contribution
 router.post('/comment/:id', async (req, res) => {
+   try {
+      const id = req.params.id;
+      const contribution = await ContributionModel.findById(id);
 
+      contribution.comment = {
+         content: req.body.comment,
+         user: req.session.user._id,
+         date: Date.now()
+      };
+
+      await contribution.save();
+
+      res.redirect('/contribution');
+
+   } catch (error) {
+      console.error("Error saving comment: ", error)
+      req.status(500).send("Error saving comment");
+   }
 })
 
 router.post('/search', async (req, res) => {
