@@ -71,6 +71,7 @@
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
+                        <button onclick="location.href='/contribution/add';" class="createBtn">Create New Contribution</button>
                         <button id="selectBtn" class="selectBtn">Select</button>
                         <button id="submitBtn" class="submitBtn">Submit Checked Articles</button>
                     </div>
@@ -502,6 +503,24 @@
         cursor: pointer;
     }
 
+    .createBtn{
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .createBtn:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    button.createBtn,
     button#selectBtn,
     button#submitBtn,
     button.btn-magazine {

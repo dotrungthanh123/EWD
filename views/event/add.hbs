@@ -47,24 +47,25 @@
                         <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                     </div>
                 </div>
+                {{!-- FIX: ADD NAMES --}}
                 <div class="form-group row">
-                    <label for="date" class="col-sm-2 col-form-label">First Closure Date:</label>
+                    <label for="date" class="col-sm-2 col-form-label">Date:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="firstClosureDate" class="form-control" id="date">
+                        <input type="date" class="form-control" id="date">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="time" class="col-sm-2 col-form-label">Final Closure Date:</label>
+                    <label for="time" class="col-sm-2 col-form-label">Time:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="finalClosureDate" class="form-control" id="time">
+                        <input type="time" class="form-control" id="time">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="image" class="col-sm-2 col-form-label">Attach Images:</label>
+                    <label for="attachImages" class="col-sm-2 col-form-label">Attach Images:</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="attachImages" multiple
-                                onchange="" name="image">
+                                onchange="previewImage()" name="image">
                             <label class="custom-file-label" for="attachImages">Choose file(s)</label>
                         </div>
                         <div id="file-preview" class="form-control mt-1 "> </div>
@@ -108,29 +109,60 @@
         $("#footer").load("sharedhtmls/footer.html");
     });
 
-    function previewFile() {
-        const fileInput = document.getElementById('attachFiles');
-        const filePreview = document.getElementById('file-preview');
+    function previewImage() {
+        const fileInput = document.getElementById('attachImages');
+        const imagePreview = document.getElementById('file-preview');
+
         const files = fileInput.files;
-
         if (files.length > 0) {
-            const file = files[0];
-            const previewContainer = document.createElement('div');
-            previewContainer.classList.add('preview-item');
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function (e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function () {
 
-            const iconElement = document.createElement('i');
-            iconElement.classList.add('fa', 'fa-file');
-            iconElement.style.fontSize = '24px';
+                    const MAX_WIDTH = 200;
+                    const MAX_HEIGHT = 150;
 
-            const filenameSpan = document.createElement('span');
-            filenameSpan.textContent = " " + file.name;
+                    let width = img.width;
+                    let height = img.height;
 
-            previewContainer.appendChild(iconElement);
-            previewContainer.appendChild(filenameSpan);
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
 
-            filePreview.appendChild(previewContainer);
-        } else {
-            filePreview.innerHTML = '';
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+
+                    img.width = width;
+                    img.height = height;
+
+                    // Create a container element for the image and its name
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-item');  // Consider adding CSS styling
+
+                    // Append the image to the container
+                    previewContainer.appendChild(img);
+
+                    // Create a span element for the image name (optional)
+                    const filenameSpan = document.createElement('span');
+                    filenameSpan.textContent = files[0].name;  // Set the filename
+
+                    // Add spacing using CSS (recommended)
+                    previewContainer.style.display = 'flex';
+                    previewContainer.style.alignItems = 'center';  // Vertically align image and name
+                    previewContainer.style.marginBottom = '10px';  // Add some space below the container (optional)
+
+                    // Append the filename span to the container (optional)
+                    previewContainer.appendChild(filenameSpan);
+
+                    imagePreview.appendChild(previewContainer);
+                };
+            };
         }
     }
 
@@ -138,7 +170,6 @@
 <style>
     body {
         padding-top: 10rem;
-        padding-bottom: 4.2rem;
         background-color: hsl(250, 25%, 19%)
     }
 

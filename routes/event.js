@@ -12,11 +12,13 @@ router.get('/', checkLoginSession, async (req, res) => {
     //    res.render('contribution/indexUser', { contributionList });
 });
 
-router.get('/add', checkAdminSession, async (req, res) => {
+
+//FIX: removed check admin session for test
+router.get('/add' , async (req, res) => {
     res.render('event/add');
 })
 
-router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
+router.post('/add', formMiddleWare, async (req, res) => {
     console.log(req.files);
     await EventModel.create({
         name: req.fields.name[0],

@@ -1,28 +1,565 @@
-<h1>Event List</h1>
-<div class="row">
-   <a class="btn" href="/event/add">Add product</a>
-</div>
-<div class="row">
-   <form class="col m5" action="/event/search" method="post">
-      <input class="form-control" type="search" name="keyword"
-      placeholder="Search by contribution name" required>
-   </form>
-</div>
-<table class="table table-primary">
-   <tr>
-      <th>Event name</th>
-      <th>Event first closure date</th>
-      <th>Event final closure date</th>
-      <th>Menu</th>
-   </tr>
-   {{#each eventList }}
-   <tr>
-      <td>{{ name }}</td>
-      <td>{{ firstClosureDate }}</td>
-      <td>{{ finalClosureDate }}</td>
-      <td>
-         <a class="btn orange" href="/event/edit/{{ _id }}">Edit</a>
-      </td>
-   </tr>
-   {{/each}}
-</table>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Events</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header id="header" class="fixed-top">
+    </header>
+
+    <section id="hero" class="d-flex align-items-center justify-content-center">
+        <div class="container" data-aos="fade-up">
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
+                <div class="col-xl-15 col-lg-10">
+                    <h1>All Events<span>.</span></h1>
+                </div>
+            </div>
+    </section>
+
+    <div class="m-container">
+        <section class="m-container-main">
+            <div class="left">
+                <div class="sidebar">
+                    <h2 style="color:#ffffff; text-align: center;">Filter</h2>
+                    <div class="filter-menu">
+                        <button onclick="location.href=''" type="button" class="btn-magazine">
+                            All Events
+                        </button>
+
+                        <button onclick="location.href=''" type="button" class="btn-magazine">
+                            IT Events
+                        </button>
+
+                        <button onclick="location.href=''" type="button" class="btn-magazine">
+                            Design Events
+                        </button>
+
+                        <button onclick="location.href=''" type="button" class="btn-magazine">
+                            Business Events
+                        </button>
+
+                    </div>
+                    <hr style="color: #ffffff; height: 3px;">
+                    <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
+                    <div class="dashboard-menu">
+                        <button onclick="location.href='/event/add';" class="createBtn">Create New Event</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="main-magazine">
+                    <form action="" class="search-bar">
+                        <input type="text" placeholder="Search">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+
+                    <div class="magazine">
+                        <article class="article">
+                            <div class="posting-user">
+                                <i class="bi bi-person"></i>
+                                <h1 class="Username">Username</h1>
+                            </div>
+                            <h2>Article Title</h2>
+                            <p>Articile Description</p>
+                            <div class="article-actions">
+                                <div class="actions">
+                                    <i class="bi bi-heart like-button"></i>
+                                    <h5 class="like-count">Count</h5>
+                                </div>
+                                <div class="actions">
+                                    <i class="bi bi-chat comment-button"></i>
+                                    <h5 class="comment-count">Count</h5>
+                                </div>
+                            </div>
+                            <hr style="color: #ffffff; height: 1px;">
+                            <div class="comments">
+                                <h3 style="font-size: 15px;">Comments</h3>
+                                <ul class="comments-list">
+                                </ul>
+                                <form class="comment-form">
+                                    <textarea id="comments" name="comment" placeholder="Leave a comment..."></textarea>
+                                </form>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer id="footer">
+    </footer>
+
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <script src="assets/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#header").load("sharedhtmls/header.html", function () {
+                $('.mobile-nav-toggle').click(function () {
+                    $('#navbar').toggleClass('navbar-mobile');
+
+                });
+
+                $('.dropdown > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).next('ul').slideToggle();
+                });
+            });
+            $("#footer").load("sharedhtmls/footer.html");
+        });
+
+        $("#comments").keypress(function (e) {
+            if (e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+
+                $(this).closest("form").submit();
+            }
+        });
+    </script>
+
+</body>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .body {
+        background-color: hsl(250, 25%, 19%);
+        display: flex;
+    }
+
+    :root {}
+
+    #hero {
+        width: 100%;
+        min-height: auto;
+        background-color: hsl(250, 25%, 19%);
+        background-size: cover;
+        position: relative;
+    }
+
+    #hero:before {
+        content: "";
+        background: hsl(250, 25%, 19%);
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    #hero .container {
+        position: relative;
+        padding-top: 74px;
+        text-align: center;
+    }
+
+    #hero h1 {
+        margin: 0;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 64px;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+    }
+
+    #hero h1 span {
+        color: hwb(260 24% 9% / 0.857);
+    }
+
+
+    @media (min-width: 1024px) {
+        #hero {
+            background-attachment: fixed;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #hero h1 {
+            font-size: 28px;
+            line-height: 36px;
+        }
+
+        #hero h2 {
+            font-size: 20px;
+            line-height: 24px;
+        }
+    }
+
+    /* Main Container */
+
+    .m-container {
+        display: flex;
+        flex-flow: column nowrap;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Container */
+
+    .m-container-main {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .left {
+        width: 25%;
+    }
+
+    .right {
+        width: 70%;
+        padding-left: 5%;
+    }
+
+    /* sidebar */
+    .sidebar {
+        background-color: hsl(261, 18%, 15%);
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        margin-left: 35px;
+        height: 100%;
+
+    }
+
+    .sidebar h2 {
+        font-size: 20px;
+    }
+
+    .btn-magazine {
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+    }
+
+    .btn-magazine:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    .btn-magazine h3 {
+        font-size: 15px;
+    }
+
+    .main-magazine {
+        width: 100%;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: auto;
+        background: hsl(261, 18%, 15%);
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        height: 50px;
+    }
+
+    .search-bar input {
+        background: transparent;
+        flex: 1;
+        border: 0;
+        outline: none;
+        padding: 10px 20px;
+        font-size: 20px;
+        color: #cac7ff;
+    }
+
+    ::placeholder {
+        color: #cac7ff;
+    }
+
+    .search-bar i {
+        width: 25px;
+        color: #ffffff;
+    }
+
+    .search-bar button {
+        border: 0;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        background: #58629b;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .magazine {
+        margin-top: 20px;
+    }
+
+    .article {
+        border-radius: 20px;
+        padding: 20px;
+        background-color: hsl(261, 18%, 15%);
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .article h2 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        text-align: left;
+        color: #ffffff;
+    }
+
+    .article p {
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: left;
+        color: #ffffff;
+    }
+
+    .posting-user {
+        display: flex;
+    }
+
+    .Username {
+        font-size: 25px;
+        color: #ffffff;
+        text-align: left;
+        margin-top: 13px;
+    }
+
+    .article-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .like-button {
+        cursor: pointer;
+        color: #ffffff;
+    }
+
+    .comment-button {
+        color: #ffffff;
+    }
+
+    .like-button:hover {
+        color: #FF69B4;
+    }
+
+    .comment-button:hover {
+        color: #80ff7b;
+    }
+
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comments h3 {
+        margin-bottom: 10px;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .comment-form {
+        margin-top: 10px;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+        background: transparent;
+        color: #cac7ff;
+    }
+
+    .comment-form button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .bi-person {
+        font-size: 40px;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+
+    .article-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .article-actions .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .like-button,
+    .comment-button {
+        font-size: 24px;
+        /* Adjust size as needed */
+        margin-right: 8px;
+        /* Add some space between the icon and the text */
+    }
+
+    .like-count {
+        font-size: 13px;
+        color: #ffffff;
+        margin-top: 5px;
+    }
+
+    .comment-count {
+        font-size: 13px;
+        color: #ffffff;
+        margin-top: 8px;
+    }
+
+    .createBtn{
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .createBtn:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    button.createBtn,
+    button.btn-magazine {
+        font-size: 15px;
+        /* Change this to the size you want */
+    }
+
+    /* Small devices (landscape phones, less than 768px) */
+    @media (max-width: 767px) {
+        .m-container-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left,
+        .right {
+            width: 100%;
+            padding: 0 15px;
+            /* Adjust padding here */
+        }
+
+        .left .sidebar {
+            width: 90%;
+            /* Adjust width here */
+            margin: auto;
+            /* Center the sidebar */
+        }
+
+        .search-bar {
+            height: 40px;
+            margin-top: 20px;
+        }
+
+        .search-bar input {
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Adjust other elements as necessary... */
+    }
+
+    /* Medium devices (tablets, less than 992px) */
+    @media (max-width: 991.98px) {
+        .m-container-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left,
+        .right {
+            width: 100%;
+            padding: 0 15px;
+            /* Adjust padding here */
+        }
+
+        .search-bar {
+            margin-top: 20px;
+        }
+
+
+        .left .sidebar {
+            width: 90%;
+            /* Adjust width here */
+            margin: auto;
+            /* Center the sidebar */
+        }
+
+        /* Adjust other elements as necessary... */
+    }
+</style>
+
+</html>
