@@ -21,7 +21,7 @@ router.get('/register', async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', checkAdminSession, checkLoginSession, async (req, res) => {
     try {
         var userRegistration = req.body;
 
@@ -63,72 +63,7 @@ router.get('/login', (req, res) => {
     res.render('auth/login', { layout: 'loginLayout' })
 })
 
-// router.post('/login', async (req, res) => {
-//     try {
-//         var userLogin = req.body;
-//         var user = await UserModel.findOne({ username: userLogin.username })
-//         if (user) {
-//             var hash = bcrypt.compareSync(userLogin.password, user.password)
-//             if (hash) {
-
-//                 req.session.username = user.username;
-//                 req.session.role = user.role;
-//                 req.session.user = user
-//                 if (req.session.role == "admin") {
-//                     res.redirect('/contribution/add')
-//                 } else if (req.session.role == "student") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "mktCoordinator") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "mktManager") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "guest") {
-//                     res.redirect('/')
-//                 } else {
-//                     res.redirect('/')
-//                 }
-//             } else {
-//                 res.redirect('/auth/login');
-//             }
-//         }
-//     } catch (err) {
-//         res.send(err)
-//     }
-// })
-
-// router.post('/login', async (req, res) => {
-//     try {
-//         var userLogin = req.body;
-//         var user = await UserModel.findOne({ username: userLogin.username }).populate('role'); // Populate the role field
-//         if (user) {
-//             var hash = bcrypt.compareSync(userLogin.password, user.password)
-//             if (hash) {
-
-//                 req.session.username = user.username;
-//                 req.session.role = user.role.roleName; // Assuming roleName is the field in the role schema containing the role name
-//                 req.session.user = user;
-//                 console.log(user);
-//                 if (req.session.role == "admin") {
-//                     res.redirect('/contribution/add')
-//                 } else if (req.session.role == "student") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "mktCoordinator") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "mktManager") {
-//                     res.redirect('/')
-//                 } else if (req.session.role == "guest") {
-//                     res.redirect('/')
-//                 } else {
-//                     res.redirect('/')
-//                 }
-//             } else {
-//                 res.redirect('/auth/login');
-//             }
-//         }
-//     } catch (err) {
-//         res.send(err)
-//     }
-// })
+//ditconme
 
 router.post('/login', async (req, res) => {
     try {
@@ -164,7 +99,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', checkLoginSession, (req, res) => {
     req.session.destroy();
     res.redirect('/auth/login');
 })
