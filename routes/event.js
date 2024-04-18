@@ -12,6 +12,7 @@ const { checkMktManagerSession,
     checkGuestDesignSession,
     checkGuestBusinessSession,
     checkMultipleSession } = require('../middlewares/auth');
+const {formMiddleWare} = require('./contribution')
 
 router.get('/', async (req, res) => {
     var eventList = await EventModel.find({});
@@ -25,13 +26,14 @@ router.get('/add', async (req, res) => {
     res.render('event/add');
 })
 
-router.post('/add', async (req, res) => {
+router.post('/add', formMiddleWare, async (req, res) => {
+    console.log(req.files);
     await EventModel.create({
-        name: req.body.name,
-        firstClosureDate: req.body.firstClosureDate.toString('yyyy-MM-dd'),
-        finalClosureDate: req.body.finalClosureDate.toString('yyyy-MM-dd'),
-        openDate: req.body.openDate.toString('yyyy-MM-dd')
-        })
+        name: req.fields.name[0],
+        firstClosureDate: req.fields.firstClosureDate[0],
+        finalClosureDate: req.fields.finalClosureDate[0],
+        image: req.files.image[0].newFilename,
+    })
     res.redirect('/event')
 })
 
