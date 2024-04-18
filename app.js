@@ -17,7 +17,6 @@ var statisticRouter = require('./routes/statistics')
 
 const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
 
-
 var app = express();
 
 var session = require('express-session');
