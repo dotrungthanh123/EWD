@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Create Account</title>
     <!-- Add the following Bootstrap 5 CSS and JS files -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -24,67 +24,64 @@
                     <div class="myform form ">
                         <div class="logo mb-3">
                             <div class="col-md-12 text-center">
-                                <h1>EduCon</h1>
+                                <a href="index.html"><h1>EduCon</h1></a>
                             </div>
                         </div>
-                        <form action="" method="post" name="login" onsubmit="return checkPass()"> <!-- Added onsubmit attribute -->
+                        <form action="" method="post" name="login">
                             <div class="card-body text-center">
-                                <label class="h2 font-weight-bold">Join Us!</label><br>
-                                <label class="font-size-16">Please fill up by your information</label>
+                                <label class="h2 font-weight-bold">Make a new account</label><br>
+                                <label class="font-size-16">Please fill up all information</label>
                             </div>
-                            {{#if messages.error}}
-                            <div class="alert alert-danger" role="alert">
-                                {{messages.error}}
-                            </div>
-                            {{/if}}
                             <div class="form-group row">
+                                {{!-- REGISTER/CREATE ACCOUNT BANG EMAIL HAY USERNAME??? CO CAN FIELD NAME KO??? (NAME DE HIEN THI TEN CHO CONTRIBUTION HAY DUNG USERNAME LUON???) --}}
                                 <div class="col-md-9 mx-auto">
-                                    <input type="text" name="username" class="rounded form-control " id="email"
-                                        aria-describedby="emailHelp" placeholder="Username">
+                                    <input type="email" name="email" class="rounded form-control " id="email"
+                                        aria-describedby="emailHelp" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
-                                    <input type="password" name="psw" id="password" class="form-control "
+                                    <input type="password" name="password" id="password" class="form-control "
                                         aria-describedby="emailHelp" placeholder="Password">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
-                                    <input type="password" name="psw-repeat" id="retype" class="form-control" placeholder="Retype Password">
-                                    <span id="retype_error" class="error"></span>
+                                    <input type="password" name="repassword" id="repassword" class="form-control "
+                                        aria-describedby="emailHelp" placeholder="Retype Password">
                                 </div>
                             </div>
+                            {{!-- THEM ROLE DROPDOWN NE!!! --}}
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
-                                    <select name="role" id="" class="form-control" style="color: #d2cccc;">
+                                    <select name="role" id="faculty" class="form-control" style="color: #d2cccc;">
+                                        
                                         {{#each roleList}}
                                             <option value="{{this.name}}">{{this.name}}</option>
                                         {{/each}}
+
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
-                                    <select name="faculty" id="" class="form-control" style="color: #d2cccc;">
+                                    <select name="faculty" id="faculty" class="form-control" style="color: #d2cccc;">
+                                        
                                         {{#each facultyList}}
                                             <option value="{{this.name}}">{{this.name}}</option>
                                         {{/each}}
+
                                     </select>
                                 </div>
                             </div>
-                            
-                                <div class="form-check" style="margin-left: 60px;">
-                                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                                    <label class="form-check-label" for="rememberMe">I agree to</label>
-                                    <a href="#">privacy policy & terms</a>
-                                </div>
                         
+                           
                             <div class="col-md-10 text-center mx-auto mt-3">
                                 <button type="submit" id="login-btn"
-                                    class="btn btn-block mybtn btn-dark tx-tfm">Sign Up</button>
+                                    class="btn btn-block mybtn btn-dark tx-tfm">Create</button>
                             </div>
+                            {{!-- CAI NAY CO CAN THIET KO??? CHI ADMIN DUNG THOI MA --}}
                             <div class="form-group mt-4 mb-5">
                                 <p class="text-center">Already have an account? <a href="/auth/login" id="signup">Sign in instead</a></p>
                             </div>
@@ -94,11 +91,11 @@
             </div>
         </div>
     </div>
+
 </body>
 <style>
     body {
-        padding-top: 5rem;
-        padding-bottom: 4.2rem;
+        padding-top: 10rem;
         background-color: hsl(250, 25%, 19%)
     }
 

@@ -30,15 +30,16 @@
 
 <body>
     <header id="header" class="fixed-top"></header>
+
     <main id="main">
         <div class="container text-white">
             <h2 class="text-center mt-4">Create New Event</h2>
             <p class="text-center">Craft Your Event: Bringing Ideas to Life on Campus</p>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form>
                 <div class="form-group row">
-                    <label for="name" class="col-sm-2 col-form-label">Event Name:</label>
+                    <label for="eventName" class="col-sm-2 col-form-label">Event Name:</label>
                     <div class="col-sm-10">
-                        <input type="text" name="name" class="form-control" id="eventName">
+                        <input type="text" name="name" class="form-control " id="eventName">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -48,26 +49,27 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="date" class="col-sm-2 col-form-label">First Closure Date:</label>
+                    <label for="date" class="col-sm-2 col-form-label">Date:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="firstClosureDate" class="form-control" id="date">
+                        <input type="date"  name="firstClosureDate" class="form-control" id="date">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="time" class="col-sm-2 col-form-label">Final Closure Date:</label>
+                    <label for="time" class="col-sm-2 col-form-label">Time:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="finalClosureDate" class="form-control" id="time">
+                        <input type="time" name="finalClosureDate" class="form-control" id="time">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="image" class="col-sm-2 col-form-label">Attach Images:</label>
+                    <label for="attachImages" class="col-sm-2 col-form-label">Attach Images:</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="attachImages" multiple
-                                onchange="" name="image">
+                                onchange="previewImage()" name="image">
                             <label class="custom-file-label" for="attachImages">Choose file(s)</label>
                         </div>
                         <div id="file-preview" class="form-control mt-1 "> </div>
+
                     </div>
                 </div>
                 <div class="form-group row justify-content-end">
@@ -93,6 +95,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 <Script>
+    const now = new Date();
+    const dateInput = document.getElementById("date");
+    const timeInput = document.getElementById("time");
+    dateInput.min = now.toISOString().split('T')[0];
+    timeInput.addEventListener('change', function () {
+        const minTime = now.setMinutes(now.getMinutes() + 10);
+        if (new Date(this.value) < minTime) {
+            this.value = "";
+            alert("Please select a time in the future.");
+        }
+    });
     $(function () {
         $("#header").load("sharedhtmls/header.html", function () {
             $('.mobile-nav-toggle').click(function () {
@@ -108,29 +121,60 @@
         $("#footer").load("sharedhtmls/footer.html");
     });
 
-    function previewFile() {
-        const fileInput = document.getElementById('attachFiles');
-        const filePreview = document.getElementById('file-preview');
+    function previewImage() {
+        const fileInput = document.getElementById('attachImages');
+        const imagePreview = document.getElementById('file-preview');
+
         const files = fileInput.files;
-
         if (files.length > 0) {
-            const file = files[0];
-            const previewContainer = document.createElement('div');
-            previewContainer.classList.add('preview-item');
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function (e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function () {
 
-            const iconElement = document.createElement('i');
-            iconElement.classList.add('fa', 'fa-file');
-            iconElement.style.fontSize = '24px';
+                    const MAX_WIDTH = 200;
+                    const MAX_HEIGHT = 150;
 
-            const filenameSpan = document.createElement('span');
-            filenameSpan.textContent = " " + file.name;
+                    let width = img.width;
+                    let height = img.height;
 
-            previewContainer.appendChild(iconElement);
-            previewContainer.appendChild(filenameSpan);
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
 
-            filePreview.appendChild(previewContainer);
-        } else {
-            filePreview.innerHTML = '';
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+
+                    img.width = width;
+                    img.height = height;
+
+                    // Create a container element for the image and its name
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-item');  // Consider adding CSS styling
+
+                    // Append the image to the container
+                    previewContainer.appendChild(img);
+
+                    // Create a span element for the image name (optional)
+                    const filenameSpan = document.createElement('span');
+                    filenameSpan.textContent = files[0].name;  // Set the filename
+
+                    // Add spacing using CSS (recommended)
+                    filenameSpan.style.marginLeft = '5px';
+                    previewContainer.style.display = 'flex';
+                    previewContainer.style.alignItems = 'center';  // Vertically align image and name
+                    previewContainer.style.marginBottom = '10px';  // Add some space below the container (optional)
+                    // Append the filename span to the container (optional)
+                    previewContainer.appendChild(filenameSpan);
+
+                    imagePreview.appendChild(previewContainer);
+                };
+            };
         }
     }
 
@@ -138,7 +182,6 @@
 <style>
     body {
         padding-top: 10rem;
-        padding-bottom: 4.2rem;
         background-color: hsl(250, 25%, 19%)
     }
 
