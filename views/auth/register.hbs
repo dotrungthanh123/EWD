@@ -33,10 +33,15 @@
                                 <label class="font-size-16">Please fill up all information</label>
                             </div>
                             <div class="form-group row">
-                                {{!-- REGISTER/CREATE ACCOUNT BANG EMAIL HAY USERNAME??? CO CAN FIELD NAME KO??? (NAME DE HIEN THI TEN CHO CONTRIBUTION HAY DUNG USERNAME LUON???) --}}
                                 <div class="col-md-9 mx-auto">
                                     <input type="email" name="email" class="rounded form-control " id="email"
                                         aria-describedby="emailHelp" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9 mx-auto">
+                                    <input type="name" name="name" class="rounded form-control " id="email"
+                                        aria-describedby="emailHelp" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -51,7 +56,6 @@
                                         aria-describedby="emailHelp" placeholder="Retype Password">
                                 </div>
                             </div>
-                            {{!-- THEM ROLE DROPDOWN NE!!! --}}
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
                                     <select name="role" id="faculty" class="form-control" style="color: #d2cccc;">
@@ -80,10 +84,6 @@
                             <div class="col-md-10 text-center mx-auto mt-3">
                                 <button type="submit" id="login-btn"
                                     class="btn btn-block mybtn btn-dark tx-tfm">Create</button>
-                            </div>
-                            {{!-- CAI NAY CO CAN THIET KO??? CHI ADMIN DUNG THOI MA --}}
-                            <div class="form-group mt-4 mb-5">
-                                <p class="text-center">Already have an account? <a href="/auth/login" id="signup">Sign in instead</a></p>
                             </div>
                         </form>
                     </div>
