@@ -58,11 +58,16 @@ router.get('/', async (req, res) => {
    
    await getContribution(req)
 
-   // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
-   // res.render('contribution/index', { contributionList });
-   // else
-   //    res.render('contribution/indexUser', { contributionList });
-   res.render('contribution/index', { contributionList })
+   if (req.session.role == "admin" || req.session.role == "mktcoordinator"){
+      console.log(contributionList + "fdsafsdfds");
+      res.render('contribution/index', { contributionList });
+   }
+   else{
+      console.log(contributionList + "dsssss");
+      res.render('contribution/indexUser', { contributionList });
+   }
+      
+   // res.render('contribution/index', { contributionList })
 });
 
 router.get('/download/:id', async (req, res) => {

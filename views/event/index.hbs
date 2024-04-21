@@ -84,6 +84,7 @@
                     </form>
 
                     <div class="magazine">
+                        {{#each eventList}}
                         <article class="article">
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
@@ -119,8 +120,8 @@
                                     </li>
                                 </ul>
                             </div>
-
                         </article>
+                        {{/each}}
                     </div>
                 </div>
             </div>
