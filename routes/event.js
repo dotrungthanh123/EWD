@@ -17,13 +17,12 @@ router.get('/add', checkAdminSession, async (req, res) => {
 })
 
 router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
-    console.log(req.files);
     await EventModel.create({
         name: req.fields.name[0],
         firstClosureDate: req.fields.firstClosureDate[0],
         finalClosureDate: req.fields.finalClosureDate[0],
-        image: req.files.image[0].newFilename,
-    })
+        image: req.files.image ? req.files.image[0].newFilename : '',
+    }).then()
     res.redirect('/event')
 })
 

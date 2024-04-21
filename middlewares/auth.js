@@ -7,7 +7,7 @@ const checkLoginSession = (req, res, next) => {
 }
 
 const checkMktManagerSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'mktManager') {
+    if (req.session.username && req.session.role === 'MktManager') {
         next();
     } else {
         res.redirect('/auth/login');
@@ -15,7 +15,7 @@ const checkMktManagerSession = (req, res, next) => {
 };
 
 const checkMktCoordinatorSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'mktCoordinator') {
+    if (req.session.username && req.session.role === 'MktCoordinator') {
         next();
     } else {
         res.redirect('/auth/login');
@@ -23,7 +23,7 @@ const checkMktCoordinatorSession = (req, res, next) => {
 };
 
 const checkStudentSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'student') {
+    if (req.session.username && req.session.role === 'Student') {
         next();
     } else {
         res.redirect('/auth/login');
@@ -31,7 +31,7 @@ const checkStudentSession = (req, res, next) => {
 };
 
 const checkGuestSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'guest') {
+    if (req.session.username && req.session.role === 'Guest') {
         next();
     } else {
         res.redirect('/auth/login');
@@ -39,7 +39,7 @@ const checkGuestSession = (req, res, next) => {
 };
 
 const checkAdminSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'admin') {
+    if (req.session.username && req.session.role === 'Admin') {
         next();
     } else {
         res.redirect('/auth/login');
