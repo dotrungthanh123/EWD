@@ -54,11 +54,11 @@ router.post('/register', checkAdminSession, checkLoginSession, async (req, res) 
     }
 });
 
-router.get('/login', checkNotLoggedIn, (req, res) => {
+router.get('/login', (req, res) => {
     res.render('auth/login', { layout: 'loginLayout' })
 })
 
-router.post('/login', checkNotLoggedIn, async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         var userLogin = req.body;
         var user = await UserModel.findOne({ username: userLogin.username }).populate('role','name');
@@ -92,7 +92,7 @@ router.post('/login', checkNotLoggedIn, async (req, res) => {
     }
 });
 
-router.get('/logout', checkLoginSession, (req, res) => {
+router.get('/logout', checkNotLoggedIn, (req, res) => {
     req.session.destroy();
     res.redirect('/auth/login');
 })

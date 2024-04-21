@@ -11,7 +11,7 @@ const fs = require('fs');
 const { ObjectId } = require('mongodb');
 const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
-const {checkLoginSession, checkAdminSession, checkStudentSession, checkMktCoordinatorSession, checkMktManagerSession} = require('../middlewares/auth');
+const {checkLoginSession, checkAdminSession, checkStudentSession, checkMktCoordinatorSession, checkMktManagerSession, checkStudentOrMktCoordinatorSession, checkRoles, checkMultipleSession} = require('../middlewares/auth');
 
 var contributionList = []
 var eventList = []
@@ -166,7 +166,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    res.redirect('/contribution')
 })
 
-router.get('/edit/:id', checkStudentSession, checkMktCoordinatorSession, async (req, res) => {
+router.get('/edit/:id', checkMultipleSession(['student', 'mktCoordinator']),  async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
    res.render('contribution/edit', { contribution });
@@ -190,7 +190,7 @@ router.get('/showPublish', checkLoginSession, async (req, res) => {
    res.render('contribution/index', { contributionList: publishContributions, publish: true })
 })
 
-router.post('/edit/:id', checkStudentSession, checkMktCoordinatorSession, formMiddleWare, async (req, res) => {
+router.post('/edit/:id', checkMultipleSession(['student', 'mktCoordinator']), formMiddleWare, async (req, res) => {
    var id = req.params.id;
    const contribution = {
       name: req.fields.name[0],
@@ -228,7 +228,7 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.post('/advcomments', async (req, res) => {
+router.post('/advcomments', checkLoginSession, async (req, res) => {
    const { contributionId, content } = req.body;
    const userId = req.session.userId; // Assuming userId is stored in the session
    try {

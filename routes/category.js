@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var CategoryModel = require('../models/CategoryModel');
 var ContributionModel = require('../models/ContributionModel');
-const { checkLoginSession, checkMktManagerSession, checkMktCoordinatorSession, checkAdminSession } = require('../middlewares/auth');
+const { checkMultipleSession, checkAdminSession } = require('../middlewares/auth');
 
-router.get('/', checkMktCoordinatorSession, checkMktManagerSession, checkAdminSession, async (req, res) => {
+router.get('/', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
    var categoryList = await CategoryModel.find({});
    res.render('category/index', { categoryList });
 });
@@ -30,7 +30,7 @@ router.post('/add', checkAdminSession, async (req, res) => {
 })
 
 
-router.get('/detail/:id', checkMktCoordinatorSession, checkMktManagerSession, checkAdminSession, async (req, res) => {
+router.get('/detail/:id', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
    await ContributionModel.find()
       .then(contributions => contributions.filter(contribution => contribution.category.map(c => c._id.valueOf()).includes(id.valueOf())))
    res.render('contribution/index', { contributionList })

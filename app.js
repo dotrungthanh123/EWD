@@ -16,6 +16,7 @@ var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
 
 const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
+// const allowedRolesForUserRoute = ['admin', 'user'];
 
 var app = express();
 
