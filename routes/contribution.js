@@ -60,11 +60,9 @@ router.get('/', async (req, res) => {
    await getContribution(req)
 
    if (req.session.role == "admin" || req.session.role == "mktcoordinator"){
-      console.log(contributionList + "fdsafsdfds");
       res.render('contribution/index', { contributionList });
    }
    else{
-      console.log(contributionList + "dsssss");
       res.render('contribution/indexUser', { contributionList });
    }
       
@@ -103,9 +101,10 @@ router.get('/download/:id', async (req, res) => {
    return res.end(zipFileContents);
 })
 
-router.get('/add', checkStudentSession, async (req, res) => {
+router.get('/add/:id', checkStudentSession, async (req, res) => {
+   var eventId = req.params.id
    var categoryList = await CategoryModel.find();
-   res.render('contribution/add', { categoryList });
+   res.render('contribution/add', { categoryList, eventId });
 })
 
 router.get('/statistics', async (req, res) => {
@@ -132,10 +131,7 @@ const formMiddleWare = (req, res, next) => {
       minFileSize: 0,
       maxFileSize: 15 * 1024 * 1024, // 15mb
       keepExtensions: true,
-      filter: (part) => {
-         part.originalFilename !== "" && fileTypes.includes(part.mimetype)
-         console.log(part);
-      }
+      filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
    })
 
    form.parse(req, (err, fields, files) => {
@@ -168,7 +164,8 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       user: req.session.user._id,
       date: Date.now(),
       anonymous: req.fields.anonymous[0].length == 0 ? true : false,
-      viewer: []
+      viewer: [],
+      event: req.fields.event[0]
    }
 
    await ContributionModel.create(contribution);
