@@ -88,6 +88,36 @@
 
 </body>
 <Script>
+
+    function getExtension(filename) {
+        var parts = filename.split('.');
+        return parts[parts.length - 1];
+    }
+
+    //binds to onchange event of your input field
+    $('#attachFiles').bind('change', function () {
+
+        var message = ""
+        var fileTypes = ['jpeg', 'png', 'pdf', 'jpg', 'docx']
+
+        Array.from(this.files).forEach(file => {
+            var a = file.size > 15 * 1024 * 1024
+            var b = !fileTypes.includes(getExtension(file.name))
+            if (a || b) {
+                message += file.name
+                if (a) message += " size is larger than limit (15mb)"
+                if (a && b) message += " and "
+                if (b) message += "type is not supported\n"
+            }
+        })
+
+        if (message.length != 0) {
+            message += 'Will be ignored when upload'
+            alert(message)
+        }
+
+    });
+
     $(function () {
         $("#header").load("sharedhtmls/header.html", function () {
             $('.mobile-nav-toggle').click(function () {

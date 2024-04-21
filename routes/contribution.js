@@ -118,7 +118,7 @@ router.get('/statistics', async (req, res) => {
 })
 
 const formMiddleWare = (req, res, next) => {
-   fileTypes = ['image/jpeg', 'image/png', 'image/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+   fileTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
    const form = formidable({
       uploadDir: './public/uploads',
@@ -127,7 +127,10 @@ const formMiddleWare = (req, res, next) => {
       minFileSize: 0,
       maxFileSize: 15 * 1024 * 1024, // 15mb
       keepExtensions: true,
-      // filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
+      filter: (part) => {
+         part.originalFilename !== "" && fileTypes.includes(part.mimetype)
+         console.log(part);
+      }
    })
 
    form.parse(req, (err, fields, files) => {
@@ -152,8 +155,6 @@ function convertDateFormat(dateObj) {
 }
 
 router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
-   console.log(req.files);
-
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
