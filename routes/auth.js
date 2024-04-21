@@ -3,7 +3,7 @@ var router = express.Router();
 var UserModel = require('../models/UserModel');
 var FacultyModel = require('../models/FacultyModel')
 var RoleModel = require('../models/RoleModel')
-const {checkLoginSession, checkAdminSession} = require('../middlewares/auth');
+const {checkLoginSession, checkAdminSession, checkNotLoggedIn} = require('../middlewares/auth');
 var bcrypt = require('bcrypt');
 var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
@@ -54,18 +54,11 @@ router.post('/register', checkAdminSession, checkLoginSession, async (req, res) 
     }
 });
 
-router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/auth/login');
-});
-
-router.get('/login', (req, res) => {
+router.get('/login', checkNotLoggedIn, (req, res) => {
     res.render('auth/login', { layout: 'loginLayout' })
 })
 
-//ditconme
-
-router.post('/login', async (req, res) => {
+router.post('/login', checkNotLoggedIn, async (req, res) => {
     try {
         var userLogin = req.body;
         var user = await UserModel.findOne({ username: userLogin.username }).populate('role','name');

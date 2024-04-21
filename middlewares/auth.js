@@ -30,17 +30,6 @@ const checkStudentSession = (req, res, next) => {
     }
 };
 
-// const checkRoleSession = (requiredRoleName) => (req, res, next) => {
-//     if (req.session.username && req.session.role === requiredRoleName) {
-//         next(); // Proceed to the next middleware or route handler
-//     } else {
-//         res.redirect('/auth/login'); // Redirect to login page if session data is not valid
-//     }
-// };
-// const checkStudentSession = checkRoleSession('student');
-
-
-
 const checkGuestSession = (req, res, next) => {
     if (req.session.username && req.session.role === 'guest') {
         next();
@@ -57,12 +46,20 @@ const checkAdminSession = (req, res, next) => {
     }
 };
 
+const checkNotLoggedIn = (req, res, next) => {
+    if (req.session.username) { 
+        res.redirect('/'); 
+    } else {
+        next();
+    }
+};
+
 module.exports = {
-    // checkRoleSession,
     checkLoginSession,
     checkMktManagerSession,
     checkMktCoordinatorSession,
     checkStudentSession,
     checkGuestSession,
-    checkAdminSession
+    checkAdminSession,
+    checkNotLoggedIn
 };
