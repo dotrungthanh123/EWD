@@ -5,6 +5,7 @@ const AdvCommentModel = require('../models/AdvCommentModel');
 const CategoryModel = require('../models/CategoryModel');
 const ReactionModel = require('../models/ReactionModel')
 const FacultyModel = require('../models/FacultyModel')
+const nodemailer = require('nodemailer');
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
 const fs = require('fs');
@@ -169,6 +170,46 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    }
 
    await ContributionModel.create(contribution);
+
+   const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+         user: 'ringotowntest@gmail.com',
+         pass: 'akaj nngk lcyk ldnl',
+      },
+   });
+
+   if(req.session.faculty == "IT"){
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: 'itszombie2019@gmail.com',
+         subject: 'New submission',
+         text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
+               14 days from the day you receive this email to response to students.`,
+      };
+   } else if (req.session.faculty == "Business") {
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: 'itszombie2016@gmail.com',
+         subject: 'New submission',
+         text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
+               14 days from the day you receive this email to response to students.`,
+      };
+   } else {
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: 'anhndgch210098@fpt.edu.vn',
+         subject: 'New submission',
+         text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
+               14 days from the day you receive this email to response to students.`,
+      };
+   }
+
+   transporter.sendMail(mailOptions, (info) => {
+      console.log('Email sent: ' + info.response);
+      // res.redirect('/contribution')
+   });
+
    res.redirect('/contribution')
 })
 
@@ -391,6 +432,40 @@ router.get('/dislike/:id', checkLoginSession, async (req, res) => {
    }
 
    res.redirect('/contribution');
+})
+
+router.get('/admin-comment/:id', async (req,res) => {
+   var id = req.params.id;
+   var contribution = await ContributionModel.findById(id)
+   const differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
+   if (differeceInDays < 14) {
+   var email = await ContributionModel.find().populate({
+      path: 'user',
+      select: 'email'
+  });
+
+  const transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+      user: 'ringotowntest@gmail.com',
+      pass: 'akaj nngk lcyk ldnl',
+   },
+});
+
+const mailOptions = {
+   from: 'ringotowntest@gmail.com',
+   to: email,
+   subject: 'Marketing Coordinator replied',
+   text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
+         want to contribution.`,
+};
+transporter.sendMail(mailOptions, (info) => {
+   console.log('Email sent: ' + info.response);
+});
+};
+res.redirect('/contribution');
+
+
 })
 
 module.exports = { 
