@@ -17,13 +17,12 @@ router.get('/add', checkAdminSession, async (req, res) => {
 })
 
 router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
-    console.log(req.files);
     await EventModel.create({
         name: req.fields.name[0],
         firstClosureDate: req.fields.firstClosureDate[0],
         finalClosureDate: req.fields.finalClosureDate[0],
-        image: req.files.image[0].newFilename,
-    })
+        image: req.files.image ? req.files.image[0].newFilename : '',
+    }).then()
     res.redirect('/event')
 })
 
@@ -45,5 +44,21 @@ router.post('/search', checkLoginSession, async (req, res) => {
     var eventList = await EventModel.find({ name: new RegExp(keyword, "i") });
     res.render('event/index', { eventList })
 })
+
+router.get('/eventData', async (req, res) => {
+    try {
+        var events = await EventModel.find({});
+        var eventData = events.map(evt => ({
+            title: evt.name,
+            start: new Date(evt.firstClosureDate),
+            end: new Date(evt.finalClosureDate)
+        }));
+
+        res.json(eventData);
+    } catch (error) {
+        console.error('Error fetching class data:', error);
+        res.status(500).json({ message: 'Error fetching class data' });
+    }
+});
 
 module.exports = router;

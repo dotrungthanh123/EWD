@@ -14,6 +14,10 @@ var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
 var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
+var bcrypt = require('bcrypt');
+
+const UserModel = require('./models/UserModel')
+const RoleModel = require('./models/RoleModel')
 
 const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
 
@@ -37,6 +41,20 @@ var con = mongoose.connect(uri)
   .then(()=> console.log('connect to db succeed'))
   .catch((err) => console.log('Error: ' + err));
 
+const checkAdmin = async () => {
+  const adminRole = await RoleModel.findOne({name: "Admin"})
+  const admin = await UserModel.findOne({role: adminRole._id})
+  
+  if (!admin) {
+    UserModel.create({
+      username: "a",
+      password: bcrypt.hashSync('a', 8),
+      role: adminRole._id
+    })
+  }
+}
+
+checkAdmin()
 
 //Body parser
 var bodyParser = require('body-parser');

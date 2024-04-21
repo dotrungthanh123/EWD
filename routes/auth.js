@@ -71,7 +71,7 @@ router.post('/login', checkNotLoggedIn, async (req, res) => {
                 console.log(user)
                 // Redirect based on the role name
                 if (req.session.role === "admin") {
-                    res.redirect('/contribution/add');
+                    res.redirect('/');
                 } else if (req.session.role === "student") {
                     res.redirect('/');
                 } else if (req.session.role === "mktCoordinator") {

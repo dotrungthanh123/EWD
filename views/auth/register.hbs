@@ -14,9 +14,22 @@
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <link href="public/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
+    <header id="header" class="fixed-top">
+    </header>
+
     <div class="container text-white">
         <div class="row">
             <div class="col-md-6 mx-auto">
@@ -24,7 +37,9 @@
                     <div class="myform form ">
                         <div class="logo mb-3">
                             <div class="col-md-12 text-center">
-                                <a href="index.html"><h1>EduCon</h1></a>
+                                <a href="index.html">
+                                    <h1>EduCon</h1>
+                                </a>
                             </div>
                         </div>
                         <form action="" method="post" name="login">
@@ -65,9 +80,9 @@
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
                                     <select name="role" id="faculty" class="form-control" style="color: #d2cccc;">
-                                        
+
                                         {{#each roleList}}
-                                            <option value="{{this.name}}">{{this.name}}</option>
+                                        <option value="{{this.name}}">{{this.name}}</option>
                                         {{/each}}
 
                                     </select>
@@ -77,16 +92,16 @@
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
                                     <select name="faculty" id="faculty" class="form-control" style="color: #d2cccc;">
-                                        
+
                                         {{#each facultyList}}
-                                            <option value="{{this.name}}">{{this.name}}</option>
+                                        <option value="{{this.name}}">{{this.name}}</option>
                                         {{/each}}
 
                                     </select>
                                 </div>
                             </div>
-                        
-                           
+
+
                             <div class="col-md-10 text-center mx-auto mt-3">
                                 <button type="submit" id="login-btn"
                                     class="btn btn-block mybtn btn-dark tx-tfm">Create</button>
@@ -98,6 +113,8 @@
         </div>
     </div>
 
+    <footer id="footer">
+    </footer>
 </body>
 <style>
     body {
@@ -121,9 +138,11 @@
         border: 0;
 
     }
+
     .form-control:focus {
         color: black;
     }
+
     .form-control::placeholder {
         color: #d2cccc;
     }

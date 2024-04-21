@@ -23,7 +23,8 @@ const getContribution = async req => {
       .then(async contributions =>
          await contributions
                // Display all when not login for testing, should be false on right side
-            .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
+            // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
+            .filter(contribution => req.session.user.faculty ? contribution.user.faculty.equals(req.session.user.faculty) : true)
       )
       .catch((err) => {
          console.log(err);
@@ -58,11 +59,16 @@ router.get('/', async (req, res) => {
    
    await getContribution(req)
 
-   // if (req.session.role == "admin" || req.session.role == "mktcoordinator")
-   // res.render('contribution/index', { contributionList });
-   // else
-   //    res.render('contribution/indexUser', { contributionList });
-   res.render('contribution/index', { contributionList })
+   if (req.session.role == "admin" || req.session.role == "mktcoordinator"){
+      console.log(contributionList + "fdsafsdfds");
+      res.render('contribution/index', { contributionList });
+   }
+   else{
+      console.log(contributionList + "dsssss");
+      res.render('contribution/indexUser', { contributionList });
+   }
+      
+   // res.render('contribution/index', { contributionList })
 });
 
 router.get('/download/:id', async (req, res) => {
@@ -126,7 +132,7 @@ const formMiddleWare = (req, res, next) => {
       minFileSize: 0,
       maxFileSize: 15 * 1024 * 1024, // 15mb
       keepExtensions: true,
-      filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
+      // filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
    })
 
    form.parse(req, (err, fields, files) => {
@@ -151,6 +157,8 @@ function convertDateFormat(dateObj) {
 }
 
 router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
+   console.log(req.files);
+
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
@@ -166,10 +174,21 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    res.redirect('/contribution')
 })
 
-router.get('/edit/:id', checkStudentSession, checkMktCoordinatorSession, async (req, res) => {
+router.get('/edit/:id', checkStudentSession, async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
    res.render('contribution/edit', { contribution });
+})
+
+router.post('/edit/:id', checkStudentSession, formMiddleWare, async (req, res) => {
+   var id = req.params.id;
+   const contribution = {
+      name: req.fields.name[0],
+      description: req.fields.description[0],
+      path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : []
+   }
+   await ContributionModel.findByIdAndUpdate(id, contribution);
+   res.redirect('/contribution');
 })
 
 router.get('/publish/:id', checkMktCoordinatorSession, async (req, res) => {
@@ -188,17 +207,6 @@ router.get('/showPublish', checkLoginSession, async (req, res) => {
    }
 
    res.render('contribution/index', { contributionList: publishContributions, publish: true })
-})
-
-router.post('/edit/:id', checkStudentSession, checkMktCoordinatorSession, formMiddleWare, async (req, res) => {
-   var id = req.params.id;
-   const contribution = {
-      name: req.fields.name[0],
-      description: req.fields.description[0],
-      path: req.files.userfile.map((userfile) => userfile.newFilename)
-   }
-   await ContributionModel.findByIdAndUpdate(id, contribution);
-   res.redirect('/contribution');
 })
 
 router.get('/delete/:id', checkMktCoordinatorSession, async (req, res) => {
