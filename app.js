@@ -14,6 +14,7 @@ var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
 var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
+var bcrypt = require('bcrypt');
 
 const UserModel = require('./models/UserModel')
 const RoleModel = require('./models/RoleModel')
@@ -41,13 +42,13 @@ var con = mongoose.connect(uri)
   .catch((err) => console.log('Error: ' + err));
 
 const checkAdmin = async () => {
-  const adminRole = await RoleModel.findOne({name: "admin"})
+  const adminRole = await RoleModel.findOne({name: "Admin"})
   const admin = await UserModel.findOne({role: adminRole._id})
   
   if (!admin) {
     UserModel.create({
       username: "a",
-      password: "a",
+      password: bcrypt.hashSync('a', 8),
       role: adminRole._id
     })
   }
