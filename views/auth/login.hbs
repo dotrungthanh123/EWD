@@ -79,6 +79,23 @@
 
   <footer id="footer">
   </footer>
+
+  <script>
+    $(function () {
+      $("#header").load("sharedhtmls/header.html", function () {
+        $('.mobile-nav-toggle').click(function () {
+          $('#navbar').toggleClass('navbar-mobile');
+
+        });
+
+        $('.dropdown > a').click(function (e) {
+          e.preventDefault();
+          $(this).next('ul').slideToggle();
+        });
+      });
+      $("#footer").load("sharedhtmls/footer.html");
+    });
+  </script>
 </body>
 <style>
   body {

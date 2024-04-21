@@ -89,14 +89,14 @@
                     <div class="magazine">
                     {{#each contributionList}}
                         <article class="article">
+                            <a href="/contribution/detail/{{_id}}">
+                                <h1>{{name}}</h1>
+                            </a>
                             <input type="checkbox" class="articleCheckbox" />
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h1 class="Username">{{user.name}}</h1>
+                                <h2 class="Username">{{user.name}}</h2>
                             </div>
-                            <a href="/contribution/detail/{{_id}}">
-                                <h2>{{name}}</h2>
-                            </a>
                             <p>{{description}}</p>
                             <button type="submit" class="publish-btn">Publish</button>
                             <hr style="color: #ffffff; height: 3px;">
@@ -149,10 +149,9 @@
             $("#footer").load("sharedhtmls/footer.html");
         });
 
-        $("#contribution").keypress(function (e) {
+        $(document).on('keypress', '#contribution', function (e) {
             if (e.which === 13 && !e.shiftKey) {
                 e.preventDefault();
-
                 $(this).closest("form").submit();
             }
         });
@@ -442,6 +441,12 @@
         right: 10px;
     }
 
+    .article h1{
+        font-size: 25px;
+        text-align: left;
+        color: #ffffff;
+    }
+
     .article h2 {
         font-size: 15px;
         margin-bottom: 10px;
@@ -464,7 +469,7 @@
         font-size: 25px;
         color: #ffffff;
         text-align: left;
-        margin-top: 13px;
+        margin-top: 20px;
     }
 
     .bi-person {
