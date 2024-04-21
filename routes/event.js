@@ -46,4 +46,20 @@ router.post('/search', checkLoginSession, async (req, res) => {
     res.render('event/index', { eventList })
 })
 
+router.get('/eventData', async (req, res) => {
+    try {
+        var events = await EventModel.find({});
+        var eventData = events.map(evt => ({
+            title: evt.name,
+            start: new Date(evt.firstClosureDate),
+            end: new Date(evt.finalClosureDate)
+        }));
+
+        res.json(eventData);
+    } catch (error) {
+        console.error('Error fetching class data:', error);
+        res.status(500).json({ message: 'Error fetching class data' });
+    }
+});
+
 module.exports = router;
