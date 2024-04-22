@@ -90,8 +90,8 @@
                         <article class="article">
                             <h1>{{ name }}</h1>
                             <p>Event Description: {{ description }}</p>
-                            <h2>First Closure Date: {{ formattedFirstClosureDate }}</h2> 
-                            <h2>Final Closure Date: {{ formattedFinalClosureDate }}</h2> 
+                            <h2>First Closure Date: {{ formattedFirstClosureDate }}</h2>
+                            <h2>Final Closure Date: {{ formattedFinalClosureDate }}</h2>
                             <hr style="color: #ffffff; height: 1px;">
                             <div class="article-actions">
                                 <div class="actions">
@@ -99,8 +99,10 @@
                                     <h5 class="like-count">Count</h5>
                                 </div>
                             </div>
-                            <button><a href="/contribution/add/{{ _id }}" >Add</a></button>
-                            
+                            <button onclick="location.href='/contribution/add/{{ _id }}'" type="button" class="addingbtn">
+                                Add
+                            </button>
+
                         </article>
                         {{/each}}
                         <div id="pagination-container"></div>
@@ -148,7 +150,7 @@
             }
         });
 
-                let currentPage = 1;
+        let currentPage = 1;
         const articlesPerPage = 5;
         const articles = document.querySelectorAll('.article');
 
@@ -374,7 +376,7 @@
         margin-top: 10px;
     }
 
-    .article h1{
+    .article h1 {
         font-size: 25px;
         text-align: left;
         color: #ffffff;
@@ -573,6 +575,23 @@
     #pagination-container button:hover {
         background-color: #ab5ec9;
         color: white;
+    }
+
+    .addingbtn {
+        justify-content: center;
+        width: 25%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        margin-top: 10px;
+        transition: .4s;
+        color: #ffffff;
+    }
+
+    .addingbtn:hover{
+        background: white;
+        color: #000000;
     }
 
     /* Small devices (landscape phones, less than 768px) */
