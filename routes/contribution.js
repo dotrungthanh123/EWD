@@ -60,11 +60,13 @@ router.get('/', async (req, res) => {
    
    await getContribution(req)
 
+   const role = req.session.role;
+
    if (req.session.role == "admin" || req.session.role == "mktcoordinator"){
-      res.render('contribution/index', { contributionList });
+      res.render('contribution/index', { contributionList, role });
    }
    else{
-      res.render('contribution/indexUser', { contributionList });
+      res.render('contribution/indexUser', { contributionList, role });
    }
       
    // res.render('contribution/index', { contributionList })
