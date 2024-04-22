@@ -42,12 +42,32 @@ var con = mongoose.connect(uri)
   .then(()=> console.log('connect to db succeed'))
   .catch((err) => console.log('Error: ' + err));
 
-const checkAdmin = async () => {
+const Initiation = async () => {
+
+  const roles = await RoleModel.find()
+  if (roles.length == 0) {
+    await RoleModel.create({
+      name: "Student"
+    })
+    await RoleModel.create({
+      name: "MktManager"
+    })
+    await RoleModel.create({
+      name: "MktCoordinator"
+    })
+    await RoleModel.create({
+      name: "Guest"
+    })
+    await RoleModel.create({
+      name: "Admin"
+    })
+  }
+
   const adminRole = await RoleModel.findOne({name: "Admin"})
   const admin = await UserModel.findOne({role: adminRole._id})
   
   if (!admin) {
-    UserModel.create({
+    await UserModel.create({
       username: "a",
       password: bcrypt.hashSync('a', 8),
       role: adminRole._id
@@ -55,7 +75,7 @@ const checkAdmin = async () => {
   }
 }
 
-checkAdmin()
+Initiation()
 
 //Body parser
 var bodyParser = require('body-parser');

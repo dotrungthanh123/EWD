@@ -49,7 +49,6 @@ const checkAdminSession = (req, res, next) => {
 const checkNotLoggedIn = (req, res, next) => {
     if (req.session.username) { 
         res.redirect('/');
-        console.log('nigga')
     } else {
         next();
     }
