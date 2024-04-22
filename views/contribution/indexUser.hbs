@@ -81,13 +81,13 @@
                         {{#each contributionList}}
                         <article class="article">
                             <a href="">
-                                <h1>Title</h1>
+                                <h1>{{ name }}</h1>
                             </a>
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h2 class="Username">Username</h1>
+                                <h2 class="Username">{{ user.username }}</h1>
                             </div>
-                            <p>Description</p>
+                            <p>{{ description }}</p>
                             <div class="article-actions">
                                 <div class="actions">
                                     <i class="bi bi-heart like-button"></i>
