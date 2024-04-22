@@ -78,14 +78,16 @@
                     </form>
 
                     <div class="magazine">
-                    {{#each contributionList}}
+                        {{#each contributionList}}
                         <article class="article">
+                            <a href="">
+                                <h1>Title</h1>
+                            </a>
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h1 class="Username">Username</h1>
+                                <h2 class="Username">Username</h1>
                             </div>
-                            <h2>Article Title</h2>
-                            <p>Articile Description</p>
+                            <p>Description</p>
                             <div class="article-actions">
                                 <div class="actions">
                                     <i class="bi bi-heart like-button"></i>
@@ -119,8 +121,9 @@
                                 </ul>
                             </div>
                         </article>
-                    {{/each}}
+                        {{/each}}
                     </div>
+                    <div id="pagination-container"></div>
                 </div>
             </div>
         </section>
@@ -196,7 +199,44 @@
             }
         });
 
+        //Pagination
+        let currentPage = 1;
+        const articlesPerPage = 5;
+        const articles = document.querySelectorAll('.article');
 
+        function paginate() {
+            // Hide all articles
+            articles.forEach(article => {
+                article.style.display = 'none';
+            });
+
+            // Show only the articles for the current page
+            let startIndex = (currentPage - 1) * articlesPerPage;
+            let endIndex = startIndex + articlesPerPage;
+            for (let i = startIndex; i < endIndex; i++) {
+                if (articles[i]) {
+                    articles[i].style.display = 'block';
+                }
+            }
+
+            // Remove old page numbers
+            let paginationContainer = document.getElementById('pagination-container');
+            paginationContainer.innerHTML = '';
+
+            // Add new page numbers
+            let totalPages = Math.ceil(articles.length / articlesPerPage);
+            for (let i = 1; i <= totalPages; i++) {
+                let btn = document.createElement('button');
+                btn.innerText = i;
+                btn.onclick = function () {
+                    currentPage = i;
+                    paginate();
+                };
+                paginationContainer.appendChild(btn);
+            }
+        }
+
+        paginate();
     </script>
 
 </body>
@@ -303,7 +343,7 @@
         flex-direction: column;
         padding: 15px;
         margin-left: 35px;
-        height: 600ps;
+        height: 300px;
     }
 
     .sidebar h2 {
@@ -383,6 +423,13 @@
         background-color: hsl(261, 18%, 15%);
         width: 100%;
         margin-top: 10px;
+        position: relative;
+    }
+
+    .article h1{
+        font-size: 25px;
+        text-align: left;
+        color: #ffffff;
     }
 
     .article h2 {
@@ -407,7 +454,7 @@
         font-size: 25px;
         color: #ffffff;
         text-align: left;
-        margin-top: 13px;
+        margin-top: 20px;
     }
 
     .article-actions {
@@ -565,6 +612,31 @@
     button.btn-magazine {
         font-size: 15px;
         /* Change this to the size you want */
+    }
+
+    #pagination-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    #pagination-container button {
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        color: #495057;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #pagination-container button:hover {
+        background-color: #ab5ec9;
+        color: white;
     }
 
     /* Small devices (landscape phones, less than 768px) */
