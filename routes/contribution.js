@@ -181,7 +181,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       },
    });
 
-   const mailOptions = '';
+   var mailOptions = '';
 
    if(req.session.faculty == "IT"){
       mailOptions = {
