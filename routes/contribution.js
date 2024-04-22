@@ -181,8 +181,10 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       },
    });
 
+   const mailOptions = '';
+
    if(req.session.faculty == "IT"){
-      const mailOptions = {
+      mailOptions = {
          from: 'ringotowntest@gmail.com',
          to: 'itszombie2019@gmail.com',
          subject: 'New submission',
@@ -190,7 +192,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
                14 days from the day you receive this email to response to students.`,
       };
    } else if (req.session.faculty == "Business") {
-      const mailOptions = {
+      mailOptions = {
          from: 'ringotowntest@gmail.com',
          to: 'itszombie2016@gmail.com',
          subject: 'New submission',
@@ -198,7 +200,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
                14 days from the day you receive this email to response to students.`,
       };
    } else {
-      const mailOptions = {
+      mailOptions = {
          from: 'ringotowntest@gmail.com',
          to: 'anhndgch210098@fpt.edu.vn',
          subject: 'New submission',
