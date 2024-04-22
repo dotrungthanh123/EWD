@@ -60,9 +60,17 @@ router.get('/', async (req, res) => {
    
    await getContribution(req)
 
+   // var publishContributions = []
+
+   // for (index in contributionList) {
+   //    if (contributionList[index].publish) publishContributions.push(contributionList[index])
+   // }
+
+   // res.render('contribution/index', { contributionList: publishContributions, publish: true })
+
    const role = req.session.role;
 
-   if (req.session.role == "admin" || req.session.role == "mktcoordinator"){
+   if (req.session.role == "Admin" || req.session.role == "MktCoordinator"){
       res.render('contribution/index', { contributionList, role });
    }
    else{
