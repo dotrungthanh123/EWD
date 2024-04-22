@@ -22,6 +22,7 @@ router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
         firstClosureDate: req.fields.firstClosureDate[0],
         finalClosureDate: req.fields.finalClosureDate[0],
         image: req.files.image ? req.files.image[0].newFilename : '',
+        description: req.fields.description[0],
     }).then()
     res.redirect('/event')
 })
