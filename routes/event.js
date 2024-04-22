@@ -8,14 +8,15 @@ const moment = require('moment');
 router.get('/', checkLoginSession, async (req, res) => {
     var eventList = await EventModel.find({});
     //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
-
     const formattedEvents = eventList.map(event => ({
         ...event.toObject(),
         formattedFirstClosureDate: moment(event.firstClosureDate).format('D/MM/YYYY'),
         formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
     }));
 
-    res.render('event/index', { eventList: formattedEvents });
+    const role = req.session.role;
+
+    res.render('event/index', { eventList: formattedEvents, role });
     // else
     //    res.render('contribution/indexUser', { contributionList });
 });
