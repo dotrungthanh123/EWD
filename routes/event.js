@@ -3,11 +3,19 @@ const router = express.Router();
 const EventModel = require('../models/EventModel');
 const { checkMktManagerSession, checkAdminSession, checkLoginSession, } = require('../middlewares/auth');
 const {formMiddleWare} = require('./contribution')
+const moment = require('moment');
 
 router.get('/', checkLoginSession, async (req, res) => {
     var eventList = await EventModel.find({});
     //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
-    res.render('event/index', { eventList });
+
+    const formattedEvents = eventList.map(event => ({
+        ...event.toObject(),
+        formattedFirstClosureDate: moment(event.firstClosureDate).format('D/MM/YYYY'),
+        formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
+    }));
+
+    res.render('event/index', { eventList: formattedEvents });
     // else
     //    res.render('contribution/indexUser', { contributionList });
 });
@@ -19,6 +27,7 @@ router.get('/add', checkAdminSession, async (req, res) => {
 router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
     await EventModel.create({
         name: req.fields.name[0],
+        description: req.fields.description[0],
         firstClosureDate: req.fields.firstClosureDate[0],
         finalClosureDate: req.fields.finalClosureDate[0],
         image: req.files.image ? req.files.image[0].newFilename : '',

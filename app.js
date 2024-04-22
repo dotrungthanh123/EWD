@@ -63,6 +63,19 @@ const Initiation = async () => {
     })
   }
 
+  const faculties = await FacultyModel.find()
+  if (faculties.length == 0) {
+    await FacultyModel.create({
+      name: "IT"
+    })
+    await FacultyModel.create({
+      name: "Business"
+    })
+    await FacultyModel.create({
+      name: "Design"
+    })
+  }
+
   const adminRole = await RoleModel.findOne({name: "Admin"})
   const admin = await UserModel.findOne({role: adminRole._id})
   
@@ -79,6 +92,7 @@ Initiation()
 
 //Body parser
 var bodyParser = require('body-parser');
+const FacultyModel = require('./models/FacultyModel');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // view engine setup
