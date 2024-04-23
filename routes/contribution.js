@@ -242,7 +242,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    res.redirect('/contribution')
 })
 
-router.get('/edit/:id', checkMultipleSession(['student', 'mktCoordinator']),  async (req, res) => {
+router.get('/edit/:id', checkMultipleSession(['Student', 'MktCoor']),  async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
    res.render('contribution/edit', { contribution });

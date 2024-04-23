@@ -69,9 +69,9 @@
             <div class="portfolio-info">
               <h3></h3>
               <ul>
-                <li><strong>Event Name</strong>: ********</li>
-                <li><strong>Date</strong>: **********</li>
-                <li><strong>Time</strong>: *************</li>
+                <li><strong>Event Name</strong>: {{ event.name }} </li>
+                <li><strong>First Closure Date</strong>: {{ event.formattedFirstClosureDate }} </li>
+                <li><strong>Final Closure Date</strong>: {{ event.formattedFinalClosureDate }} </li>
               </ul>
             </div>
             <div class="portfolio-info">
@@ -84,7 +84,9 @@
               </p>
               <!-- start if -->
               <div class="row justify-content-center mt-5">
-                <button type="" class="btn btn-secondary btn-lg">Edit</button>
+                {{#if Student}}
+                    <button type="" class="btn btn-secondary btn-lg">Edit</button>
+                {{/if}}
               </div>
               <!-- end if -->
             </div>
