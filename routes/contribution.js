@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
 
    const role = req.session.role;
 
-   if (req.session.role == "Admin" || req.session.role == "MktCoordinator"){
+   if (req.session.role == "Admin" || req.session.role == "MktCoor"){
       res.render('contribution/index', { contributionList, role });
    }
    else{

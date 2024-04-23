@@ -79,6 +79,7 @@
 
                     <div class="magazine">
                         {{#each contributionList}}
+                        {{#if publish}}
                         <article class="article">
                             <a href="">
                                 <h1>{{ name }}</h1>
@@ -121,6 +122,7 @@
                                 </ul>
                             </div>
                         </article>
+                        {{/if}}
                         {{/each}}
                     </div>
                     <div id="pagination-container"></div>
