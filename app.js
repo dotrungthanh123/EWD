@@ -72,20 +72,18 @@ const Initiation = async () => {
     username: "Admin",
     password: await bcrypt.hash(password, salt),
     name: 'Admin',
-    role: await RoleModel.find({name: 'Admin'})._id,
+    role: (await RoleModel.findOne({name: 'Admin'}))._id,
   })
 
   await UserModel.create({
     username: "MktManager",
     password: await bcrypt.hash(password, salt),
     name: 'MktManager',
-    role: await RoleModel.find({name: 'MktManager'})._id,
+    role: (await RoleModel.findOne({name: 'MktManager'}))._id,
   })
 
   roles.forEach(async role => await RoleModel.create({ name: role }))
   categories.forEach(async category => await CategoryModel.create({ name: category }))
-
-  var facultys = []
 
   faculties.forEach(async faculty => {
     await FacultyModel.create({ name: faculty })

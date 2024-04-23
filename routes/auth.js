@@ -3,7 +3,7 @@ var router = express.Router();
 var UserModel = require('../models/UserModel');
 var FacultyModel = require('../models/FacultyModel')
 var RoleModel = require('../models/RoleModel')
-const {checkLoginSession, checkAdminSession, checkNotLoggedIn} = require('../middlewares/auth');
+const { checkLoginSession, checkAdminSession, checkNotLoggedIn } = require('../middlewares/auth');
 var bcrypt = require('bcrypt');
 var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
@@ -20,7 +20,7 @@ router.get('/register', checkAdminSession, checkLoginSession, async (req, res) =
     try {
         var roleList = await RoleModel.find({});
         var facultyList = await FacultyModel.find({});
-        
+
         res.render('auth/register', { roleList, facultyList });
     } catch (err) {
         console.error(err);
@@ -35,7 +35,7 @@ router.post('/register', checkAdminSession, checkLoginSession, async (req, res) 
         const existingUser = await UserModel.findOne({ username: userRegistration.username });
         if (existingUser) {
             req.flash('error', 'Username already exists. Please choose a different username.');
-            return res.redirect('/auth/register'); 
+            return res.redirect('/auth/register');
         }
 
         var role = await RoleModel.findOne({ name: userRegistration.role });
@@ -53,11 +53,11 @@ router.post('/register', checkAdminSession, checkLoginSession, async (req, res) 
     } catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyPattern.username === 1) {
             req.flash('error', 'Username already exists. Please choose a different username.');
-            return res.redirect('/auth/register'); 
+            return res.redirect('/auth/register');
         }
         console.error(err);
         req.flash('error', 'Error during registration');
-        res.redirect('/auth/register'); 
+        res.redirect('/auth/register');
     }
 });
 
@@ -68,24 +68,23 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         var userLogin = req.body;
-        var user = await UserModel.findOne({ username: userLogin.username }).populate('role','name');
+        var user = await UserModel.findOne({ username: userLogin.username }).populate('role', 'name');
         if (user) {
             var hash = bcrypt.compareSync(userLogin.password, user.password);
             if (hash) {
+                var role = user.role.name
                 req.session.username = user.username;
-                req.session.role = user.role.name; // Store only the role name in the session
                 req.session.user = user;
-                console.log(user)
                 // Redirect based on the role name
-                if (req.session.role === "admin") {
+                if (role === "Admin") {
                     res.redirect('/');
-                } else if (req.session.role === "student") {
+                } else if (role === "Student") {
                     res.redirect(`/`);
-                } else if (req.session.role === "mktCoordinator") {
+                } else if (role === "MktCoor") {
                     res.redirect('/');
-                } else if (req.session.role === "mktManager") {
+                } else if (role === "MktManager") {
                     res.redirect('/');
-                } else if (req.session.role === "guest") {
+                } else if (role === "Guest") {
                     res.redirect('/');
                 } else {
                     res.redirect('/');
