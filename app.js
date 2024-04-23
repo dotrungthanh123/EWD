@@ -47,19 +47,19 @@ const Initiation = async () => {
   const roles = await RoleModel.find()
   if (roles.length == 0) {
     await RoleModel.create({
-      name: "Student"
+      name: "student"
     })
     await RoleModel.create({
-      name: "MktManager"
+      name: "mktManager"
     })
     await RoleModel.create({
-      name: "MktCoordinator"
+      name: "mktCoordinator"
     })
     await RoleModel.create({
-      name: "Guest"
+      name: "guest"
     })
     await RoleModel.create({
-      name: "Admin"
+      name: "admin"
     })
   }
 
@@ -76,7 +76,7 @@ const Initiation = async () => {
     })
   }
 
-  const adminRole = await RoleModel.findOne({name: "Admin"})
+  const adminRole = await RoleModel.findOne({name: "admin"})
   const admin = await UserModel.findOne({role: adminRole._id})
   
   if (!admin) {
@@ -117,6 +117,14 @@ app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
 app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
+
+
+app.get('/', (req, res) => {
+  // Retrieve username from session
+  const username = req.session.username;
+  res.render('/index', { username: username });
+  console.log('username: ', username);
+});
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
