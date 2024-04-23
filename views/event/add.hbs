@@ -49,15 +49,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="date" class="col-sm-2 col-form-label">Date:</label>
+                    <label for="firstClosureDate" class="col-sm-2 col-form-label">First Closure Date:</label>
                     <div class="col-sm-10">
-                        <input type="date"  name="firstClosureDate" class="form-control" id="date">
+                        <input type="date" name="firstClosureDate" class="form-control" id="firstClosureDate">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="date" class="col-sm-2 col-form-label">Time:</label>
+                    <label for="finalClosureDate" class="col-sm-2 col-form-label">Final Closure Date:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="finalClosureDate" class="form-control" id="date">
+                        <input type="date" name="finalClosureDate" class="form-control" id="finalClosureDate">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -74,7 +74,7 @@
                 </div>
                 <div class="form-group row justify-content-end">
                     <div class="col-sm-10 mt-5">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
                         <button type="reset" class="btn btn-secondary ml-2">Reset</button>
                     </div>
                 </div>
@@ -95,15 +95,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 <Script>
-    const now = new Date();
-    const dateInput = document.getElementById("date");
-    const timeInput = document.getElementById("time");
-    dateInput.min = now.toISOString().split('T')[0];
-    timeInput.addEventListener('change', function () {
-        const minTime = now.setMinutes(now.getMinutes() + 10);
-        if (new Date(this.value) < minTime) {
-            this.value = "";
-            alert("Please select a time in the future.");
+    const submitButton = document.getElementById('submitButton');
+    const today = new Date().toISOString().split('T')[0];
+    const firstClosureDateInput = document.getElementById('firstClosureDate');
+    const finalClosureDateInput = document.getElementById('finalClosureDate');
+    firstClosureDateInput.min = today;
+
+    submitButton.addEventListener('click', function (event) {
+        const firstClosureDate = firstClosureDateInput.value;
+        const finalClosureDate = finalClosureDateInput.value;
+        // Check if first closure date is empty
+        if (!firstClosureDate) {
+            alert('Please enter a First Closure Date');
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
+
+        // Check if final closure date is empty
+        if (!finalClosureDate) {
+            alert('Please enter a Final Closure Date');
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
+
+        // Check if first closure date is before final closure date
+        if (firstClosureDate > finalClosureDate) {
+            alert('First Closure Date must be before Final Closure Date');
+            event.preventDefault(); // Prevent form submission
+            return;
         }
     });
     $(function () {
