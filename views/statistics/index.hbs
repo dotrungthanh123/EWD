@@ -1,8 +1,139 @@
-<h1>Total: {{ total }} contributions</h1>
-<h1>Total: {{ studentCount }} students</h1>
-<ul>
-    {{#each facultyContributionCount}}
-    <li>{{ key }}: {{ value }} contributions</li>
-    <li>Publish: {{ percent }}%</li>
-    {{/each}}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Statistics</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Basic styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .chart-container {
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>University Statistics Overview</h1>
+
+<!-- Bar chart for general statistics (faculties and events) -->
+<div class="chart-container">
+    <h2>Faculties and Events Count</h2>
+    <canvas id="generalStatsChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Bar chart for faculty contribution counts -->
+<div class="chart-container">
+    <h2>Contributions by Faculty</h2>
+    <canvas id="facultyContributionChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Line chart for published contribution percentages -->
+<div class="chart-container">
+    <h2>Published Contributions Percentage by Faculty</h2>
+    <canvas id="publishedPercentChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Chart.js Script -->
+<script>
+    const ctx1 = document.getElementById('generalStatsChart').getContext('2d');
+    const ctx2 = document.getElementById('facultyContributionChart').getContext('2d');
+    const ctx3 = document.getElementById('publishedPercentChart').getContext('2d');
+
+    // Data for general statistics (faculties and events)
+    const generalStatsData = {
+        labels: ['Faculties', 'Events', 'Users'], // Labels for faculties and events
+        datasets: [{
+            label: 'Count',
+            data: [{{numFaculties}}, {{numEvents}}, {{numUsers}}], // Number of faculties and events
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+        }]
+    };
+
+    new Chart(ctx1, {
+        type: 'bar', // Bar chart
+        data: generalStatsData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Data for faculty contributions
+    const facultyNames = [{{#each facultyContributionCount}}{{name}},{{/each}}];
+    const facultyContributions = [{{#each facultyContributionCount}}{{contributions}},{{/each}}];
+
+    const facultyContributionData = {
+        labels: facultyNames,
+        datasets: [{
+            label: 'Contributions',
+            data: facultyContributions,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+        }]
+    };
+
+    new Chart(ctx2, {
+        type: 'bar', // Bar chart
+        data: facultyContributionData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Data for published percentages
+    const publishedPercents = [{{#each facultyContributionCount}}{{publishedPercent}},{{/each}}];
+
+    const publishedPercentData = {
+        labels: facultyNames,
+        datasets: [{
+            label: 'Published Contribution Percentage',
+            data: publishedPercents,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            fill: true,
+            borderWidth: 2,
+            tension: 0.4
+        }]
+    };
+
+    new Chart(ctx3, {
+        type: 'line', // Line chart
+        data: publishedPercentData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>
