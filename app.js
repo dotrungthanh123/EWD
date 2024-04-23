@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var flash = require('express-flash');
+var hbs = require('hbs');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -105,6 +106,7 @@ const Initiation = async () => {
 
 //Body parser
 var bodyParser = require('body-parser');
+const FacultyModel = require('./models/FacultyModel');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // view engine setup
@@ -129,6 +131,8 @@ app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
 app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
+
+
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

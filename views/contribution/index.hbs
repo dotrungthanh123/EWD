@@ -71,13 +71,13 @@
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
-                        {{#if student}}
                         <button onclick="location.href='/contribution/add';" class="createBtn">Create New
                             Contribution</button>
-                        {{/if}}
                         <button id="selectBtn" class="selectBtn">Select</button>
                         <button id="submitBtn" class="submitBtn">Submit Checked Articles</button>
                     </div>
+                    <hr style="color: #ffffff; height: 3px;">
+                    <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
                 </div>
             </div>
 
@@ -97,10 +97,16 @@
                             <input type="checkbox" class="articleCheckbox" />
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h2 class="Username">{{user.name}}</h2>
+                                <h2 class="Username">{{user.username}}</h2>
                             </div>
                             <p>{{description}}</p>
-                            <button type="submit" class="publish-btn">Publish</button>
+                            {{#if publish}}
+                                <button type="submit" class="published-btn" disabled>Published</button>
+                            {{else}}
+                            <form action="/contribution/publish/{{_id}}" method="get">
+                                <button type="submit" class="publish-btn">Publish</button>
+                            </form>
+                            {{/if}}
                             <hr style="color: #ffffff; height: 3px;">
                             <div class="comments">
                                 <ul class="comments-list">
@@ -212,6 +218,7 @@
             location.reload();
         });
 
+        //Pagination
         let currentPage = 1;
         const articlesPerPage = 5;
         const articles = document.querySelectorAll('.article');
@@ -495,6 +502,17 @@
         background: #ffffff;
         color: #000;
         cursor: pointer;
+    }
+
+    .published-btn {
+        border:0;
+        width: 224px;
+        height: 35px;
+        flex-shrink: 0;
+        border-radius: 20px;
+        background: #2D4268;
+        color: #ffffff;
+        transition: .4s;
     }
 
     .comments {

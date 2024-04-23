@@ -1,30 +1,31 @@
 <header id="header">
   <div class="container d-flex align-items-center justify-content-lg-between">
 
-    <h1 class="logo me-auto me-lg-0"><a href="index.html">EduCon<span>.</span></a></h1>
+    <h1 class="logo me-auto me-lg-0"><a href="/">EduCon<span>.</span></a></h1>
 
     <nav id="navbar" class="navbar order-last order-lg-0">
       <ul>
-        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-        <li><a class="nav-link scrollto" href="#about">About</a></li>
-        <li><a class="nav-link scrollto" href="#events">Events</a></li>
-        <li><a class="nav-link scrollto" href="#team">Team</a></li>
+        <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About</a></li>
+        <li><a class="nav-link scrollto" href="/#events">Occurences</a></li>
+        <li><a class="nav-link scrollto" href="/#team">Team</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
+        <li><a class="nav-link scrollto" href="/event/eventData">Schedule</a></li>
         <li class="dropdown"><a href="#"><span>User Sections</span> <i class="bi bi-chevron-down"></i></a>
           <ul>
-            <li><a href="#">Create User</a></li>
+            <li><a href="/auth/register">Create User</a></li>
             <li><a href="/event">Events</a></li>
             <li><a href="/contribution">Contributions</a></li>
           </ul>
         </li>
         <li><a class="nav-link scrollto" href="/auth/login">Login</a></li>
-        <li><a class="nav-link scrollto" href="/auth/logout">Logout</a></li>
-        <li><a class="nav-link scrollto" href="/contribution">Contributions</a></li>
-        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <!-- {{#if login}} -->
+        <li><a class="nav-link scrollto" href="/auth/logout">LogOut</a></li>
+        <!-- {{/if}} -->
+
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav>
-
-    <a href="#about" class="get-started-btn scrollto">Get Started</a>
 
   </div>
 </header>

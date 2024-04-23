@@ -9,6 +9,13 @@ var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
 
 
+router.get('/', (req, res) => {
+    // Retrieve username from session
+    const username = req.session.username;
+    res.render('/index', { username: username });
+    console.log('username: ', username);
+});
+
 router.get('/register', checkAdminSession, checkLoginSession, async (req, res) => {
     try {
         var roleList = await RoleModel.find({});
@@ -73,7 +80,7 @@ router.post('/login', async (req, res) => {
                 if (req.session.role === "admin") {
                     res.redirect('/');
                 } else if (req.session.role === "student") {
-                    res.redirect('/');
+                    res.redirect(`/`);
                 } else if (req.session.role === "mktCoordinator") {
                     res.redirect('/');
                 } else if (req.session.role === "mktManager") {
@@ -90,6 +97,13 @@ router.post('/login', async (req, res) => {
     } catch (err) {
         res.send(err);
     }
+});
+
+router.get('/', (req, res) => {
+    // Retrieve username from session
+    const username = req.session.username;
+    res.render('index', { username: username });
+    console.log('username: ', username);
 });
 
 router.get('/logout', checkNotLoggedIn, (req, res) => {
