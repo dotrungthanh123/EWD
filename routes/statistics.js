@@ -31,6 +31,7 @@ router.get('/stats', async (req, res) => {
         const numFaculties = facultyNames.length; // Number of faculties
         const numEvents = await EventModel.countDocuments({}); // Number of events
         const numUsers = await UserModel.countDocuments({}); // Number of events
+        const numContribution = await ContributionModel.countDocuments({});
 
         res.render('statistics/index', {
             facultyContributionCount,
