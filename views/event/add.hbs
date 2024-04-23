@@ -96,10 +96,16 @@
 </body>
 <Script>
     const submitButton = document.getElementById('submitButton');
+    const resetButton = document.querySelector('button[type="reset"]');
     const today = new Date().toISOString().split('T')[0];
     const firstClosureDateInput = document.getElementById('firstClosureDate');
     const finalClosureDateInput = document.getElementById('finalClosureDate');
     firstClosureDateInput.min = today;
+
+    resetButton.addEventListener('click', function () {
+        const imagePreview = document.getElementById('file-preview');
+        imagePreview.innerHTML = '';
+    });
 
     submitButton.addEventListener('click', function (event) {
         const firstClosureDate = firstClosureDateInput.value;
@@ -125,6 +131,7 @@
             return;
         }
     });
+    
     $(function () {
         $("#header").load("/sharedhtmls/header.html", function () {
             $('.mobile-nav-toggle').click(function () {
@@ -141,7 +148,7 @@
     });
 
     function previewImage() {
-        const fileInput = document.getElementById('attachImages');
+        const fileInput = document.getElementById('attachFiles');
         const imagePreview = document.getElementById('file-preview');
 
         const files = fileInput.files;
