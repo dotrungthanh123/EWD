@@ -68,7 +68,9 @@
                     <div class="magazine">
                         {{#each eventList}}
                         <article class="article">
-                            <h1>{{ name }}</h1>
+                            <a href="/event/detail/{{_id}}">
+                                <h1>{{ name }}</h1>
+                            </a>
                             <p>Event Description: {{ description }}</p>
                             <h2>First Closure Date: {{ formattedFirstClosureDate }}</h2>
                             <h2>Final Closure Date: {{ formattedFinalClosureDate }}</h2>

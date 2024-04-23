@@ -17,8 +17,6 @@ router.get('/', checkLoginSession, async (req, res) => {
     const role = req.session.role;
 
     res.render('event/index', { eventList: formattedEvents, role });
-    // else
-    //    res.render('contribution/indexUser', { contributionList });
 });
 
 router.get('/add', checkAdminSession, async (req, res) => {
@@ -49,6 +47,22 @@ router.post('/edit/:id', checkAdminSession, async (req, res) => {
     await EventModel.findByIdAndUpdate(id, data);
     res.redirect('/event');
 })
+
+router.get('/detail/:id', checkLoginSession, async (req, res) => {
+    const id = req.params.id;
+    const event = await EventModel.findById(id);
+    
+    const formattedEvent = {
+        ...event.toObject(),
+        formattedFirstClosureDate: moment(event.firstClosureDate).format('D/MM/YYYY'),
+        formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
+    };
+
+    // Preprocess the data to include a boolean indicating if the role is "Admin"
+    const isAdmin = req.session.role === "Admin";
+
+    res.render("event/detail", { event: formattedEvent, isAdmin });
+});
 
 router.post('/search', checkLoginSession, async (req, res) => {
     var keyword = req.body.keyword;
