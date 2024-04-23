@@ -332,7 +332,15 @@ router.post('/advcomments', checkLoginSession, async (req, res) => {
 router.post('/search', checkLoginSession, async (req, res) => {
    var keyword = req.body.keyword;
    var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") });
-   res.render('contribution/index', { contributionList })
+
+   const role = req.session.role;
+
+   if (req.session.role == "Admin" || req.session.role == "MktCoor"){
+      res.render('contribution/index', { contributionList, role });
+   }
+   else{
+      res.render('contribution/indexUser', { contributionList, role });
+   }
 })
 
 router.get('/sort/asc', checkLoginSession, async (req, res) => {
