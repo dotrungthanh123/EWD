@@ -73,6 +73,7 @@ router.post('/login', async (req, res) => {
             var hash = bcrypt.compareSync(userLogin.password, user.password);
             if (hash) {
                 var role = user.role.name
+                req.session.role = role
                 req.session.username = user.username;
                 req.session.user = user;
                 // Redirect based on the role name
