@@ -69,25 +69,31 @@ router.get('/', async (req, res) => {
    // res.render('contribution/index', { contributionList: publishContributions, publish: true })
 
    const role = req.session.role;
+   const facultyList = await FacultyModel.find()
 
-   renderContributionIndex(res, req.session.role, contributionList)
+   if (role == "Admin" || role == "MktManager"){
+      res.render('contribution/index', { contributionList, role, facultyList });
+   }
+   else{
+      res.render('contribution/indexUser', { contributionList, role });
+   }
       
    // res.render('contribution/index', { contributionList })
 });
 
 const renderContributionIndex = (res, role, contributions) => {
-   if (role == "Admin" || role == "MktCoordinator"){
-      res.render('contribution/index', { contributions, role });
-   }
-   else{
-      res.render('contribution/indexUser', { contributions, role });
-   }
+
 }
 
-router.get('/fauclty/:id', async (req, res) => {
+router.get('/faculty/:id', async (req, res) => {
    const id = req.params.id
    const contributions = contributionList.filter(contribution => contribution.user.faculty == id)
-   renderContributionIndex(res, req.session.role, contributions)
+   const role = req.session.role
+   if (role == "Admin" || role == "MktManager") {
+      res.render('contribution/index', { contributions, role })
+   } else {
+      res.render('contribution/indexUser', {contributionList, role})
+   }
 })
 
 router.get('/download/:id', async (req, res) => {
