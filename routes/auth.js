@@ -5,7 +5,6 @@ var FacultyModel = require('../models/FacultyModel')
 var RoleModel = require('../models/RoleModel')
 const { checkLoginSession, checkAdminSession, checkNotLoggedIn } = require('../middlewares/auth');
 var bcrypt = require('bcrypt');
-var ContributionModel = require('../models/ContributionModel');
 var salt = 8;
 
 

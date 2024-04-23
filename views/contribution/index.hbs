@@ -51,21 +51,17 @@
                 <div class="sidebar">
                     <h2 style="color:#ffffff; text-align: center;">Filter</h2>
                     <div class="filter-menu">
-                        <button onclick="location.href='/event'" type="button" class="btn-magazine">
-                            All Events
+                        <button onclick="location.href='/contribution'" type="button" class="btn-magazine">
+                            All Contributions
                         </button>
 
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            IT Events
-                        </button>
-
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            Design Events
-                        </button>
-
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            Business Events
-                        </button>
+                        {{#if facultyList}}
+                            {{#each facultyList}}
+                                <button onclick="location.href='/contribution/faculty/{{ _id }}'" type="button" class="btn-magazine">
+                                    {{ name }} Contributions
+                                </button>
+                            {{/each}}
+                        {{/if}}
 
                     </div>
                     <hr style="color: #ffffff; height: 3px;">
@@ -125,7 +121,6 @@
 
     <footer id="footer"></footer>
 
-    <!-- Vendor JS Files -->
     <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="/assets/vendor/aos/aos.js"></script>
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -134,10 +129,7 @@
     <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="/assets/vendor/php-email-form/validate.js"></script>
 
-
-    <!-- Template Main JS File -->
     <script src="/assets/js/main.js"></script>
-    <!--Shared Header and Footer with jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(function () {
