@@ -39,7 +39,8 @@ router.get('/stats', async (req, res) => {
             studentCount,
             numFaculties,
             numEvents,
-            numUsers
+            numUsers,
+            numContribution
         });
     } catch (error) {
         console.error('Error fetching statistics:', error);
