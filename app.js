@@ -18,8 +18,10 @@ var bcrypt = require('bcrypt');
 
 const UserModel = require('./models/UserModel')
 const RoleModel = require('./models/RoleModel')
+const FacultyModel = require('./models/FacultyModel')
+const CategoryModel = require('./models/CategoryModel')
 
-const {checkLoginSession, checkAdminSession} = require('./middlewares/auth');
+const { checkLoginSession, checkAdminSession } = require('./middlewares/auth');
 // const allowedRolesForUserRoute = ['admin', 'user'];
 
 var app = express();
@@ -29,53 +31,77 @@ var session = require('express-session');
 const timeout = 1000 * 60 * 60 * 24;
 //config session middleware
 app.use(session({
-    secret: "alien_is_existed_or_not_it_is_still_a_secret",
-    saveUninitialized: false,
-    cookie: { maxAge: timeout },
-    resave: false,
+  secret: "alien_is_existed_or_not_it_is_still_a_secret",
+  saveUninitialized: false,
+  cookie: { maxAge: timeout },
+  resave: false,
 }));
 
 //Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 var uri = "mongodb://0.0.0.0:27017/EnterpriseWebDev";
-var con = mongoose.connect(uri) 
-  .then(()=> console.log('connect to db succeed'))
+var con = mongoose.connect(uri)
+  .then(async () => {
+    console.log('connect to db succeed')
+    await Initiation()
+  })
   .catch((err) => console.log('Error: ' + err));
 
 const Initiation = async () => {
 
-  const roles = await RoleModel.find()
-  if (roles.length == 0) {
-    await RoleModel.create({
-      name: "Student"
-    })
-    await RoleModel.create({
-      name: "MktManager"
-    })
-    await RoleModel.create({
-      name: "MktCoordinator"
-    })
-    await RoleModel.create({
-      name: "Guest"
-    })
-    await RoleModel.create({
-      name: "Admin"
-    })
-  }
+  if ((await RoleModel.find()).length != 0) return
 
-  const adminRole = await RoleModel.findOne({name: "Admin"})
-  const admin = await UserModel.findOne({role: adminRole._id})
-  
-  if (!admin) {
-    await UserModel.create({
-      username: "a",
-      password: bcrypt.hashSync('a', 8),
-      role: adminRole._id
-    })
-  }
+  salt = 8
+
+  const faculties = ['IT', 'Design', 'Business']
+  const roles = ['MktCoor', 'Student', 'Guest']
+  const categories = ['Fiction', 'Comedy', 'Science']
+
+  const password = "123456"
+
+  await RoleModel.create({
+    name: "Admin"
+  })
+
+  await RoleModel.create({
+    name: "MktManager"
+  })
+
+  await UserModel.create({
+    username: "Admin",
+    password: await bcrypt.hash(password, salt),
+    name: 'Admin',
+    role: await RoleModel.find({name: 'Admin'})._id,
+  })
+
+  await UserModel.create({
+    username: "MktManager",
+    password: await bcrypt.hash(password, salt),
+    name: 'MktManager',
+    role: await RoleModel.find({name: 'MktManager'})._id,
+  })
+
+  roles.forEach(async role => await RoleModel.create({ name: role }))
+  categories.forEach(async category => await CategoryModel.create({ name: category }))
+
+  var facultys = []
+
+  faculties.forEach(async faculty => {
+    await FacultyModel.create({ name: faculty })
+    var facultyId = (await FacultyModel.findOne({ name: faculty }))._id
+    for (const role of roles) {
+      var roleId = (await RoleModel.findOne({ name: role }))._id
+      await UserModel.create({
+        username: role + faculty,
+        password: await bcrypt.hash(password, salt),
+        name: role + faculty,
+        faculty: facultyId,
+        role: roleId,
+      })
+    }
+  })
+
 }
-
-Initiation()
 
 //Body parser
 var bodyParser = require('body-parser');
