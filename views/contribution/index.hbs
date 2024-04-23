@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -19,16 +19,16 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -71,10 +71,8 @@
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
-                        <button onclick="location.href='/contribution/add';" class="createBtn">Create New
-                            Contribution</button>
                         <button id="selectBtn" class="selectBtn">Select</button>
-                        <button id="submitBtn" class="submitBtn">Submit Checked Articles</button>
+                        <button id="submitBtn" class="submitBtn">Publish Selected Articles</button>
                     </div>
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
@@ -83,8 +81,8 @@
 
             <div class="right">
                 <div class="main-magazine">
-                    <form action="" class="search-bar">
-                        <input type="text" placeholder="Search">
+                    <form action="/contribution/search" method="post" class="search-bar">
+                        <input type="text" name="keyword" placeholder="Search">
                         <button type="submit"><i class="bi bi-search"></i></button>
                     </form>
 
@@ -128,22 +126,22 @@
     <footer id="footer"></footer>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
 
 
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
     <!--Shared Header and Footer with jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(function () {
-            $("#header").load("sharedhtmls/header.html", function () {
+            $("#header").load("/sharedhtmls/header.html", function () {
                 $('.mobile-nav-toggle').click(function () {
                     $('#navbar').toggleClass('navbar-mobile');
 
@@ -154,7 +152,7 @@
                     $(this).next('ul').slideToggle();
                 });
             });
-            $("#footer").load("sharedhtmls/footer.html");
+            $("#footer").load("/sharedhtmls/footer.html");
         });
 
         $(document).on('keypress', '#contribution', function (e) {
@@ -446,8 +444,10 @@
     .articleCheckbox {
         display: none;
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 20px;
+        right: 20px;
+        width: 20px; 
+        height: 20px; 
     }
 
     .article h1{

@@ -15,7 +15,7 @@ const checkMktManagerSession = (req, res, next) => {
 };
 
 const checkMktCoordinatorSession = (req, res, next) => {
-    if (req.session.username && req.session.role === 'MktCoordinator') {
+    if (req.session.username && req.session.role === 'MktCoor') {
         next();
     } else {
         res.redirect('/auth/login');

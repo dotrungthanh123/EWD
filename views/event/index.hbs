@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -19,16 +19,16 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -49,26 +49,6 @@
         <section class="m-container-main">
             <div class="left">
                 <div class="sidebar">
-                    <h2 style="color:#ffffff; text-align: center;">Filter</h2>
-                    <div class="filter-menu">
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            All Events
-                        </button>
-
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            IT Events
-                        </button>
-
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            Design Events
-                        </button>
-
-                        <button onclick="location.href=''" type="button" class="btn-magazine">
-                            Business Events
-                        </button>
-
-                    </div>
-                    <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
                         <button onclick="location.href='/event/add';" class="createBtn">Create New Event</button>
@@ -80,8 +60,8 @@
 
             <div class="right">
                 <div class="main-magazine">
-                    <form action="" class="search-bar">
-                        <input type="text" placeholder="Search">
+                    <form action="/event/search" method="post" class="search-bar">
+                        <input type="text" name="keyword" placeholder="Search">
                         <button type="submit"><i class="bi bi-search"></i></button>
                     </form>
 
@@ -100,7 +80,7 @@
                                 </div>
                             </div>
                             <button onclick="location.href='/contribution/add/{{ _id }}'" type="button" class="addingbtn">
-                                Add
+                                Add contribution
                             </button>
 
                         </article>
@@ -115,20 +95,20 @@
     <footer id="footer">
     </footer>
 
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
 
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
         $(function () {
-            $("#header").load("sharedhtmls/header.html", function () {
+            $("#header").load("/sharedhtmls/header.html", function () {
                 $('.mobile-nav-toggle').click(function () {
                     $('#navbar').toggleClass('navbar-mobile');
 
@@ -139,7 +119,7 @@
                     $(this).next('ul').slideToggle();
                 });
             });
-            $("#footer").load("sharedhtmls/footer.html");
+            $("#footer").load("/sharedhtmls/footer.html");
         });
 
         $("#comments").keypress(function (e) {
@@ -299,26 +279,6 @@
 
     .sidebar h2 {
         font-size: 20px;
-    }
-
-    .btn-magazine {
-        justify-content: center;
-        width: 75%;
-        padding: 8px;
-        background: #686bc4;
-        border: none;
-        border-radius: 50px;
-        color: #ffffff;
-        margin-top: 10px;
-    }
-
-    .btn-magazine:hover {
-        background: #bf58ff;
-        cursor: pointer;
-    }
-
-    .btn-magazine h3 {
-        font-size: 15px;
     }
 
     .main-magazine {
