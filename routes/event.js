@@ -53,7 +53,15 @@ router.post('/edit/:id', checkAdminSession, async (req, res) => {
 router.post('/search', checkLoginSession, async (req, res) => {
     var keyword = req.body.keyword;
     var eventList = await EventModel.find({ name: new RegExp(keyword, "i") });
-    res.render('event/index', { eventList })
+    const formattedEvents = eventList.map(event => ({
+        ...event.toObject(),
+        formattedFirstClosureDate: moment(event.firstClosureDate).format('D/MM/YYYY'),
+        formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
+    }));
+
+    const role = req.session.role;
+    
+    res.render('event/index', { eventList: formattedEvents, role });
 })
 
 router.get('/eventData', async (req, res) => {
