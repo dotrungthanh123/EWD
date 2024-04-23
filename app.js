@@ -106,7 +106,6 @@ const Initiation = async () => {
 
 //Body parser
 var bodyParser = require('body-parser');
-const FacultyModel = require('./models/FacultyModel');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // view engine setup
