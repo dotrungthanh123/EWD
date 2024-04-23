@@ -14,18 +14,18 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -43,72 +43,84 @@
                 <div class="form-group row">
                     <label for="eventName" class="col-sm-2 col-form-label">Contribution:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="eventName" disabled placeholder="{{contribution.name}}">
+                        <input type="text" class="form-control" id="eventName" disabled
+                            placeholder="{{contribution.name}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="eventName" class="col-sm-2 col-form-label">Event:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="eventName" disabled placeholder="{{contribution.event.name}}">
+                        <input type="text" class="form-control" id="eventName" disabled
+                            placeholder="{{contribution.event.name}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="description" class="col-sm-2 col-form-label">Description:</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="description" rows="3" disabled placeholder="{{contribution.description}}"></textarea>
+                        <textarea class="form-control" id="description" rows="3" disabled
+                            placeholder="{{contribution.description}}"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="eventName" class="col-sm-2 col-form-label">Author:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="eventName" disabled placeholder="{{contribution.user.name}}">
+                        <input type="text" class="form-control" id="eventName" disabled
+                            placeholder="{{contribution.user.name}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="eventName" class="col-sm-2 col-form-label">Date:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="eventName" disabled placeholder="{{contribution.formattedDate}}">
+                        <input type="text" class="form-control" id="eventName" disabled
+                            placeholder="{{contribution.formattedDate}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2">
                         <label for="attachFiles" class="col-form-label">Attached Files:</label>
-                        <div class="row"> <button type="download_all" class="btn btn-primary"><a href="/contribution/download/{{contribution._id}}">Download All</a></button></div>
-                    </div>
+                        <div class="row">
+                            <button onclick="location.href='/contribution/download/{{contribution._id}}'"
+                                type="download_all" class="downloadAll">
+                                Download All
+                            </button>
 
-                    <div class="col-sm-10">
-                        <div id="file-preview" class="form-control mt-1 "> </div>
+                            {{!-- <button type="download_all" class="downloadAll"><a
+                                    href="/contribution/download/{{contribution._id}}">Download All</a></button> --}}
+                        </div>
+
+                        <div class="col-sm-10">
+                            <div id="file-preview" class="form-control mt-1 "> </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row justify-content-end">
-                    <div class="col-sm-12 mt-3 text-center">
-                        <!-- start if -->
-                        <a href="/contribution/edit/{{contribution._id}}" class="col-sm-2 btn btn-primary">Edit</a>
-                        <!-- end if -->
-                        <!-- start else -->
-                        <button type="comment" class="col-sm-2 btn btn-secondary">Comment</button>
-                        <!-- end else -->
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-12 mt-3 text-center">
+                            <!-- start if -->
+                            <a href="/contribution/edit/{{contribution._id}}" class="col-sm-2 btn btn-primary">Edit</a>
+                            <!-- end if -->
+                            <!-- start else -->
+                            <button type="comment" class="col-sm-2 btn btn-secondary">Comment</button>
+                            <!-- end else -->
+                        </div>
                     </div>
-                </div>
             </form>
         </div>
     </main><!-- End #main -->
     <!-- ======= Footer ======= -->
     <footer id="footer"></footer>
     <!-- End Footer -->
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 <Script>
     $(function () {
-        $("#header").load("sharedhtmls/header.html", function () {
+        $("#header").load("/sharedhtmls/header.html", function () {
             $('.mobile-nav-toggle').click(function () {
                 $('#navbar').toggleClass('navbar-mobile');
 
@@ -119,7 +131,7 @@
                 $(this).next('ul').slideToggle();
             });
         });
-        $("#footer").load("sharedhtmls/footer.html");
+        $("#footer").load("/sharedhtmls/footer.html");
     });
 </Script>
 <style>
@@ -150,9 +162,66 @@
         background-color: hsl(235, 22%, 30%);
     }
 
-
     .form-control:focus {
         color: rgb(0, 0, 0);
+    }
+
+    .form-control::placeholder {
+        color: white;
+    }
+
+    .downloadAll {
+        background-color: #3498db;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+        transition-duration: 0.4s;
+        width: 80%;
+    }
+
+    .downloadAll:hover {
+        background-color: white;
+        color: black !important;
+        border: 2px solid #3498db;
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .downloadAll {
+            padding: 10px 20px;
+            font-size: 14px;
+            width: 50%;
+        }
+
+        .form-control {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        box-action {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .box-action .btn {
+            padding: 10px 15px;
+            font-size: 15px;
+            width: auto;
+            margin: 5px;
+        }
     }
 </style>
 
