@@ -77,7 +77,7 @@ const Initiation = async () => {
     })
   }
 
-  const adminRole = await RoleModel.findOne({name: "admin"})
+  const adminRole = await RoleModel.findOne({name: "Admin"})
   const admin = await UserModel.findOne({role: adminRole._id})
   
   if (!admin) {
