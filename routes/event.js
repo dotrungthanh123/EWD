@@ -47,10 +47,17 @@ router.get('/edit/:id', checkAdminSession, async (req, res) => {
     res.render('event/edit', { event, formattedFirstClosureDate, formattedFinalClosureDate });
 })
 
-router.post('/edit/:id', checkAdminSession, async (req, res) => {
+router.post('/edit/:id', checkAdminSession, formMiddleWare, async (req, res) => {
     var id = req.params.id;
-    var data = req.body;
-    await EventModel.findByIdAndUpdate(id, data);
+    const event = {
+        name: req.fields.name[0],
+        description: req.fields.description[0],
+        firstClosureDate: req.fields.firstClosureDate[0],
+        finalClosureDate: req.fields.finalClosureDate[0],
+        image: req.files.image ? req.files.image[0].newFilename : '',
+        description: req.fields.description[0],
+    }
+    await EventModel.findByIdAndUpdate(id, event);
     res.redirect('/event');
 })
 
