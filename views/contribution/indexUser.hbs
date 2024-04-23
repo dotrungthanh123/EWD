@@ -47,63 +47,61 @@
 
     <div class="m-container">
         <section class="m-container-main">
-            <div class="right">
-                <div class="main-magazine">
-                    <form action="/contribution/search" method="post" class="search-bar">
-                        <input type="text" name="keyword" placeholder="Search">
-                        <button type="submit"><i class="bi bi-search"></i></button>
-                    </form>
-                    
-                    <div class="magazine">
-                        {{#each contributionList}}
-                        {{#if publish}}
-                        <article class="article">
-                            <a href="/contribution/detail/{{_id}}">
-                                <h1>{{ name }}</h1>
-                            </a>
-                            <div class="posting-user">
-                                <i class="bi bi-person"></i>
-                                <h2 class="Username">{{ user.username }}</h1>
-                            </div>
-                            <p>{{ description }}</p>
-                            <div class="article-actions">
-                                <div class="actions">
-                                    <i class="bi bi-heart like-button"></i>
-                                    <h5 class="like-count">Count</h5>
+            <div class="main-magazine">
+                <form action="/contribution/search" method="post" class="search-bar">
+                    <input type="text" name="keyword" placeholder="Search">
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
 
-                                    <i class="bi bi-heartbreak dislike-button"></i>
-                                    <h5 class="dislike-count">Count</h5>
-                                </div>
+                <div class="magazine">
+                    {{#each contributionList}}
+                    {{#if publish}}
+                    <article class="article">
+                        <a href="/contribution/detail/{{_id}}">
+                            <h1>{{ name }}</h1>
+                        </a>
+                        <div class="posting-user">
+                            <i class="bi bi-person"></i>
+                            <h2 class="Username">{{ user.username }}</h1>
+                        </div>
+                        <p>{{ description }}</p>
+                        <div class="article-actions">
+                            <div class="actions">
+                                <i class="bi bi-heart like-button"></i>
+                                <h5 class="like-count">Count</h5>
 
-                                <div class="actions">
-                                    <i class="bi bi-chat comment-button"></i>
-                                    <h5 class="comment-count">Count</h5>
-                                </div>
+                                <i class="bi bi-heartbreak dislike-button"></i>
+                                <h5 class="dislike-count">Count</h5>
                             </div>
-                            <hr style="color: #ffffff; height: 1px;">
-                            <div class="comments">
-                                <h3 style="font-size: 15px;">Comments</h3>
-                                <form class="comment-form">
-                                    <textarea id="comments" name="comment" placeholder="Leave a comment..."></textarea>
-                                </form>
-                                <ul class="comments-list text-white mt-3">
-                                    <li class="comment-block">
-                                        <div class="comment-user">
-                                            <img class="avatar" src="assets\img\testimonials\circle-user-7-512.webp">
-                                            <span class="username">PixelPioneer88</span>
-                                        </div>
-                                        <div class="comment-content">
-                                            <p>Here's the comment text...</p>
-                                        </div>
-                                    </li>
-                                </ul>
+
+                            <div class="actions">
+                                <i class="bi bi-chat comment-button"></i>
+                                <h5 class="comment-count">Count</h5>
                             </div>
-                        </article>
-                        {{/if}}
-                        {{/each}}
-                    </div>
-                    <div id="pagination-container"></div>
+                        </div>
+                        <hr style="color: #ffffff; height: 1px;">
+                        <div class="comments">
+                            <h3 style="font-size: 15px;">Comments</h3>
+                            <form class="comment-form">
+                                <textarea id="comments" name="comment" placeholder="Leave a comment..."></textarea>
+                            </form>
+                            <ul class="comments-list text-white mt-3">
+                                <li class="comment-block">
+                                    <div class="comment-user">
+                                        <img class="avatar" src="assets\img\testimonials\circle-user-7-512.webp">
+                                        <span class="username">PixelPioneer88</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>Here's the comment text...</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                    {{/if}}
+                    {{/each}}
                 </div>
+                <div id="pagination-container"></div>
             </div>
         </section>
     </div>
@@ -303,54 +301,11 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-    }
-
-    .left {
-        width: 25%;
-    }
-
-    .right {
-        width: 70%;
-        padding-left: 5%;
-    }
-
-    /* sidebar */
-    .sidebar {
-        background-color: hsl(261, 18%, 15%);
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        padding: 15px;
-        margin-left: 35px;
-        height: 300px;
-    }
-
-    .sidebar h2 {
-        font-size: 20px;
-    }
-
-    .btn-magazine {
         justify-content: center;
-        width: 75%;
-        padding: 8px;
-        background: #686bc4;
-        border: none;
-        border-radius: 50px;
-        color: #ffffff;
-        margin-top: 10px;
-    }
-
-    .btn-magazine:hover {
-        background: #bf58ff;
-        cursor: pointer;
-    }
-
-    .btn-magazine h3 {
-        font-size: 15px;
     }
 
     .main-magazine {
-        width: 100%;
+        width: 90%;
     }
 
     .search-bar {
@@ -405,7 +360,7 @@
         position: relative;
     }
 
-    .article h1{
+    .article h1 {
         font-size: 25px;
         text-align: left;
         color: #ffffff;
@@ -450,7 +405,7 @@
     .dislike-button {
         cursor: pointer;
         color: white;
-        margin-left: 10px;
+        margin-left: 20px;
     }
 
     .dislike-button:hover {
