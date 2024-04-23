@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
 
-   if (role == "Admin" || role == "MktManager"){
+   if (role == "Admin" || role == "MktCoor"){
       res.render('contribution/index', { contributionList, role, facultyList });
    }
    else{
@@ -90,7 +90,7 @@ router.get('/faculty/:id', async (req, res) => {
    const id = new mongoose.Types.ObjectId(req.params.id)
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
-   if (role == "Admin" || role == "MktManager") {
+   if (role == "Admin" || role == "MktCoor") {
       res.render('contribution/index', { contributionList: contributions, role })
    } else {
       res.render('contribution/indexUser', {contributionList, role})
