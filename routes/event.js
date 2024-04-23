@@ -38,7 +38,13 @@ router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
 router.get('/edit/:id', checkAdminSession, async (req, res) => {
     var id = req.params.id;
     var event = await EventModel.findById(id);
-    res.render('event/edit', { event });
+
+    const formattedFirstClosureDate = moment(event.firstClosureDate).format('YYYY-MM-DD');
+    const formattedFinalClosureDate = moment(event.finalClosureDate).format('YYYY-MM-DD');
+    
+    console.log(formattedFirstClosureDate);
+
+    res.render('event/edit', { event, formattedFirstClosureDate, formattedFinalClosureDate });
 })
 
 router.post('/edit/:id', checkAdminSession, async (req, res) => {

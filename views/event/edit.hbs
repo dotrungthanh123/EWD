@@ -33,31 +33,31 @@
 
     <main id="main">
         <div class="container text-white">
-            <h2 class="text-center mt-4">Create New Event</h2>
+            <h2 class="text-center mt-4">Edit {{ event.name }}</h2>
             <p class="text-center">Craft Your Event: Bringing Ideas to Life on Campus</p>
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="form-group row">
                     <label for="eventName" class="col-sm-2 col-form-label">Event Name:</label>
                     <div class="col-sm-10">
-                        <input type="text" name="name" class="form-control " id="eventName">
+                        <input type="text" name="name" class="form-control " id="eventName" value="{{ event.name }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="description" class="col-sm-2 col-form-label">Description:</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                        <textarea class="form-control" id="description" rows="3" name="description">{{ event.description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="firstClosureDate" class="col-sm-2 col-form-label">First Closure Date:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="firstClosureDate" class="form-control" id="firstClosureDate">
+                        <input type="date" name="firstClosureDate" class="form-control" id="firstClosureDate" value="{{formattedFirstClosureDate}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="finalClosureDate" class="col-sm-2 col-form-label">Final Closure Date:</label>
                     <div class="col-sm-10">
-                        <input type="date" name="finalClosureDate" class="form-control" id="finalClosureDate">
+                        <input type="date" name="finalClosureDate" class="form-control" id="finalClosureDate" value="{{formattedFinalClosureDate}}">
                     </div>
                 </div>
                 <div class="form-group row">
