@@ -47,6 +47,11 @@
                 <label class="h2 font-weight-bold">Welcome to EduCon!</label>
                 <label class="font-size-16">Please sign-in to your account and start the adventure</label>
               </div>
+              {{#if error}}
+              <div class="alert alert-danger">
+                  {{error}} <!-- Show the error message -->
+              </div>
+              {{/if}}
               <div class="form-group row">
                 {{!-- LOGIN BANG EMAIL HAY USERNAME VAY??? --}}
                 <div class="col-md-9 mx-auto">
