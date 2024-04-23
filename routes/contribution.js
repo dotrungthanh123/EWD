@@ -86,11 +86,11 @@ const renderContributionIndex = (res, role, contributions) => {
 }
 
 router.get('/faculty/:id', async (req, res) => {
-   const id = req.params.id
-   const contributions = contributionList.filter(contribution => contribution.user.faculty == id)
+   const id = new mongoose.Types.ObjectId(req.params.id)
+   const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
    if (role == "Admin" || role == "MktManager") {
-      res.render('contribution/index', { contributions, role })
+      res.render('contribution/index', { contributionList: contributions, role })
    } else {
       res.render('contribution/indexUser', {contributionList, role})
    }
@@ -360,13 +360,13 @@ router.post('/search', checkLoginSession, async (req, res) => {
 })
 
 router.get('/sort/asc', checkLoginSession, async (req, res) => {
-   var contributionList = await ContributionModel.find().sort({ name: 1 }).populate('faculty');
-   res.render('contribution/index', { contributionList })
+   var contribtutions = await ContributionModel.find().sort({ name: 1 }).populate('faculty');
+   res.render('contribution/index', { contributionList: contribtutions })
 })
 
 router.get('/sort/desc', checkLoginSession, async (req, res) => {
-   var contributionList = await ContributionModel.find().sort({ name: -1 }).populate('faculty');
-   res.render('contribution/index', { contributionList })
+   var contributions = await ContributionModel.find().sort({ name: -1 }).populate('faculty');
+   res.render('contribution/index', { contributionList: contributions })
 })
 
 router.get('/exportcsv', checkMktManagerSession, async (req, res, next) => {
