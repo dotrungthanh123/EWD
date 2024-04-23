@@ -38,13 +38,13 @@
             <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label">Name:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" name="name" required placeholder="{{contribution.name}}">
+                    <input type="text" class="form-control" id="name" name="name" required value="{{ contribution.name }}">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="description" class="col-sm-2 col-form-label">Description:</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="description" name="description" rows="3" required placeholder="{{contribution.description}}"></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3" required>{{ contribution.description }}</textarea>
                 </div>
             </div>
 

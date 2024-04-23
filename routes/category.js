@@ -4,7 +4,7 @@ var CategoryModel = require('../models/CategoryModel');
 var ContributionModel = require('../models/ContributionModel');
 const { checkMultipleSession, checkAdminSession } = require('../middlewares/auth');
 
-router.get('/', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
+router.get('/', checkMultipleSession(['Admin', 'MktCoor', 'MktManager']), async (req, res) => {
    var categoryList = await CategoryModel.find({});
    res.render('category/index', { categoryList });
 });
@@ -30,7 +30,7 @@ router.post('/add', checkAdminSession, async (req, res) => {
 })
 
 
-router.get('/detail/:id', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
+router.get('/detail/:id', checkMultipleSession(['Admin', 'MktCoor', 'MktManager']), async (req, res) => {
    await ContributionModel.find()
       .then(contributions => contributions.filter(contribution => contribution.category.map(c => c._id.valueOf()).includes(id.valueOf())))
    res.render('contribution/index', { contributionList })

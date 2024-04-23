@@ -50,6 +50,13 @@ router.post('/edit/:id', checkAdminSession, async (req, res) => {
     res.redirect('/event');
 })
 
+router.get('/detail/:id', checkLoginSession, async (req, res) => {
+    const id = req.params.id
+    let event = await EventModel.findById(id);
+ 
+    res.render("event/detail", { event })
+ })
+
 router.post('/search', checkLoginSession, async (req, res) => {
     var keyword = req.body.keyword;
     var eventList = await EventModel.find({ name: new RegExp(keyword, "i") });

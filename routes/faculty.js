@@ -5,7 +5,7 @@ var ContributionModel = require('../models/ContributionModel');
 const { checkMktCoordinatorSession, checkAdminSession, checkMultipleSession } = require('../middlewares/auth');
 
 
-router.get('/', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
+router.get('/', checkMultipleSession(['Admin', 'MktCoor', 'MktManager']), async (req, res) => {
    //retrieve data from "faculties" collection
    var facultyList = await FacultyModel.find({});
    //render view and pass data
@@ -32,7 +32,7 @@ router.post('/add', checkAdminSession, async (req, res) => {
    res.redirect('/faculty');
 })
 
-router.get('/detail/:id', checkMultipleSession(['admin', 'mktCoordinator', 'mktManager']), async (req, res) => {
+router.get('/detail/:id', checkMultipleSession(['Admin', 'MktCoor', 'MktManager']), async (req, res) => {
    var id = req.params.id;
    var contributionList = await ContributionModel.find({ faculty: id }).populate('contribution');
    res.render('contribution/index', { contributionList })
