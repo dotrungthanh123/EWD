@@ -51,6 +51,10 @@ router.post('/edit/:id', checkAdminSession, async (req, res) => {
 router.get('/detail/:id', checkLoginSession, async (req, res) => {
     const id = req.params.id;
     const event = await EventModel.findById(id);
+   var Student = false;
+    if (req.session.role= 'Student') {
+       Student = true
+    };
     
     const formattedEvent = {
         ...event.toObject(),
@@ -58,7 +62,7 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
         formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
     };
 
-    res.render("event/detail", { event: formattedEvent, role: req.session.role });
+    res.render("event/detail", { event: formattedEvent, Student });
 });
 
 router.post('/search', checkLoginSession, async (req, res) => {
