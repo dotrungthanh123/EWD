@@ -13,6 +13,7 @@ const { ObjectId } = require('mongodb');
 const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
 const {checkLoginSession, checkAdminSession, checkStudentSession, checkMktCoordinatorSession, checkMktManagerSession, checkStudentOrMktCoordinatorSession, checkRoles, checkMultipleSession} = require('../middlewares/auth');
+const moment = require('moment');
 
 var contributionList = []
 var eventList = []
@@ -392,11 +393,17 @@ router.get('/exportcsv', checkMktManagerSession, async (req, res, next) => {
 
 router.get('/detail/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
-   let contribution = await ContributionModel.findById(id).populate('user')
+   let contribution = await ContributionModel.findById(id)
+    .populate('user')
+    .populate('event');
    if (!contribution.viewer.includes(req.session.user._id)) {
       contribution.viewer.push(req.session.user._id)
    }
+
+   contribution.formattedDate = moment(contribution.date).format('D/MM/YYYY');
+
    await ContributionModel.findByIdAndUpdate(id, contribution)
+
    res.render("contribution/detail", { contribution })
 })
 
