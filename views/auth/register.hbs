@@ -47,6 +47,11 @@
                                 <label class="h2 font-weight-bold">Make a new account</label><br>
                                 <label class="font-size-16">Please fill up all information</label>
                             </div>
+                            {{#if error}}
+                            <div class="alert alert-danger">
+                                {{error}} <!-- Show the error message -->
+                            </div>
+                            {{/if}}
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
                                     <input type="email" name="email" class="rounded form-control " id="email"
@@ -79,7 +84,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-9 mx-auto">
-                                    <select name="role" id="faculty" class="form-control" style="color: #d2cccc;">
+                                    <select name="role" id="" class="form-control" style="color: #d2cccc;">
 
                                         {{#each roleList}}
                                         <option value="{{this.name}}">{{this.name}}</option>
