@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var flash = require('express-flash');
+var hbs = require('hbs');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -119,12 +120,6 @@ app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
 
 
-app.get('/', (req, res) => {
-  // Retrieve username from session
-  const username = req.session.username;
-  res.render('/index', { username: username });
-  console.log('username: ', username);
-});
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
