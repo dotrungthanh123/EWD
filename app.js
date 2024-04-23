@@ -48,19 +48,19 @@ const Initiation = async () => {
   const roles = await RoleModel.find()
   if (roles.length == 0) {
     await RoleModel.create({
-      name: "student"
+      name: "Student"
     })
     await RoleModel.create({
-      name: "mktManager"
+      name: "MktManager"
     })
     await RoleModel.create({
-      name: "mktCoordinator"
+      name: "MktCoordinator"
     })
     await RoleModel.create({
-      name: "guest"
+      name: "Guest"
     })
     await RoleModel.create({
-      name: "admin"
+      name: "Admin"
     })
   }
 
