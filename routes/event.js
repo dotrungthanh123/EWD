@@ -58,7 +58,7 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
         formattedFinalClosureDate: moment(event.finalClosureDate).format('D/MM/YYYY')
     };
 
-    res.render("event/detail", { event: formattedEvent, role= req.session.role });
+    res.render("event/detail", { event: formattedEvent, role: req.session.role });
 });
 
 router.post('/search', checkLoginSession, async (req, res) => {
