@@ -32,6 +32,7 @@ const getContribution = async req => {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
                   if (req.session.user.role === "MktCoor") return true
                }
+               return false
             })
       )
       .catch((err) => {
