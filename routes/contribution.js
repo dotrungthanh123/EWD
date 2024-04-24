@@ -191,7 +191,7 @@ router.get('/statistics', async (req, res) => {
    res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
-router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => 
+router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
