@@ -38,6 +38,7 @@ const formMiddleWare = (req, res, next) => {
       }
       req.fields = fields;
       req.files = files;
+
       next();
    });
 };
@@ -140,6 +141,13 @@ router.get('/faculty/:id', async (req, res) => {
 })
 
 router.get('/download/:id', async (req, res) => {
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
+   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
    var zip = new AdmZip()
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
@@ -191,7 +199,7 @@ router.get('/statistics', async (req, res) => {
    res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
-router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => 
+router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],

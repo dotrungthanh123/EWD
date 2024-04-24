@@ -186,21 +186,22 @@
         const files = fileInput.files;
 
         if (files.length > 0) {
-            const file = files[0];
-            const previewContainer = document.createElement('div');
-            previewContainer.classList.add('preview-item');
+            Array.from(files).forEach(file => {
+                var previewContainer = document.createElement('div');
+                previewContainer.classList.add('preview-item');
 
-            const iconElement = document.createElement('i');
-            iconElement.classList.add('fa', 'fa-file');
-            iconElement.style.fontSize = '24px';
+                var iconElement = document.createElement('i');
+                iconElement.classList.add('fa', 'fa-file');
+                iconElement.style.fontSize = '24px';
 
-            const filenameSpan = document.createElement('span');
-            filenameSpan.textContent = " " + file.name;
+                var filenameSpan = document.createElement('span');
+                filenameSpan.textContent = " " + file.name;
 
-            previewContainer.appendChild(iconElement);
-            previewContainer.appendChild(filenameSpan);
+                previewContainer.appendChild(iconElement);
+                previewContainer.appendChild(filenameSpan);
 
-            filePreview.appendChild(previewContainer);
+                filePreview.appendChild(previewContainer);
+            })
         } else {
             filePreview.innerHTML = '';
         }
