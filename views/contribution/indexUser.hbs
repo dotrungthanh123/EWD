@@ -165,13 +165,18 @@
             }
         };
 
-        document.querySelector('.like-button').addEventListener('click', function (event) {
-            var postId = event.target.dataset.postId;
+        const likes = document.querySelectorAll('.like-button')
+        const dislikes = document.querySelectorAll('.dislike-button')
+
+        Array.from(likes).forEach(like => like.addEventListener('click', function (event) {
+            const postId = event.target.dataset.postId;
+            const likeButton = event.target
+            const index = Array.from(likes).indexOf(likeButton)
+            const dislikeButton = dislikes[index]
             if (this.classList.contains('bi-heart')) {
                 this.classList.remove('bi-heart');
                 this.classList.add('bi-heart-fill');
                 // If dislike button is full, empty it
-                let dislikeButton = document.querySelector('.dislike-button');
                 updatePostStats['like'](postId)
                 if (dislikeButton.classList.contains('bi-heartbreak-fill')) {
                     dislikeButton.classList.remove('bi-heartbreak-fill');
@@ -185,16 +190,18 @@
                 axios.post('contribution/like/' + postId);
                 updatePostStats['unlike'](postId)
             }
-        });
+        }))
 
-        document.querySelector('.dislike-button').addEventListener('click', function () {
-            var postId = event.target.dataset.postId;
+        Array.from(dislikes).forEach(dislike => dislike.addEventListener('click', function () {
+            const postId = event.target.dataset.postId;
+            const dislikeButton = event.target
+            const index = Array.from(dislikes).indexOf(dislikeButton)
+            const likeButton = likes[index]
             if (this.classList.contains('bi-heartbreak')) {
                 this.classList.remove('bi-heartbreak');
                 this.classList.add('bi-heartbreak-fill');
                 // If like button is full, empty it
                 updatePostStats['dislike'](postId)   
-                let likeButton = document.querySelector('.like-button');
                 if (likeButton.classList.contains('bi-heart-fill')) {
                     likeButton.classList.remove('bi-heart-fill');
                     likeButton.classList.add('bi-heart');
@@ -207,7 +214,7 @@
                 axios.post('contribution/dislike/' + postId);
                 updatePostStats['undislike'](postId)
             }
-        });
+        }))
 
         //Pagination
         let currentPage = 1;
