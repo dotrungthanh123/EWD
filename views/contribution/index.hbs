@@ -56,11 +56,12 @@
                         </button>
 
                         {{#if facultyList}}
-                            {{#each facultyList}}
-                                <button onclick="location.href='/contribution/faculty/{{ _id }}'" type="button" class="btn-magazine">
-                                    {{ name }} Contributions
-                                </button>
-                            {{/each}}
+                        {{#each facultyList}}
+                        <button onclick="location.href='/contribution/faculty/{{ _id }}'" type="button"
+                            class="btn-magazine">
+                            {{ name }} Contributions
+                        </button>
+                        {{/each}}
                         {{/if}}
 
                     </div>
@@ -83,7 +84,7 @@
                     </form>
 
                     <div class="magazine">
-                    {{#each contributionList}}
+                        {{#each contributionList}}
                         <article class="article">
                             <a href="/contribution/detail/{{_id}}">
                                 <h1>{{name}}</h1>
@@ -94,23 +95,27 @@
                                 <h2 class="Username">{{user.username}}</h2>
                             </div>
                             <p>{{description}}</p>
-                            <form action="/contribution/admin-comment/{{_id}}" method="get">
-                                <button type="submit" class="publish-btn">Feedback</button>
-                            </form>
-                            {{#if publish}}
+                            <div class="btn-group">
+                                <form action="/contribution/admin-comment/{{_id}}" method="get">
+                                    <button type="submit" class="feedback-btn">Feedback</button>
+                                </form>
+                                {{#if publish}}
                                 <button type="submit" class="published-btn" disabled>Published</button>
-                            {{else}}
-                            <form action="/contribution/publish/{{_id}}" method="get">
-                                <button type="submit" class="publish-btn">Publish</button>
-                            </form>
-                            {{/if}}
+                                {{else}}
+                                <form action="/contribution/publish/{{_id}}" method="get">
+                                    <button type="submit" class="publish-btn">Publish</button>
+                                </form>
+                                {{/if}}
+                            </div>
                             <hr style="color: #ffffff; height: 3px;">
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}" method="post">
+                                <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
+                                    method="post">
                                     <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
-                                    <a href="/contribution/advcomments/{{_id}}"><button type="submit">Submit</button></a>
+                                    <a href="/contribution/advcomments/{{_id}}"><button
+                                            type="submit">Submit</button></a>
                                 </form>
                             </div>
                         </article>
@@ -441,11 +446,11 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 20px; 
-        height: 20px; 
+        width: 20px;
+        height: 20px;
     }
 
-    .article h1{
+    .article h1 {
         font-size: 25px;
         text-align: left;
         color: #ffffff;
@@ -482,8 +487,14 @@
         margin-right: 10px;
     }
 
-    .publish-btn {
-        border:0;
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .feedback-btn {
+        border: 0;
         width: 224px;
         height: 35px;
         flex-shrink: 0;
@@ -493,6 +504,12 @@
         transition: .4s;
     }
 
+    .feedback-btn:hover {
+        background: #ffffff;
+        color: #000;
+        cursor: pointer;
+    }
+
     .publish-btn:hover {
         background: #ffffff;
         color: #000;
@@ -500,11 +517,12 @@
     }
 
     .published-btn {
-        border:0;
+        border: 0;
         width: 224px;
         height: 35px;
         flex-shrink: 0;
         border-radius: 20px;
+        margin-left: 20px;
         background: #2D4268;
         color: #ffffff;
         transition: .4s;

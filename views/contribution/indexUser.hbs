@@ -82,7 +82,8 @@
                         <hr style="color: #ffffff; height: 1px;">
                         <div class="comments">
                             <h3 style="font-size: 15px;">Comments</h3>
-                            <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}" method="post">
+                            <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
+                                method="post">
                                 <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
                                 <a href="/contribution/advcomments/{{_id}}"><button type="submit">Submit</button></a>
                             </form>
@@ -137,44 +138,23 @@
             $("#footer").load("/sharedhtmls/footer.html");
         });
 
-        $("#comments").keypress(function (e) {
+        $(document).on('keypress', '#comments', function (e) {
             if (e.which === 13 && !e.shiftKey) {
                 e.preventDefault();
-
                 $(this).closest("form").submit();
             }
         });
 
-        document.querySelector('.like-button').addEventListener('click', function () {
-            if (this.classList.contains('bi-heart')) {
-                this.classList.remove('bi-heart');
-                this.classList.add('bi-heart-fill');
-                // If dislike button is full, empty it
-                let dislikeButton = document.querySelector('.dislike-button');
-                if (dislikeButton.classList.contains('bi-heartbreak-fill')) {
-                    dislikeButton.classList.remove('bi-heartbreak-fill');
-                    dislikeButton.classList.add('bi-heartbreak');
-                }
-            } else {
-                this.classList.remove('bi-heart-fill');
-                this.classList.add('bi-heart');
-            }
-        });
+        $(document).ready(function () {
+            $('.like-button').click(function () {
+                $(this).toggleClass('toggled');
+                $('.dislike-button').removeClass('toggled');
+            });
 
-        document.querySelector('.dislike-button').addEventListener('click', function () {
-            if (this.classList.contains('bi-heartbreak')) {
-                this.classList.remove('bi-heartbreak');
-                this.classList.add('bi-heartbreak-fill');
-                // If like button is full, empty it
-                let likeButton = document.querySelector('.like-button');
-                if (likeButton.classList.contains('bi-heart-fill')) {
-                    likeButton.classList.remove('bi-heart-fill');
-                    likeButton.classList.add('bi-heart');
-                }
-            } else {
-                this.classList.remove('bi-heartbreak-fill');
-                this.classList.add('bi-heartbreak');
-            }
+            $('.dislike-button').click(function () {
+                $(this).toggleClass('toggled');
+                $('.like-button').removeClass('toggled');
+            });
         });
 
         //Pagination
@@ -419,6 +399,10 @@
 
     .like-button:hover {
         color: #FF69B4;
+    }
+
+    .toggled {
+        color: #FF69B4 !important;
     }
 
     .comment-button:hover {
