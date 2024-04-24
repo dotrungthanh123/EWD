@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
    
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/index', { contributionList, role, facultyList});
+      res.render('contribution/indexUser', { contributionList, role, facultyList});
    }
    else{
       res.render('contribution/indexUser', { contributionList, role});
@@ -107,7 +107,7 @@ router.get('/faculty/:id', async (req, res) => {
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
    if (role == "Admin" || role == "MktCoor") {
-      res.render('contribution/index', { contributionList: contributions, role })
+      res.render('contribution/indexUser', { contributionList: contributions, role })
    } else {
       res.render('contribution/indexUser', {contributionList, role})
    }
@@ -467,6 +467,8 @@ router.post('/like/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
+
+   console.log('like');
 })
 
 router.post('/dislike/:id', checkLoginSession, async (req, res) => {
@@ -491,6 +493,7 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
+   console.log('dislike');
 })
 
 router.get('/feedback/:id', async (req,res) => {
