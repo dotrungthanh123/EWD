@@ -119,18 +119,18 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(function () {
-      $("#header").load("/sharedhtmls/header.html", function () {
-        $('.mobile-nav-toggle').click(function () {
-          $('#navbar').toggleClass('navbar-mobile');
+        $("#header").load("/sharedhtmls/header.hbs", function () {
+            $('.mobile-nav-toggle').click(function () {
+                $('#navbar').toggleClass('navbar-mobile');
 
-        });
+            });
 
-        $('.dropdown > a').click(function (e) {
-          e.preventDefault();
-          $(this).next('ul').slideToggle();
+            $('.dropdown > a').click(function (e) {
+                e.preventDefault();
+                $(this).next('ul').slideToggle();
+            });
         });
-      });
-      $("#footer").load("/sharedhtmls/footer.html");
+        $("#footer").load("/sharedhtmls/footer.hbs");
     });
   </script>
 </body>

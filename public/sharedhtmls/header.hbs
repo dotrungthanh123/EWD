@@ -18,10 +18,12 @@
             <li><a href="/contribution">Contributions</a></li>
           </ul>
         </li>
-        <li><a class="nav-link scrollto" href="/auth/login">Login</a></li>
-        <!-- {{#if login}} -->
+        {{#if username}}
+        <li>Welcome, {{username}}</li>
         <li><a class="nav-link scrollto" href="/auth/logout">Logout</a></li>
-        <!-- {{/if}} -->
+        {{else}}
+        <li><a class="nav-link scrollto" href="/auth/login">Login</a></li>
+        {{/if}}
 
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>

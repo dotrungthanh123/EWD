@@ -166,7 +166,7 @@
     });
 
     $(function () {
-        $("#header").load("/sharedhtmls/header.html", function () {
+        $("#header").load("/sharedhtmls/header.hbs", function () {
             $('.mobile-nav-toggle').click(function () {
                 $('#navbar').toggleClass('navbar-mobile');
 
@@ -177,7 +177,7 @@
                 $(this).next('ul').slideToggle();
             });
         });
-        $("#footer").load("/sharedhtmls/footer.html");
+        $("#footer").load("/sharedhtmls/footer.hbs");
     });
 
     function previewFile() {
