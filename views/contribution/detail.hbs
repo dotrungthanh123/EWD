@@ -79,13 +79,9 @@
                     <div class="col-sm-2">
                         <label for="attachFiles" class="col-form-label">Attached Files:</label>
                         <div class="row">
-                            <button onclick="location.href='/contribution/download/{{contribution._id}}'"
-                                type="download_all" class="downloadAll">
-                                Download All
+                            <button type="button" class="downloadAll">
+                                <a href="/contribution/download/{{contribution._id}}">Download All</a>
                             </button>
-
-                            {{!-- <button type="download_all" class="downloadAll"><a
-                                    href="/contribution/download/{{contribution._id}}">Download All</a></button> --}}
                         </div>
                     </div>
 

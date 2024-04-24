@@ -105,7 +105,6 @@ router.post('/search', checkLoginSession, async (req, res) => {
 
     const role = req.session.role;
     
-    formattedEvents.reverse()
     res.render('event/index', { eventList: formattedEvents, role });
 })
 

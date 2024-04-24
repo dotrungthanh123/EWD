@@ -70,6 +70,7 @@
                     <div class="dashboard-menu">
                         <button id="selectBtn" class="selectBtn">Select</button>
                         <button id="submitBtn" class="submitBtn">Publish Selected Articles</button>
+                        <button id="downloadBtn" class="downloadBtn">Download CSV Files</button>
                     </div>
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
@@ -613,7 +614,7 @@
         cursor: pointer;
     }
 
-    .createBtn {
+    .downloadBtn {
         justify-content: center;
         width: 75%;
         padding: 8px;
@@ -625,12 +626,11 @@
         transition: .4s;
     }
 
-    .createBtn:hover {
+    .downloadBtn:hover {
         background: #bf58ff;
         cursor: pointer;
     }
 
-    button.createBtn,
     button#selectBtn,
     button#submitBtn,
     button.btn-magazine {
