@@ -74,19 +74,20 @@
     <script src='/fullcalendar/packages/list/main.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        $(function () {
-            $("#header").load("/sharedhtmls/header.html", function () {
-                $('.mobile-nav-toggle').click(function () {
-                    $('#navbar').toggleClass('navbar-mobile');
-                });
+    $(function () {
+        $("#header").load("/sharedhtmls/header.hbs", function () {
+            $('.mobile-nav-toggle').click(function () {
+                $('#navbar').toggleClass('navbar-mobile');
 
-                $('.dropdown > a').click(function (e) {
-                    e.preventDefault();
-                    $(this).next('ul').slideToggle();
-                });
             });
-            $("#footer").load("/sharedhtmls/footer.html");
+
+            $('.dropdown > a').click(function (e) {
+                e.preventDefault();
+                $(this).next('ul').slideToggle();
+            });
         });
+        $("#footer").load("/sharedhtmls/footer.hbs");
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
