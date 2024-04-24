@@ -116,25 +116,24 @@
                                 </div>
                             </div>
 
-                            <div class="btn-group">
-                                {{#if publish}}
-                                <button type="submit" class="publish-btn" disabled>Published</button>
-                                {{else}}
-                                <form action="/contribution/publish/{{_id}}" method="get">
-                                    <button type="submit" class="publish-btn">Publish</button>
-                                </form>
-                                {{/if}}
-                            </div>
+                            {{#if publish}}
+                            <button type="submit" class="published-btn" disabled>Published</button>
+                            {{else}}
+                            <form action="/contribution/publish/{{_id}}" method="get">
+                                <button type="submit" class="publish-btn">Publish</button>
+                            </form>
+                            {{/if}}
                             <hr style="color: #ffffff; height: 3px;">
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form id="comment-form" class="comment-form">
-                                    <textarea id="comments" name="emailContent"
-                                        placeholder="Leave feedback..."></textarea>
-                                    <a href="/contribution/feedback/{{_id}}">
-                                        <button type="submit">Feedback</button>
-                                    </a>
+                                <form id="comment-form" class="comment-form" action="/contribution/feedback/{{_id}}" method="post">
+                                    <div class="feedback-container">
+                                        <textarea id="comments" name="emailContent"
+                                            placeholder="Leave feedback..."></textarea>
+                                            <button type="submit" class="publish-btn">Feedback</button>
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
                         </article>
@@ -291,6 +290,7 @@
 
     :root {}
 
+    /*hero*/
     #hero {
         width: 100%;
         min-height: auto;
@@ -348,7 +348,6 @@
     }
 
     /* Main Container */
-
     .m-container {
         display: flex;
         flex-flow: column nowrap;
@@ -356,14 +355,13 @@
         width: 100%;
     }
 
-    /* Container */
-
     .m-container-main {
         display: flex;
         flex-wrap: wrap;
         width: 100%;
     }
 
+    /*Separated Sections*/
     .left {
         width: 25%;
     }
@@ -373,6 +371,7 @@
         padding-left: 5%;
     }
 
+    /*Sidebar*/
     .sidebar {
         background-color: hsl(261, 18%, 15%);
         border-radius: 20px;
@@ -404,10 +403,12 @@
         cursor: pointer;
     }
 
+    /*Section for Articles + Searchbar*/
     .main-magazine {
         width: 100%;
     }
 
+    /*Searchbar*/
     .search-bar {
         width: 100%;
         max-width: auto;
@@ -447,6 +448,7 @@
         margin-right: 10px;
     }
 
+    /*Articles*/
     .magazine {
         margin-top: 20px;
     }
@@ -489,6 +491,7 @@
         color: #ffffff;
     }
 
+    /*User Appearance*/
     .posting-user {
         display: flex;
     }
@@ -505,61 +508,10 @@
         color: #ffffff;
         margin-right: 10px;
     }
-
-     .article-actions {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
-
-    .like-button {
-        cursor: pointer;
-        color: #ffffff;
-    }
-
-    .dislike-button {
-        cursor: pointer;
-        color: white;
-        margin-left: 20px;
-    }
-
-    .dislike-button:hover {
-        color: #FF69B4;
-    }
-
-    .like-button:hover {
-        color: #FF69B4;
-    }
-
-    .toggled {
-        color: #FF69B4 !important;
-    }
-
-    .btn-group {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .feedback-btn {
-        border: 0;
-        width: 224px;
-        height: 35px;
-        flex-shrink: 0;
-        border-radius: 20px;
-        background: #2D4268;
-        color: #ffffff;
-        transition: .4s;
-    }
-
-    .feedback-btn:hover {
-        background: #ffffff;
-        color: #000;
-        cursor: pointer;
-    }
-
+    
+    /*Publish-btn*/
     .publish-btn:hover {
-        background: #ffffff;
+        background: #bf58ff;
         color: #000;
         cursor: pointer;
     }
@@ -571,11 +523,26 @@
         flex-shrink: 0;
         border-radius: 20px;
         margin-left: 20px;
-        background: #2D4268;
+        background: #686bc4;
         color: #ffffff;
         transition: .4s;
+        align-items: center;
     }
 
+    .published-btn{
+        border: 0;
+        width: 224px;
+        height: 35px;
+        flex-shrink: 0;
+        border-radius: 20px;
+        margin-left: 20px;
+        background: #686bc4;
+        color: #ffffff;
+        transition: .4s;
+        align-items: center;
+    }
+
+    /*Comment Sections*/
     .comments {
         margin-top: 20px;
     }
@@ -596,8 +563,15 @@
         margin-top: 10px;
     }
 
+    .feedback-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .comment-form textarea {
-        width: 100%;
+        flex: 1;
+        margin-right: 10px;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -606,15 +580,22 @@
         color: #cac7ff;
     }
 
-    .comment-form button {
+    .comment-form a button {
         padding: 5px 10px;
         border: none;
-        border-radius: 4px;
-        background-color: #007bff;
+        border-radius: 10px;
+        background-color: #2D4268;
         color: #fff;
         cursor: pointer;
     }
 
+    .comment-form a button:hover {
+        background: #ffffff;
+        color: #000;
+        cursor: pointer;
+    }
+
+    /*Sidebar buttons*/
     .submitBtn {
         justify-content: center;
         width: 75%;
@@ -674,6 +655,7 @@
         cursor: pointer;
     }
 
+    /*Pagination Section*/
     #pagination-container {
         display: flex;
         justify-content: center;
@@ -699,6 +681,54 @@
         color: white;
     }
 
+    /*Like/Dislike Section*/
+    .article-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .article-actions .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .like-button {
+        cursor: pointer;
+        color: #ffffff;
+    }
+
+    .dislike-button {
+        cursor: pointer;
+        color: white;
+        margin-left: 20px;
+    }
+
+    .dislike-button:hover {
+        color: #FF69B4;
+    }
+
+    .like-button:hover {
+        color: #FF69B4;
+    }
+
+    .toggled {
+        color: #FF69B4 !important;
+    }
+
+    .like-button,
+    .dislike-button {
+        font-size: 24px;
+        margin-right: 8px;
+    }
+
+    .like-count,
+    .dislike-count {
+        font-size: 13px;
+        color: #ffffff;
+        margin-top: 5px;
+    }
+
 
     /* Small devices (landscape phones, less than 768px) */
     @media (max-width: 767px) {
@@ -712,14 +742,11 @@
         .right {
             width: 100%;
             padding: 0 15px;
-            /* Adjust padding here */
         }
 
         .left .sidebar {
             width: 90%;
-            /* Adjust width here */
             margin: auto;
-            /* Center the sidebar */
         }
 
         .search-bar {
@@ -737,7 +764,6 @@
             height: 30px;
         }
 
-        /* Adjust other elements as necessary... */
     }
 
     /* Medium devices (tablets, less than 992px) */
@@ -752,7 +778,6 @@
         .right {
             width: 100%;
             padding: 0 15px;
-            /* Adjust padding here */
         }
 
         .search-bar {
@@ -762,12 +787,9 @@
 
         .left .sidebar {
             width: 90%;
-            /* Adjust width here */
             margin: auto;
-            /* Center the sidebar */
         }
 
-        /* Adjust other elements as necessary... */
     }
 </style>
 

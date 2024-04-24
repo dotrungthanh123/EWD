@@ -20,14 +20,25 @@ var eventList = []
 
 const getContribution = async req => {
    contributionList = await ContributionModel.find()
-      .populate('user')
       .populate('category')
+      .populate({
+         path : 'user',
+         populate : {
+           path : 'role'
+         }
+       })
       .then(async contributions =>
          await contributions
                // Display all when not login for testing, should be false on right side
             // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
-            .filter(contribution => req.session.user.faculty ? contribution.user._id.equals(req.session.user._id) ||
-                                                               (contribution.user.faculty.equals(req.session.user.faculty) && contribution.publish) : true)
+            .filter(contribution => {
+               if (!req.session.user.faculty) return true
+               else if (contribution.user.faculty.equals(req.session.user.faculty)) {
+                  if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
+                  if ( req.session.user.role.name === "MktCoor") return true
+               }
+               return false
+            })
       )
       .catch((err) => {
          console.log(err);
@@ -482,7 +493,7 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.get('/feedback/:id', async (req,res) => {
+router.post('/feedback/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id).populate('user');
    var email = contribution.user.email;
@@ -510,6 +521,7 @@ router.get('/feedback/:id', async (req,res) => {
          subject: 'Marketing Coordinator replied',
          text: emailContent,
       };
+      console.log('Email content: ', emailContent);
       transporter.sendMail(mailOptions, (info) => {
          console.log('Email sent: ' + info.response);
       });
