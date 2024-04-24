@@ -42,4 +42,13 @@ router.get('/list', checkAdminSession, async (req,res) => {
   res.render("student/list", {facultyList, studentList})
 })
 
+router.get('/faculty/:id', async (req, res) => {
+  const facultyId = req.params.id
+  const studentRole = await RoleModel.findOne({name: 'Student'})
+
+  const studentList = await UserModel.find({faculty: facultyId, role: studentRole._id}).populate('role').populate('faculty')
+  const facultyList = await FacultyModel.find()
+  res.render("student/list", {facultyList, studentList})
+})
+
 module.exports = router;
