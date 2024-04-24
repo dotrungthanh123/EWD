@@ -93,7 +93,11 @@
                             <input type="checkbox" class="articleCheckbox" />
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h2 class="Username">{{user.username}}</h2>
+                            {{#if anonymous}}
+                                <h2 class="Username">Anonymous</h1>
+                            {{else}}
+                                <h2 class="Username">{{ user.username }}</h1>
+                            {{/if}}
                             </div>
                             <p>{{description}}</p>
                             <div class="article-actions">

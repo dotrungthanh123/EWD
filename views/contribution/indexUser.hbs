@@ -61,7 +61,11 @@
                         </a>
                         <div class="posting-user">
                             <i class="bi bi-person"></i>
-                            <h2 class="Username">{{ user.username }}</h1>
+                            {{#if anonymous}}
+                                <h2 class="Username">Anonymous</h1>
+                            {{else}}
+                                <h2 class="Username">{{ user.username }}</h1>
+                            {{/if}}
                         </div>
                         <p>{{ description }}</p>
                         <div class="article-actions">
@@ -81,9 +85,7 @@
                                 <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
                                     id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
                                 {{/if}}
-
                             </div>
-
                             {{!-- <div class="actions">
                                 <i class="bi bi-chat comment-button"></i>
                                 <h5 class="comment-count">0</h5>
@@ -100,6 +102,22 @@
                                             type="submit">Submit</button></a>
                                 </div>
                             </form>
+
+                            {{#each advcomment}}
+                            <div class="comment">
+                                <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+                                    <div class="d-flex flex-row align-items-center feed-text px-2">
+                                        <div class="comment-user">
+                                            <span class="username">{{ userId.username }}: </span>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="mb-0">{{ this.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+
                             {{!-- <ul class="comments-list text-white mt-3">
                                 <li class="comment-block">
                                     <div class="comment-user">
