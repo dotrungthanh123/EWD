@@ -105,20 +105,48 @@ router.post('/search', checkLoginSession, async (req, res) => {
     res.render('event/index', { eventList: formattedEvents, role });
 })
 
+// router.get('/eventData', async (req, res) => {
+//     try {
+//         var events = await EventModel.find({});
+//         var eventData = events.map(evt => ({
+//             title: evt.name,
+//             start: new Date(evt.firstClosureDate),
+//             end: new Date(evt.finalClosureDate)
+//         }));
+
+//         res.json(eventData);
+//     } catch (error) {
+//         console.error('Error fetching class data:', error);
+//         res.status(500).json({ message: 'Error fetching class data' });
+//     }
+// });
+
 router.get('/eventData', async (req, res) => {
     try {
         var events = await EventModel.find({});
-        var eventData = events.map(evt => ({
-            title: evt.name,
-            start: new Date(evt.firstClosureDate),
-            end: new Date(evt.finalClosureDate)
-        }));
+        
+        var eventData = [];
+
+        events.forEach(evt => {
+            eventData.push({
+                title: evt.name + ' (First)',
+                start: new Date(evt.firstClosureDate),
+                color: 'green',
+            });
+
+            eventData.push({
+                title: evt.name + ' (Second)',
+                start: new Date(evt.finalClosureDate),
+                color: 'red',
+            });
+        });
 
         res.json(eventData);
     } catch (error) {
-        console.error('Error fetching class data:', error);
-        res.status(500).json({ message: 'Error fetching class data' });
+        console.error('Error fetching event data:', error);
+        res.status(500).json({ message: 'Error fetching event data' });
     }
 });
+
 
 module.exports = router;

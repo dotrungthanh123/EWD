@@ -88,38 +88,35 @@
             $("#footer").load("/sharedhtmls/footer.html");
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                height: '100%',
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                },
-                defaultView: 'dayGridMonth',
-                defaultDate: '2024-04-01',
-                navLinks: false,
-                editable: false,
-                eventLimit: true,
-                events: [
-                    {
-                        title: 'Conference',
-                        start: '2024-04-11',
-                        end: '2024-04-13'
-                    },
-                    {
-                        title: 'Mark',
-                        start: '2024-04-20',
-                        end: '2024-04-23'
-                    },
-                ]
-            });
-
-            calendar.render();
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            height: '100%',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultView: 'dayGridMonth',
+            initialDate: new Date(),
+            navLinks: false,
+            editable: false,
+            eventLimit: true,
+            eventSources: [
+                {
+                    url: '/event/eventData',
+                    color: 'red', // Set color of the event dot
+                    textColor: 'white', // Set color of the text (not relevant for dots)
+                    eventDisplay: 'dot' // Display events as dots
+                }
+            ]
         });
+
+    calendar.render();
+});
+
 
     </script>
 </body>
