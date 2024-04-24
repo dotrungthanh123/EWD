@@ -15,6 +15,7 @@ var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
 var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
+var accountRouter = require('./routes/account')
 var bcrypt = require('bcrypt');
 
 const UserModel = require('./models/UserModel')
@@ -129,6 +130,7 @@ app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
 app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
+app.use('/account', accountRouter);
 
 
 
