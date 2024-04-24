@@ -95,6 +95,27 @@
                                 <h2 class="Username">{{user.username}}</h2>
                             </div>
                             <p>{{description}}</p>
+                            <div class="article-actions">
+                                <div class="actions">
+                                    {{#if isLike}}
+                                    <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')"
+                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                    {{else}}
+                                    <i class="bi bi-heart like-button" onclick="react(event, 'like')"
+                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                    {{/if}}
+
+                                    {{#if isDislike}}
+                                    <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')"
+                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                    {{else}}
+                                    <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
+                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                    {{/if}}
+
+                                </div>
+                            </div>
+
                             <div class="btn-group">
                                 {{#if publish}}
                                 <button type="submit" class="publish-btn" disabled>Published</button>
@@ -109,7 +130,8 @@
                                 <ul class="comments-list">
                                 </ul>
                                 <form id="comment-form" class="comment-form">
-                                    <textarea id="comments" name="emailContent" placeholder="Leave feedback..."></textarea>
+                                    <textarea id="comments" name="emailContent"
+                                        placeholder="Leave feedback..."></textarea>
                                     <a href="/contribution/feedback/{{_id}}">
                                         <button type="submit">Feedback</button>
                                     </a>
@@ -482,6 +504,35 @@
         font-size: 40px;
         color: #ffffff;
         margin-right: 10px;
+    }
+
+     .article-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .like-button {
+        cursor: pointer;
+        color: #ffffff;
+    }
+
+    .dislike-button {
+        cursor: pointer;
+        color: white;
+        margin-left: 20px;
+    }
+
+    .dislike-button:hover {
+        color: #FF69B4;
+    }
+
+    .like-button:hover {
+        color: #FF69B4;
+    }
+
+    .toggled {
+        color: #FF69B4 !important;
     }
 
     .btn-group {
