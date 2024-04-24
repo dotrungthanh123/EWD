@@ -9,7 +9,7 @@ var AdvCommentSchema = mongoose.Schema(
         // The user that posts the comment
         userId: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'users' 
+            ref: 'User' 
         },
         date: {
             type: Date

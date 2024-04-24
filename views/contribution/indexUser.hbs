@@ -88,8 +88,10 @@
                         <hr style="color: #ffffff; height: 1px;">
                         <div class="comments">
                             <h3 style="font-size: 15px;">Comments</h3>
-                            <form class="comment-form">
-                                <textarea id="comments" name="comment" placeholder="Leave a comment..."></textarea>
+                            <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
+                                method="post">
+                                <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
+                                <a href="/contribution/advcomments/{{_id}}"><button type="submit">Submit</button></a>
                             </form>
                             <ul class="comments-list text-white mt-3">
                                 <li class="comment-block">
@@ -141,10 +143,9 @@
             $("#footer").load("/sharedhtmls/footer.html");
         });
 
-        $("#comments").keypress(function (e) {
+        $(document).on('keypress', '#comments', function (e) {
             if (e.which === 13 && !e.shiftKey) {
                 e.preventDefault();
-
                 $(this).closest("form").submit();
             }
         });
@@ -450,6 +451,10 @@
 
     .like-button:hover {
         color: #FF69B4;
+    }
+
+    .toggled {
+        color: #FF69B4 !important;
     }
 
     .comment-button:hover {

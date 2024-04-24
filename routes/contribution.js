@@ -58,32 +58,33 @@ const getEvent = async () => {
 }
 
 router.get('/', async (req, res) => {
-   // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
-   // Suck not because design suck, is mongodb that suck
-
-   // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
-
-   // Must login else undefine faculty in session
-   // Need code to prevent viewing without login
-   
    await getContribution(req)
-
-   // var publishContributions = []
-
-   // for (index in contributionList) {
-   //    if (contributionList[index].publish) publishContributions.push(contributionList[index])
-   // }
-
-   // res.render('contribution/index', { contributionList: publishContributions, publish: true })
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
+//    var contributions = await ContributionModel.find();
+//    const currentDate = new Date();
+//    const twoWeeksAgo = new Date(currentDate.getTime() - (14*24*60*60*1000));
+//    // var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
+//    // console.log('difference in days: ', differeceInDays);
+//    console.log('2 weeks ago: ',twoWeeksAgo);
+//    var notOver = false;
+//    // if(differeceInDays < 14){
+//    //    notOver = true;
+//    // }
+//    contributions.forEach(contribution => {
+//       console.log('contribution Date: ', contribution.date)
+//       if (contribution.date <= twoWeeksAgo) {
+//           notOver = true;
+//       }
+//   });
+   
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/indexUser', { contributionList, role, facultyList });
+      res.render('contribution/index', { contributionList, role, facultyList});
    }
    else{
-      res.render('contribution/indexUser', { contributionList, role });
+      res.render('contribution/indexUser', { contributionList, role});
    }
       
    // res.render('contribution/index', { contributionList })
@@ -318,31 +319,24 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.post('/advcomments', checkLoginSession, async (req, res) => {
-   const { contributionId, content } = req.body;
-   const userId = req.session.userId; // Assuming userId is stored in the session
+router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
    try {
-      // Create the new comment
+      const contributionId = req.params.id;
+      const userId = req.session.user._id;
+      const content = req.body.content;
+
       const newAdvComment = await AdvCommentModel.create({
          content,
-         date: new Date(),
+         date: Date.now(),
          userId,
          contributionId,
       });
-      // Find the corresponding post and update its comments array
-      const post = await ContributionModel.findById(contributionId);
-      if (post) {
-         post.advcomments.push(newAdvComment._id);
-         await post.save();
-      } else {
-         console.error('Post not found');
-         return res.status(404).send('Post not found');
-      }
 
-      res.redirect('/post/posts');
+      console.log(newAdvComment);
 
-      // Log success message
-      console.log("Comment created successfully", newAdvComment);
+      await ContributionModel.findByIdAndUpdate(contributionId, { $push: { advcomment: newAdvComment._id } });
+
+      res.redirect('/contribution');
    } catch (err) {
       console.error(err);
       res.status(500).send('Internal Server Error');
@@ -489,37 +483,39 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
 
 router.get('/admin-comment/:id', async (req,res) => {
    var id = req.params.id;
-   var contribution = await ContributionModel.findById(id)
-   const differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
-   if (differeceInDays < 14) {
-   var email = await ContributionModel.find().populate({
-      path: 'user',
-      select: 'email'
-  });
-
-  const transporter = nodemailer.createTransport({
-   service: 'gmail',
-   auth: {
-      user: 'ringotowntest@gmail.com',
-      pass: 'akaj nngk lcyk ldnl',
-   },
+   var contribution = await ContributionModel.findById(id).populate('user');
+   var email = contribution.user.email;
+   console.log('contribution: ',contribution);
+   console.log('contribution.email: ', email);
+   const currentDate = new Date();
+   var daysDifference = Math.floor((currentDate-contribution.date) / (1000 * 60 * 60 * 24));
+   console.log(daysDifference);
+   if (daysDifference > 14) {
+      console.log('nigga');
+      res.redirect('/contribution');
+   } else {
+      console.log('email', email);
+      const transporter = nodemailer.createTransport({
+         service: 'gmail',
+         auth: {
+            user: 'ringotowntest@gmail.com',
+            pass: 'akaj nngk lcyk ldnl',
+         },
+      });
+      
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: email,
+         subject: 'Marketing Coordinator replied',
+         text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
+               want to contribution.`,
+      };
+      transporter.sendMail(mailOptions, (info) => {
+         console.log('Email sent: ' + info.response);
+      });
+      res.redirect('/contribution');
+   }
 });
-
-const mailOptions = {
-   from: 'ringotowntest@gmail.com',
-   to: email,
-   subject: 'Marketing Coordinator replied',
-   text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
-         want to contribution.`,
-};
-transporter.sendMail(mailOptions, (info) => {
-   console.log('Email sent: ' + info.response);
-});
-};
-res.redirect('/contribution');
-
-
-})
 
 module.exports = { 
    router: router,
