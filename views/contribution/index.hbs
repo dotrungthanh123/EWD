@@ -94,6 +94,9 @@
                                 <h2 class="Username">{{user.username}}</h2>
                             </div>
                             <p>{{description}}</p>
+                            <form action="/contribution/admin-comment/{{_id}}" method="get">
+                                <button type="submit" class="publish-btn">Comment</button>
+                            </form>
                             {{#if publish}}
                                 <button type="submit" class="published-btn" disabled>Published</button>
                             {{else}}

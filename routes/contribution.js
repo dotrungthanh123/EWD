@@ -71,18 +71,29 @@ router.get('/', async (req, res) => {
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
-   var contributionDate = await ContributionModel.find(date);
-   var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
-   var notOver = false;
-   if(differeceInDays < 14){
-      notOver = true;
-   }
+//    var contributions = await ContributionModel.find();
+//    const currentDate = new Date();
+//    const twoWeeksAgo = new Date(currentDate.getTime() - (14*24*60*60*1000));
+//    // var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
+//    // console.log('difference in days: ', differeceInDays);
+//    console.log('2 weeks ago: ',twoWeeksAgo);
+//    var notOver = false;
+//    // if(differeceInDays < 14){
+//    //    notOver = true;
+//    // }
+//    contributions.forEach(contribution => {
+//       console.log('contribution Date: ', contribution.date)
+//       if (contribution.date <= twoWeeksAgo) {
+//           notOver = true;
+//       }
+//   });
+   
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/index', { contributionList, role, facultyList, notOver });
+      res.render('contribution/index', { contributionList, role, facultyList});
    }
    else{
-      res.render('contribution/indexUser', { contributionList, role, notOver });
+      res.render('contribution/indexUser', { contributionList, role});
    }
       
    // res.render('contribution/index', { contributionList })
@@ -489,37 +500,39 @@ router.get('/dislike/:id', checkLoginSession, async (req, res) => {
 
 router.get('/admin-comment/:id', async (req,res) => {
    var id = req.params.id;
-   var contribution = await ContributionModel.findById(id)
-   var differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
-   if (differeceInDays < 14) {
-   var email = await ContributionModel.find().populate({
-      path: 'user',
-      select: 'email'
-  });
-
-  const transporter = nodemailer.createTransport({
-   service: 'gmail',
-   auth: {
-      user: 'ringotowntest@gmail.com',
-      pass: 'akaj nngk lcyk ldnl',
-   },
+   var contribution = await ContributionModel.findById(id).populate('user');
+   var email = contribution.user.email;
+   console.log('contribution: ',contribution);
+   console.log('contribution.email: ', email);
+   const currentDate = new Date();
+   var daysDifference = Math.floor((currentDate-contribution.date) / (1000 * 60 * 60 * 24));
+   console.log(daysDifference);
+   if (daysDifference > 14) {
+      console.log('nigga');
+      res.redirect('/contribution');
+   } else {
+      console.log('email', email);
+      const transporter = nodemailer.createTransport({
+         service: 'gmail',
+         auth: {
+            user: 'ringotowntest@gmail.com',
+            pass: 'akaj nngk lcyk ldnl',
+         },
+      });
+      
+      const mailOptions = {
+         from: 'ringotowntest@gmail.com',
+         to: email,
+         subject: 'Marketing Coordinator replied',
+         text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
+               want to contribution.`,
+      };
+      transporter.sendMail(mailOptions, (info) => {
+         console.log('Email sent: ' + info.response);
+      });
+      res.redirect('/contribution');
+   }
 });
-
-const mailOptions = {
-   from: 'ringotowntest@gmail.com',
-   to: email,
-   subject: 'Marketing Coordinator replied',
-   text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
-         want to contribution.`,
-};
-transporter.sendMail(mailOptions, (info) => {
-   console.log('Email sent: ' + info.response);
-});
-};
-res.redirect('/contribution');
-
-
-})
 
 module.exports = { 
    router: router,

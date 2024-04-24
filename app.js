@@ -92,6 +92,7 @@ const Initiation = async () => {
       var roleId = (await RoleModel.findOne({ name: role }))._id
       await UserModel.create({
         username: role + faculty,
+        email: "itszombie2016@gmail.com",
         password: await bcrypt.hash(password, salt),
         name: role + faculty,
         faculty: facultyId,
