@@ -67,18 +67,22 @@
                         <div class="article-actions">
                             <div class="actions">
                                 {{#if isLike}}
-                                    <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')" id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')"
+                                    id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
                                 {{else}}
-                                    <i class="bi bi-heart like-button" onclick="react(event, 'like')" id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                <i class="bi bi-heart like-button" onclick="react(event, 'like')"
+                                    id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
                                 {{/if}}
 
                                 {{#if isDislike}}
-                                    <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')" id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')"
+                                    id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
                                 {{else}}
-                                    <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')" id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
+                                    id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
                                 {{/if}}
 
-                            </div >
+                            </div>
 
                             <div class="actions">
                                 <i class="bi bi-chat comment-button"></i>
@@ -90,8 +94,11 @@
                             <h3 style="font-size: 15px;">Comments</h3>
                             <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
                                 method="post">
-                                <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
-                                <a href="/contribution/advcomments/{{_id}}"><button type="submit">Submit</button></a>
+                                <div class="feedback-container">
+                                    <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
+                                    <a href="/contribution/advcomments/{{_id}}"><button
+                                            type="submit">Submit</button></a>
+                                </div>
                             </form>
                             <ul class="comments-list text-white mt-3">
                                 <li class="comment-block">
@@ -154,13 +161,13 @@
             'like': function (postId) {
                 document.querySelector('#likes-count-' + postId).textContent++
             },
-            'dislike': function(postId) {
+            'dislike': function (postId) {
                 document.querySelector('#dislikes-count-' + postId).textContent++
             },
-            'unlike': function(postId) {
+            'unlike': function (postId) {
                 document.querySelector('#likes-count-' + postId).textContent--
             },
-            'undislike': function(postId) {
+            'undislike': function (postId) {
                 document.querySelector('#dislikes-count-' + postId).textContent--
             }
         };
@@ -201,7 +208,7 @@
                 this.classList.remove('bi-heartbreak');
                 this.classList.add('bi-heartbreak-fill');
                 // If like button is full, empty it
-                updatePostStats['dislike'](postId)   
+                updatePostStats['dislike'](postId)
                 if (likeButton.classList.contains('bi-heart-fill')) {
                     likeButton.classList.remove('bi-heart-fill');
                     likeButton.classList.add('bi-heart');
@@ -272,6 +279,7 @@
 
     :root {}
 
+    /*hero*/
     #hero {
         width: 100%;
         min-height: auto;
@@ -329,7 +337,6 @@
     }
 
     /* Main Container */
-
     .m-container {
         display: flex;
         flex-flow: column nowrap;
@@ -348,6 +355,7 @@
         width: 90%;
     }
 
+    /*searchbar*/
     .search-bar {
         width: 100%;
         max-width: auto;
@@ -387,6 +395,7 @@
         margin-right: 10px;
     }
 
+    /*article*/
     .magazine {
         margin-top: 20px;
     }
@@ -420,6 +429,7 @@
         color: #ffffff;
     }
 
+    /*User Appearance*/
     .posting-user {
         display: flex;
     }
@@ -431,6 +441,13 @@
         margin-top: 20px;
     }
 
+    .bi-person {
+        font-size: 40px;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+
+    /*Actions (Likes/Dislikes/Comments)*/
     .article-actions {
         display: flex;
         justify-content: space-between;
@@ -468,6 +485,32 @@
         color: #80ff7b;
     }
 
+    .article-actions .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .like-button,
+    .dislike-button,
+    .comment-button {
+        font-size: 24px;
+        margin-right: 8px;
+    }
+
+    .like-count,
+    .dislike-count {
+        font-size: 13px;
+        color: #ffffff;
+        margin-top: 5px;
+    }
+
+    .comment-count {
+        font-size: 13px;
+        color: #ffffff;
+        margin-top: 8px;
+    }
+
+    /*Comment Section*/
     .comments {
         margin-top: 20px;
     }
@@ -512,8 +555,15 @@
         margin-top: 10px;
     }
 
+    .feedback-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .comment-form textarea {
-        width: 100%;
+        flex: 1;
+        margin-right: 10px;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -522,76 +572,22 @@
         color: #cac7ff;
     }
 
-    .comment-form button {
-        padding: 5px 10px;
+    .comment-form a button {
+        padding: 10px 20px;
         border: none;
-        border-radius: 4px;
-        background-color: #007bff;
+        border-radius: 10px;
+        background-color: #2D4268;
         color: #fff;
         cursor: pointer;
     }
 
-    .bi-person {
-        font-size: 40px;
-        color: #ffffff;
-        margin-right: 10px;
-    }
-
-    .article-actions {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .article-actions .actions {
-        display: flex;
-        align-items: center;
-    }
-
-    .like-button,
-    .dislike-button,
-    .comment-button {
-        font-size: 24px;
-        /* Adjust size as needed */
-        margin-right: 8px;
-        /* Add some space between the icon and the text */
-    }
-
-    .like-count,
-    .dislike-count {
-        font-size: 13px;
-        color: #ffffff;
-        margin-top: 5px;
-    }
-
-    .comment-count {
-        font-size: 13px;
-        color: #ffffff;
-        margin-top: 8px;
-    }
-
-    .createBtn {
-        justify-content: center;
-        width: 75%;
-        padding: 8px;
-        background: #686bc4;
-        border: none;
-        border-radius: 50px;
-        color: #ffffff;
-        margin-top: 10px;
-        transition: .4s;
-    }
-
-    .createBtn:hover {
-        background: #bf58ff;
+    .comment-form a button:hover {
+        background: #ffffff;
+        color: #000;
         cursor: pointer;
     }
 
-    button.createBtn,
-    button.btn-magazine {
-        font-size: 15px;
-        /* Change this to the size you want */
-    }
-
+    /*Pagination-Container*/
     #pagination-container {
         display: flex;
         justify-content: center;
@@ -625,20 +621,6 @@
             align-items: center;
         }
 
-        .left,
-        .right {
-            width: 100%;
-            padding: 0 15px;
-            /* Adjust padding here */
-        }
-
-        .left .sidebar {
-            width: 90%;
-            /* Adjust width here */
-            margin: auto;
-            /* Center the sidebar */
-        }
-
         .search-bar {
             height: 40px;
             margin-top: 20px;
@@ -654,7 +636,6 @@
             height: 30px;
         }
 
-        /* Adjust other elements as necessary... */
     }
 
     /* Medium devices (tablets, less than 992px) */
@@ -665,26 +646,10 @@
             align-items: center;
         }
 
-        .left,
-        .right {
-            width: 100%;
-            padding: 0 15px;
-            /* Adjust padding here */
-        }
-
         .search-bar {
             margin-top: 20px;
         }
 
-
-        .left .sidebar {
-            width: 90%;
-            /* Adjust width here */
-            margin: auto;
-            /* Center the sidebar */
-        }
-
-        /* Adjust other elements as necessary... */
     }
 </style>
 
