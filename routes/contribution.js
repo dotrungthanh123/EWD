@@ -26,8 +26,13 @@ const getContribution = async req => {
          await contributions
                // Display all when not login for testing, should be false on right side
             // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
-            .filter(contribution => req.session.user.faculty ? contribution.user._id.equals(req.session.user._id) ||
-                                                               (contribution.user.faculty.equals(req.session.user.faculty) && contribution.publish) : true)
+            .filter(contribution => {
+               if (!req.session.user.faculty) return true
+               else {
+                  if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
+                  if (req.session.user.role === "MktCoor" && contribution.user.faculty.equals(req.session.user.faculty)) return true
+               }
+            })
       )
       .catch((err) => {
          console.log(err);
