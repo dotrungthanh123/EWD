@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/fonts/icomoon/style.css">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-    
+
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
@@ -88,7 +88,6 @@
             $("#footer").load("/sharedhtmls/footer.html");
         });
 
-
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
@@ -101,17 +100,11 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 defaultView: 'dayGridMonth',
-                defaultDate: '2020-02-12',
-                navLinks: true,
-                editable: true,
+                defaultDate: '2024-04-01',
+                navLinks: false,
+                editable: false,
                 eventLimit: true,
-                EventSource: [
-                    {
-                        url: '/event/eventData', 
-                        color: 'red',
-                        textColor: 'white' 
-                    }
-                ]
+                events: eventlist,
             });
 
             calendar.render();
