@@ -481,17 +481,17 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.get('/admin-comment/:id', async (req,res) => {
+router.get('/feedback/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id).populate('user');
    var email = contribution.user.email;
+   var emailContent = req.body.emailContent;
    console.log('contribution: ',contribution);
    console.log('contribution.email: ', email);
    const currentDate = new Date();
    var daysDifference = Math.floor((currentDate-contribution.date) / (1000 * 60 * 60 * 24));
    console.log(daysDifference);
    if (daysDifference > 14) {
-      console.log('nigga');
       res.redirect('/contribution');
    } else {
       console.log('email', email);
@@ -507,8 +507,7 @@ router.get('/admin-comment/:id', async (req,res) => {
          from: 'ringotowntest@gmail.com',
          to: email,
          subject: 'Marketing Coordinator replied',
-         text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
-               want to contribution.`,
+         text: emailContent,
       };
       transporter.sendMail(mailOptions, (info) => {
          console.log('Email sent: ' + info.response);
