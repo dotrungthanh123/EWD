@@ -202,8 +202,6 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       event: req.fields.event[0]
    }
 
-   console.log(req.fields.category);
-
    await ContributionModel.create(contribution);
 
    const transporter = nodemailer.createTransport({

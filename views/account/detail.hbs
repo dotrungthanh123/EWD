@@ -55,7 +55,7 @@
                         <h3>Email: {{ user.email }}</h3>
                         <h3>Name: {{ user.name }}</h3>
                         <h3>Role: {{ user.role.name }}</h3>
-                        <h3>Number of Contributions:</h3>
+                        <h3>Number of Contributions: {{ numOfContributions }}</h3>
                     </div>
                 </div>
             </div>
@@ -68,49 +68,27 @@
                     </form>
     
                     <div class="magazine">
-                        <article class="article">
-                            <a href="">
-                                <h1>Name</h1>
-                            </a>
-                            <div class="posting-user">
-                                <i class="bi bi-person"></i>
-                                <h2 class="Username">Username</h1>
-                            </div>
-                            <p>Description</p>
-                            <div class="article-actions">
-                                <div class="actions">
-                                    <!-- {{#if isLike}}
-                                    <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')"
-                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
-                                    {{else}}
-                                    <i class="bi bi-heart like-button" onclick="react(event, 'like')"
-                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
-                                    {{/if}}
-    
-                                    {{#if isDislike}}
-                                    <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')"
-                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
-                                    {{else}}
-                                    <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
-                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
-                                    {{/if}} -->
+                        {{#each contributions}}
+                            <article class="article">
+                                <a href="">
+                                    <h1>{{ name }}</h1>
+                                </a>
+                                <p>{{ description }}</p>
+                                <hr style="color: #ffffff; height: 3px;">
+                                <div class="comments">
+                                    <ul class="comments-list">
+                                    </ul>
+                                    <form id="comment-form" class="comment-form" action="" method="post">
+                                        <div class="feedback-container">
+                                            <textarea id="comments" name="emailContent"
+                                                placeholder="Leave feedback..."></textarea>
+                                                <button type="submit" class="publish-btn">Feedback</button>
+                                            </a>
+                                        </div>
+                                    </form>
                                 </div>
-                            </div>
-
-                            <hr style="color: #ffffff; height: 3px;">
-                             <div class="comments">
-                                <ul class="comments-list">
-                                </ul>
-                                <form id="comment-form" class="comment-form" action="" method="post">
-                                    <div class="feedback-container">
-                                        <textarea id="comments" name="emailContent"
-                                            placeholder="Leave feedback..."></textarea>
-                                            <button type="submit" class="publish-btn">Feedback</button>
-                                        </a>
-                                    </div>
-                                </form>
-                            </div>
-                        </article>
+                            </article>
+                        {{/each}}
 
                     </div>
                     <div id="pagination-container"></div>

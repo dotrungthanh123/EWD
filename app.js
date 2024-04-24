@@ -122,7 +122,7 @@ app.use(flash());
 app.use('/contribution', checkLoginSession)
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/auth', authRouter);
 app.use('/contribution', contributionRouter.router);
 app.use('/faculty', facultyRouter);
