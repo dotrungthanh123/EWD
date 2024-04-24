@@ -131,13 +131,13 @@ router.get('/eventData', async (req, res) => {
             eventData.push({
                 title: evt.name + ' (First)',
                 start: new Date(evt.firstClosureDate),
-                color: 'green',
+                color: '#686bc4',
             });
 
             eventData.push({
-                title: evt.name + ' (Second)',
+                title: evt.name + ' (Final)',
                 start: new Date(evt.finalClosureDate),
-                color: 'red',
+                color: '#bf58ff',
             });
         });
 
