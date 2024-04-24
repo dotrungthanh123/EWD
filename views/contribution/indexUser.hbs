@@ -55,7 +55,6 @@
 
                 <div class="magazine">
                     {{#each contributionList}}
-                    {{#if publish}}
                     <article class="article">
                         <a href="/contribution/detail/{{_id}}">
                             <h1>{{ name }}</h1>
@@ -67,12 +66,19 @@
                         <p>{{ description }}</p>
                         <div class="article-actions">
                             <div class="actions">
-                                <i class="bi bi-heart like-button"></i>
-                                <h5 class="like-count">Count</h5>
+                                {{#if isLike}}
+                                    <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')" id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                {{else}}
+                                    <i class="bi bi-heart like-button" onclick="react(event, 'like')" id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                {{/if}}
 
-                                <i class="bi bi-heartbreak dislike-button"></i>
-                                <h5 class="dislike-count">Count</h5>
-                            </div>
+                                {{#if isDislike}}
+                                    <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')" id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                {{else}}
+                                    <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')" id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                {{/if}}
+
+                            </div >
 
                             <div class="actions">
                                 <i class="bi bi-chat comment-button"></i>
@@ -98,7 +104,6 @@
                             </ul>
                         </div>
                     </article>
-                    {{/if}}
                     {{/each}}
                 </div>
                 <div id="pagination-container"></div>
@@ -119,7 +124,7 @@
 
     <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(function () {
             $("#header").load("/sharedhtmls/header.html", function () {
@@ -144,35 +149,62 @@
             }
         });
 
-        document.querySelector('.like-button').addEventListener('click', function () {
+        const updatePostStats = {
+            'like': function (postId) {
+                document.querySelector('#likes-count-' + postId).textContent++
+            },
+            'dislike': function(postId) {
+                document.querySelector('#dislikes-count-' + postId).textContent++
+            },
+            'unlike': function(postId) {
+                document.querySelector('#likes-count-' + postId).textContent--
+            },
+            'undislike': function(postId) {
+                document.querySelector('#dislikes-count-' + postId).textContent--
+            }
+        };
+
+        document.querySelector('.like-button').addEventListener('click', function (event) {
+            var postId = event.target.dataset.postId;
             if (this.classList.contains('bi-heart')) {
                 this.classList.remove('bi-heart');
                 this.classList.add('bi-heart-fill');
                 // If dislike button is full, empty it
                 let dislikeButton = document.querySelector('.dislike-button');
+                updatePostStats['like'](postId)
                 if (dislikeButton.classList.contains('bi-heartbreak-fill')) {
                     dislikeButton.classList.remove('bi-heartbreak-fill');
                     dislikeButton.classList.add('bi-heartbreak');
+                    axios.post('contribution/like/' + postId);
+                    updatePostStats['undislike'](postId)
                 }
             } else {
                 this.classList.remove('bi-heart-fill');
                 this.classList.add('bi-heart');
+                axios.post('contribution/like/' + postId);
+                updatePostStats['unlike'](postId)
             }
         });
 
         document.querySelector('.dislike-button').addEventListener('click', function () {
+            var postId = event.target.dataset.postId;
             if (this.classList.contains('bi-heartbreak')) {
                 this.classList.remove('bi-heartbreak');
                 this.classList.add('bi-heartbreak-fill');
                 // If like button is full, empty it
+                updatePostStats['dislike'](postId)   
                 let likeButton = document.querySelector('.like-button');
                 if (likeButton.classList.contains('bi-heart-fill')) {
                     likeButton.classList.remove('bi-heart-fill');
                     likeButton.classList.add('bi-heart');
+                    axios.post('contribution/dislike/' + postId);
+                    updatePostStats['unlike'](postId)
                 }
             } else {
                 this.classList.remove('bi-heartbreak-fill');
                 this.classList.add('bi-heartbreak');
+                axios.post('contribution/dislike/' + postId);
+                updatePostStats['undislike'](postId)
             }
         });
 

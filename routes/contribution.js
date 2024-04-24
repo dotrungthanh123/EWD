@@ -32,9 +32,15 @@ const getContribution = async req => {
          console.log(err);
       })
 
-   contributionList.map(async contribution => {
+   contributionList.forEach(async contribution => {
+      var userState = 0
+
       let reactionList = await ReactionModel.find().then(
-         list => list.filter(react => react._id.contribution.equals(contribution._id) && react.state != 0)
+         list => list.filter(react => {
+            const flag = react._id.contribution.equals(contribution._id) && react.state != 0
+            if (flag && react._id.user.equals(req.session.user._id)) userState = react.state
+            return flag
+         })
       )
 
       likeList = reactionList.filter(react => react.state == 1)
@@ -42,7 +48,8 @@ const getContribution = async req => {
 
       contribution.like = likeList.length
       contribution.dislike = dislikeList.length
-      return contribution
+      contribution.isLike = userState == 1
+      contribution.isDislike = userState == 2
    })
 }
 
@@ -73,7 +80,7 @@ router.get('/', async (req, res) => {
    const facultyList = await FacultyModel.find()
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/index', { contributionList, role, facultyList });
+      res.render('contribution/indexUser', { contributionList, role, facultyList });
    }
    else{
       res.render('contribution/indexUser', { contributionList, role });
@@ -81,10 +88,6 @@ router.get('/', async (req, res) => {
       
    // res.render('contribution/index', { contributionList })
 });
-
-const renderContributionIndex = (res, role, contributions) => {
-
-}
 
 router.get('/faculty/:id', async (req, res) => {
    const id = new mongoose.Types.ObjectId(req.params.id)
@@ -356,7 +359,7 @@ router.post('/search', checkLoginSession, async (req, res) => {
       res.render('contribution/index', { contributionList, role });
    }
    else{
-      res.render('contribution/indexUser', { contributionList, role });
+      res.render('contribution/index', { contributionList, role });
    }
 })
 
@@ -436,7 +439,7 @@ router.post('/filterDate', checkLoginSession, async (req, res) => {
    res.render('contribution/index', { contributionList })
 })
 
-router.get('/like/:id', checkLoginSession, async (req, res) => {
+router.post('/like/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
 
    let reactId = {
@@ -458,11 +461,9 @@ router.get('/like/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
-
-   res.redirect('/contribution');
 })
 
-router.get('/dislike/:id', checkLoginSession, async (req, res) => {
+router.post('/dislike/:id', checkLoginSession, async (req, res) => {
    const id = req.params.id
 
    let reactId = {
@@ -484,8 +485,6 @@ router.get('/dislike/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
-
-   res.redirect('/contribution');
 })
 
 router.get('/admin-comment/:id', async (req,res) => {
