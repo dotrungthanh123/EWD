@@ -8,4 +8,6 @@ router.get('/', checkAdminSession, async (req, res) => {
     res.render('/', { UserList })
 });
 
+
+
 module.exports = router;
