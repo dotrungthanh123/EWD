@@ -22,7 +22,9 @@ router.get('/', checkLoginSession, async (req, res) => {
 router.get('/add', checkAdminSession, async (req, res) => {
     res.render('event/add');
 })
-
+router.get('/schedule', checkAdminSession, async (req, res) => {
+    res.render('event/schedule');
+})
 router.post('/add', checkAdminSession, formMiddleWare, async (req, res) => {
     await EventModel.create({
         name: req.fields.name[0],
