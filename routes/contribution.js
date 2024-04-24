@@ -485,6 +485,7 @@ router.get('/feedback/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id).populate('user');
    var email = contribution.user.email;
+   var emailContent = req.body.emailContent;
    console.log('contribution: ',contribution);
    console.log('contribution.email: ', email);
    const currentDate = new Date();
@@ -506,8 +507,7 @@ router.get('/feedback/:id', async (req,res) => {
          from: 'ringotowntest@gmail.com',
          to: email,
          subject: 'Marketing Coordinator replied',
-         text: `You are receiving this because you have submitted a low quality contribution, please fix it and submit again if you still
-               want to contribution.`,
+         text: emailContent,
       };
       transporter.sendMail(mailOptions, (info) => {
          console.log('Email sent: ' + info.response);

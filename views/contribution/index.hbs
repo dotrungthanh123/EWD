@@ -96,9 +96,6 @@
                             </div>
                             <p>{{description}}</p>
                             <div class="btn-group">
-                                <form action="/contribution/feedback/{{_id}}" method="get">
-                                    <button type="submit" class="feedback-btn">Feedback</button>
-                                </form>
                                 {{#if publish}}
                                 <button type="submit" class="publish-btn" disabled>Published</button>
                                 {{else}}
@@ -111,11 +108,11 @@
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form id="comment-form" class="comment-form" action="/contribution/feedback/{{_id}}"
-                                    method="post">
-                                    <textarea id="comments" name="content" placeholder="Leave feedback..."></textarea>
-                                    <a href="/contribution/feedback/{{_id}}"><button
-                                            type="submit">Feedback</button></a>
+                                <form id="comment-form" class="comment-form">
+                                    <textarea id="comments" name="emailContent" placeholder="Leave feedback..."></textarea>
+                                    <a href="/contribution/feedback/{{_id}}">
+                                        <button type="submit">Feedback</button>
+                                    </a>
                                 </form>
                             </div>
                         </article>
