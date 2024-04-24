@@ -132,7 +132,7 @@ router.get('/faculty/:id', async (req, res) => {
    const role = req.session.role
    if (role == "Admin" || role == "MktCoor") {
       contributions.reverse()
-      res.render('contribution/indexUser', { contributionList: contributions, role })
+      res.render('contribution/index', { contributionList: contributions, role })
    } else {
       contributionList.reverse()
       res.render('contribution/indexUser', {contributionList, role})
@@ -196,10 +196,10 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
-      category: req.fields.category ? [req.fields.category[0]] : [],
+      // category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
       date: Date.now(),
-      anonymous: req.fields.anonymous[0].length == 0 ? true : false,
+      // anonymous: req.fields.anonymous[0].length == 0 ? true : false,
       viewer: [],
       event: req.fields.event[0]
    }
