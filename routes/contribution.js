@@ -481,7 +481,7 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.get('/admin-comment/:id', async (req,res) => {
+router.get('/feedback/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id).populate('user');
    var email = contribution.user.email;
@@ -491,7 +491,6 @@ router.get('/admin-comment/:id', async (req,res) => {
    var daysDifference = Math.floor((currentDate-contribution.date) / (1000 * 60 * 60 * 24));
    console.log(daysDifference);
    if (daysDifference > 14) {
-      console.log('nigga');
       res.redirect('/contribution');
    } else {
       console.log('email', email);
