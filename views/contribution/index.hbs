@@ -105,9 +105,9 @@
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form class="comment-form">
-                                    <textarea id="contribution" name="comment"
-                                        placeholder="Comment for contribution"></textarea>
+                                <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}" method="post">
+                                    <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
+                                    <a href="/contribution/advcomments/{{_id}}"><button type="submit">Submit</button></a>
                                 </form>
                             </div>
                         </article>
