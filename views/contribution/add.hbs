@@ -28,55 +28,80 @@
     <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
+
 <body>
     <header id="header" class="fixed-top"></header>
     <main id="main">
-    <div class="container text-white">
-        <h2 class="text-center mt-4">Add New Contribution</h2>
-        <p class="text-center">Bringing Ideas to Life on Campus</p>
-        <form action="/contribution/add" method="post" enctype="multipart/form-data">
-            <div class="form-group row">
-                <label for="name" class="col-sm-2 col-form-label">Name:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="description" class="col-sm-2 col-form-label">Description:</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                </div>
-            </div>
-
-            {{!-- Change to checkbox --}}
-            <div class="form-group row">
-                <label for="description" class="col-sm-2 col-form-label">Anonymous:</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" id="description" name="anonymous" rows="3" ></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="attachFiles" class="col-sm-2 col-form-label">Attach Files:</label>
-                <div class="col-sm-10">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="attachFiles" name="userfile" multiple onchange="previewFile()">
-                        <label class="custom-file-label" for="attachFiles">Choose file(s)</label>
+        <div class="container text-white">
+            <h2 class="text-center mt-4">Add New Contribution</h2>
+            <p class="text-center">Bringing Ideas to Life on Campus</p>
+            <form action="/contribution/add" method="post" enctype="multipart/form-data">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
-                    <div id="file-preview" class="form-control mt-1 "> </div>
                 </div>
-            </div>
-
-            <input type="hidden" name="event" value="{{ eventId }}">
-
-            <div class="form-group row justify-content-end">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-secondary ml-2" onclick="onReset()">Reset</button>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 col-form-label">Description:</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</main>
+
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 col-form-label">Anonymous:</label>
+                    <div class="col-sm-10">
+                        <input type="checkbox" on class="form-check-input ml-1 mt-2" id="checkano" name="checkano"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 col-form-label">Category:</label>
+                    <div class="col-sm-10">
+                        <button type="button" id="showcatButton" class="btn btn-info">Show</button>
+                        <div class="mt-3 ml-4" id="checkboxContainer" style="display: none;">
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" id="category1" name="category1" class="form-check-input">
+                                <label for="category1" class="form-check-label">Category 1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" id="category2" name="category2" class="form-check-input">
+                                <label for="category2" class="form-check-label">Category 2</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" id="category3" name="category3" class="form-check-input">
+                                <label for="category3" class="form-check-label">Category 3</label>
+                            </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="attachFiles" class="col-sm-2 col-form-label">Attach Files:</label>
+                    <div class="col-sm-10">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="attachFiles" name="userfile" multiple
+                                onchange="previewFile()">
+                            <label class="custom-file-label" for="attachFiles">Choose file(s)</label>
+                        </div>
+                        <div id="file-preview" class="form-control mt-1 "> </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="event" value="{{ eventId }}">
+
+                <div class="form-group row justify-content-end">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="reset" class="btn btn-secondary ml-2" onclick="onReset()">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
     <footer id="footer"></footer>
     <!-- End Footer -->
     <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
@@ -92,6 +117,18 @@
 </body>
 <Script>
 
+    document.addEventListener('DOMContentLoaded', function () {
+        var showcatButton = document.getElementById('showcatButton');
+        var checkboxContainer = document.getElementById('checkboxContainer');
+
+        showcatButton.addEventListener('click', function () {
+            if (checkboxContainer.style.display === 'none') {
+                checkboxContainer.style.display = 'inline-block';
+            } else {
+                checkboxContainer.style.display = 'none';
+            }
+        });
+    });
     function getExtension(filename) {
         var parts = filename.split('.');
         return parts[parts.length - 1];
@@ -195,5 +232,10 @@
     .form-control:focus {
         color: rgb(0, 0, 0);
     }
+
+    #checkboxContainer {
+        display: inline-block;
+    }
 </style>
+
 </html>
