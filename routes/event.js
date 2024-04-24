@@ -16,6 +16,8 @@ router.get('/', checkLoginSession, async (req, res) => {
 
     const role = req.session.role;
 
+    formattedEvents.reverse()
+
     res.render('event/index', { eventList: formattedEvents, role });
 });
 
@@ -42,7 +44,8 @@ router.get('/schedule', checkLoginSession, async (req, res) => {
         formattedFirstClosureDate: moment(event.firstClosureDate).format('YYYY-MM-DD'),
         formattedFinalClosureDate: moment(event.finalClosureDate).format('YYYY-MM-DD'),
       }));
-      res.render('event/schedule', { eventList: formattedEvents });
+    formattedEvents.reverse()
+    res.render('event/schedule', { eventList: formattedEvents });
     } catch (error) {
       console.error('Error fetching event data:', error);
       res.status(500).json({ message: 'Error fetching event data' });
@@ -102,6 +105,7 @@ router.post('/search', checkLoginSession, async (req, res) => {
 
     const role = req.session.role;
     
+    formattedEvents.reverse()
     res.render('event/index', { eventList: formattedEvents, role });
 })
 
