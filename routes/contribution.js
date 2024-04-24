@@ -71,12 +71,18 @@ router.get('/', async (req, res) => {
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
+   var contributionDate = await ContributionModel.find(date);
+   var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
+   var notOver = false;
+   if(differeceInDays < 14){
+      notOver = true;
+   }
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/index', { contributionList, role, facultyList });
+      res.render('contribution/index', { contributionList, role, facultyList, notOver });
    }
    else{
-      res.render('contribution/indexUser', { contributionList, role });
+      res.render('contribution/indexUser', { contributionList, role, notOver });
    }
       
    // res.render('contribution/index', { contributionList })
@@ -315,31 +321,24 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.post('/advcomments', checkLoginSession, async (req, res) => {
-   const { contributionId, content } = req.body;
-   const userId = req.session.userId; // Assuming userId is stored in the session
+router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
    try {
-      // Create the new comment
+      const contributionId = req.params.id;
+      const userId = req.session.user._id;
+      const content = req.body.content;
+
       const newAdvComment = await AdvCommentModel.create({
          content,
-         date: new Date(),
+         date: Date.now(),
          userId,
          contributionId,
       });
-      // Find the corresponding post and update its comments array
-      const post = await ContributionModel.findById(contributionId);
-      if (post) {
-         post.advcomments.push(newAdvComment._id);
-         await post.save();
-      } else {
-         console.error('Post not found');
-         return res.status(404).send('Post not found');
-      }
 
-      res.redirect('/post/posts');
+      console.log(newAdvComment);
 
-      // Log success message
-      console.log("Comment created successfully", newAdvComment);
+      await ContributionModel.findByIdAndUpdate(contributionId, { $push: { advcomment: newAdvComment._id } });
+
+      res.redirect('/contribution');
    } catch (err) {
       console.error(err);
       res.status(500).send('Internal Server Error');
@@ -491,7 +490,7 @@ router.get('/dislike/:id', checkLoginSession, async (req, res) => {
 router.get('/admin-comment/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id)
-   const differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
+   var differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
    if (differeceInDays < 14) {
    var email = await ContributionModel.find().populate({
       path: 'user',
