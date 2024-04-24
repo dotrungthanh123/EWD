@@ -493,7 +493,7 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.get('/feedback/:id', async (req,res) => {
+router.post('/feedback/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id).populate('user');
    var email = contribution.user.email;
@@ -521,6 +521,7 @@ router.get('/feedback/:id', async (req,res) => {
          subject: 'Marketing Coordinator replied',
          text: emailContent,
       };
+      console.log('Email content: ', emailContent);
       transporter.sendMail(mailOptions, (info) => {
          console.log('Email sent: ' + info.response);
       });

@@ -127,11 +127,10 @@
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form id="comment-form" class="comment-form">
+                                <form id="comment-form" class="comment-form" action="/contribution/feedback/{{_id}}" method="post">
                                     <div class="feedback-container">
                                         <textarea id="comments" name="emailContent"
                                             placeholder="Leave feedback..."></textarea>
-                                        <a href="/contribution/feedback/{{_id}}">
                                             <button type="submit">Feedback</button>
                                         </a>
                                     </div>
