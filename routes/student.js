@@ -16,5 +16,9 @@ router.get('/detail/:id', checkMultipleSession(['Admin', 'MktCoor', 'MktManager'
    await ContributionModel.find({user: id}).populate('category')
    res.render('contribution/index', { contributionList })
 })
+router.get('/list', checkAdminSession, async (req, res) => {
+   var studentList = await UserModel.find({});
+   res.render('student/list', { studentList});
+});
 
 module.exports = router;
