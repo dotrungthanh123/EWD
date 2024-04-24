@@ -18,6 +18,30 @@ const moment = require('moment');
 var contributionList = []
 var eventList = []
 
+const formMiddleWare = (req, res, next) => {
+   fileTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+
+   const form = formidable({
+      uploadDir: './public/uploads',
+      multiples: true,
+      allowEmptyFiles: true,
+      minFileSize: 0,
+      maxFileSize: 15 * 1024 * 1024, // 15mb
+      keepExtensions: true,
+      filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
+   })
+
+   form.parse(req, (err, fields, files) => {
+      if (err) {
+         next(err);
+         return;
+      }
+      req.fields = fields;
+      req.files = files;
+      next();
+   });
+};
+
 const getContribution = async req => {
    contributionList = await ContributionModel.find()
       .populate('category')
@@ -93,7 +117,7 @@ router.get('/', async (req, res) => {
    
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/indexUser', { contributionList, role, facultyList});
+      res.render('contribution/index', { contributionList, role, facultyList});
    }
    else{
       res.render('contribution/indexUser', { contributionList, role});
@@ -165,40 +189,6 @@ router.get('/statistics', async (req, res) => {
    res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
-const formMiddleWare = (req, res, next) => {
-   fileTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/jpg', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-
-   const form = formidable({
-      uploadDir: './public/uploads',
-      multiples: true,
-      allowEmptyFiles: true,
-      minFileSize: 0,
-      maxFileSize: 15 * 1024 * 1024, // 15mb
-      keepExtensions: true,
-      filter: (part) => part.originalFilename !== "" && fileTypes.includes(part.mimetype)
-   })
-
-   form.parse(req, (err, fields, files) => {
-      if (err) {
-         next(err);
-         return;
-      }
-      req.fields = fields;
-      req.files = files;
-      next();
-   });
-};
-
-function convertDateFormat(dateObj) {
-   const month = dateObj.getUTCMonth() + 1;
-   const day = dateObj.getUTCDate();
-   const year = dateObj.getUTCFullYear();
-
-   const pMonth = month.toString().padStart(2, "0");
-   const pDay = day.toString().padStart(2, "0");
-   return `${year}/${pMonth}/${pDay}`
-}
-
 router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    const contribution = {
       name: req.fields.name[0],
@@ -211,6 +201,8 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       viewer: [],
       event: req.fields.event[0]
    }
+
+   console.log(req.fields.category);
 
    await ContributionModel.create(contribution);
 
@@ -257,6 +249,16 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
 
    res.redirect('/contribution')
 })
+
+function convertDateFormat(dateObj) {
+   const month = dateObj.getUTCMonth() + 1;
+   const day = dateObj.getUTCDate();
+   const year = dateObj.getUTCFullYear();
+
+   const pMonth = month.toString().padStart(2, "0");
+   const pDay = day.toString().padStart(2, "0");
+   return `${year}/${pMonth}/${pDay}`
+}
 
 router.get('/edit/:id', checkMultipleSession(['Student', 'MktCoor']),  async (req, res) => {
    var id = req.params.id;
@@ -467,8 +469,6 @@ router.post('/like/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
-
-   console.log('like');
 })
 
 router.post('/dislike/:id', checkLoginSession, async (req, res) => {
@@ -493,7 +493,6 @@ router.post('/dislike/:id', checkLoginSession, async (req, res) => {
          state: react.state,
       })
    }
-   console.log('dislike');
 })
 
 router.post('/feedback/:id', async (req,res) => {
