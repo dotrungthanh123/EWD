@@ -315,31 +315,24 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
    }
 })
 
-router.post('/advcomments', checkLoginSession, async (req, res) => {
-   const { contributionId, content } = req.body;
-   const userId = req.session.userId; // Assuming userId is stored in the session
+router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
    try {
-      // Create the new comment
+      const contributionId = req.params.id;
+      const userId = req.session.user._id;
+      const content = req.body.content;
+
       const newAdvComment = await AdvCommentModel.create({
          content,
-         date: new Date(),
+         date: Date.now(),
          userId,
          contributionId,
       });
-      // Find the corresponding post and update its comments array
-      const post = await ContributionModel.findById(contributionId);
-      if (post) {
-         post.advcomments.push(newAdvComment._id);
-         await post.save();
-      } else {
-         console.error('Post not found');
-         return res.status(404).send('Post not found');
-      }
 
-      res.redirect('/post/posts');
+      console.log(newAdvComment);
 
-      // Log success message
-      console.log("Comment created successfully", newAdvComment);
+      await ContributionModel.findByIdAndUpdate(contributionId, { $push: { advcomment: newAdvComment._id } });
+
+      res.redirect('/contribution');
    } catch (err) {
       console.error(err);
       res.status(500).send('Internal Server Error');
