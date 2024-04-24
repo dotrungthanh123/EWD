@@ -51,23 +51,7 @@ const getEvent = async () => {
 }
 
 router.get('/', async (req, res) => {
-   // Suck because it has to retrieve all the contributions, then a call for each of them to get the faculty of the user
-   // Suck not because design suck, is mongodb that suck
-
-   // Might be better: https://stackoverflow.com/questions/11303294/querying-after-populate-in-mongoose
-
-   // Must login else undefine faculty in session
-   // Need code to prevent viewing without login
-   
    await getContribution(req)
-
-   // var publishContributions = []
-
-   // for (index in contributionList) {
-   //    if (contributionList[index].publish) publishContributions.push(contributionList[index])
-   // }
-
-   // res.render('contribution/index', { contributionList: publishContributions, publish: true })
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
