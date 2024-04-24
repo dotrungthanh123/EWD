@@ -192,17 +192,17 @@ router.get('/statistics', async (req, res) => {
 })
 
 router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
+   console.log(req.fields);
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : [],
-      category: req.fields.category ? [req.fields.category[0]] : [],
       user: req.session.user._id,
       date: Date.now(),
-      anonymous: req.fields.anonymous[0].length == 0 ? true : false,
+      anonymous: req.fields.anonymous ? true : false,
       viewer: [],
       event: req.fields.event[0]
-   }
+   }  
 
    await ContributionModel.create(contribution);
 
