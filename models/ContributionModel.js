@@ -42,7 +42,7 @@ var ContributionSchema = mongoose.Schema(
       advcomment: [{
          type: mongoose.Schema.Types.ObjectId,
          ref: 'AdvComment'
-     }],
+      }],
 
       // users can only filter for category after seeing the index (which means the contributions have already been filtered by faculty)
       category: [{

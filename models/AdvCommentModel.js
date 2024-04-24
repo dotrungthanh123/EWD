@@ -20,5 +20,5 @@ var AdvCommentSchema = mongoose.Schema(
         },
     }
 );
-var AdvCommentModel = mongoose.model("advcomments", AdvCommentSchema);
+var AdvCommentModel = mongoose.model("AdvComment", AdvCommentSchema);
 module.exports = AdvCommentModel;

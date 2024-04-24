@@ -45,13 +45,21 @@ const formMiddleWare = (req, res, next) => {
 
 const getContribution = async req => {
    contributionList = await ContributionModel.find()
-      .populate('category')
+      .populate('category') // Populate category details if required
       .populate({
-         path : 'user',
-         populate : {
-           path : 'role'
+         path: 'advcomment', // Populate the 'advcomment' field in ContributionModel
+         populate: {
+            path: 'userId', // Populate user information within 'advcomment'
+            select: 'username', // Only fetch the username
+         },
+      })
+      .populate({
+         path: 'user', // Populate the user who made the contribution
+         populate: {
+         path: 'role', // Populate the user's role
+         select: 'name' // Only fetch the role name
          }
-       })
+      })
       .then(async contributions =>
          await contributions
                // Display all when not login for testing, should be false on right side
@@ -99,22 +107,6 @@ router.get('/', async (req, res) => {
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
-//    var contributions = await ContributionModel.find();
-//    const currentDate = new Date();
-//    const twoWeeksAgo = new Date(currentDate.getTime() - (14*24*60*60*1000));
-//    // var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
-//    // console.log('difference in days: ', differeceInDays);
-//    console.log('2 weeks ago: ',twoWeeksAgo);
-//    var notOver = false;
-//    // if(differeceInDays < 14){
-//    //    notOver = true;
-//    // }
-//    contributions.forEach(contribution => {
-//       console.log('contribution Date: ', contribution.date)
-//       if (contribution.date <= twoWeeksAgo) {
-//           notOver = true;
-//       }
-//   });
    
    contributionList.reverse()
    if (role == "Admin" || role == "MktCoor"){
@@ -208,7 +200,8 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       date: Date.now(),
       anonymous: req.fields.anonymous ? true : false,
       viewer: [],
-      event: req.fields.event[0]
+      event: req.fields.event[0],
+      advcomment: []
    }  
 
    await ContributionModel.create(contribution);
@@ -344,9 +337,9 @@ router.post('/comment/:id', checkLoginSession, async (req, res) => {
 
 router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
    try {
+      const content = req.body.content;
       const contributionId = req.params.id;
       const userId = req.session.user._id;
-      const content = req.body.content;
 
       const newAdvComment = await AdvCommentModel.create({
          content,
@@ -355,10 +348,19 @@ router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
          contributionId,
       });
 
+      const contribution = await ContributionModel.findById(contributionId);
+      if (contribution) {
+         contribution.advcomment.push(newAdvComment._id);
+         await contribution.save();
+      } else {
+         console.error('Post not found');
+         return res.status(404).send('Post not found');
+      }
+
       console.log(newAdvComment);
-
-      await ContributionModel.findByIdAndUpdate(contributionId, { $push: { advcomment: newAdvComment._id } });
-
+      console.log("Comment content:", content);
+      console.log("Contribution ID:", contributionId);
+      
       res.redirect('/contribution');
    } catch (err) {
       console.error(err);
