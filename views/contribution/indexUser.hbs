@@ -175,7 +175,7 @@
         const likes = document.querySelectorAll('.like-button')
         const dislikes = document.querySelectorAll('.dislike-button')
 
-        Array.from(likes).forEach(like => like.addEventListener('click', function (event) {
+        Array.from(likes).forEach(like => like.addEventListener('click', function () {
             const postId = event.target.dataset.postId;
             const likeButton = event.target
             const index = Array.from(likes).indexOf(likeButton)
