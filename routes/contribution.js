@@ -132,7 +132,7 @@ router.get('/faculty/:id', async (req, res) => {
    const role = req.session.role
    if (role == "Admin" || role == "MktCoor") {
       contributions.reverse()
-      res.render('contribution/indexUser', { contributionList: contributions, role })
+      res.render('contribution/index', { contributionList: contributions, role })
    } else {
       contributionList.reverse()
       res.render('contribution/indexUser', {contributionList, role})
@@ -191,8 +191,7 @@ router.get('/statistics', async (req, res) => {
    res.render('contribution/statistics', {facultyContributionCount, total})
 })
 
-router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
-   console.log(req.fields);
+router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => 
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],

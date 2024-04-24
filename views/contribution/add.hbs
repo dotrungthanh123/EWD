@@ -35,7 +35,7 @@
         <div class="container text-white">
             <h2 class="text-center mt-4">Add New Contribution</h2>
             <p class="text-center">Bringing Ideas to Life on Campus</p>
-            <form action="/contribution/add" method="post" enctype="multipart/form-data">
+            <form id="myForm" action="/contribution/add" method="post" enctype="multipart/form-data">
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Name:</label>
                     <div class="col-sm-10">
@@ -86,6 +86,14 @@
 
                 <div class="form-group row justify-content-end">
                     <div class="col-sm-10">
+                        <input type="checkbox" class="form-check-input" id="termsCheck" name="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">I agree with <a href="">Terms and
+                                Conditions</a></label>
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-end">
+                    <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="reset" class="btn btn-secondary ml-2" onclick="onReset()">Reset</button>
                     </div>
@@ -93,7 +101,7 @@
             </form>
         </div>
     </main>
-    <footer id="footer"></footer>
+    <footer id="footer" style="width: 100%;"></footer>
     <!-- End Footer -->
     <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="/assets/vendor/aos/aos.js"></script>
@@ -107,6 +115,13 @@
 
 </body>
 <Script>
+    document.getElementById('myForm').addEventListener('submit', function (e) {
+        var termsCheck = document.getElementById('termsCheck');
+        if (!termsCheck.checked) {
+            e.preventDefault();
+            alert('Please agree to the terms and conditions before submitting.');
+        }
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
         var showcatButton = document.getElementById('showcatButton');
@@ -199,7 +214,7 @@
 <style>
     body {
         padding-top: 10rem;
-        padding-bottom: 4.2rem;
+        padding-bottom: 60px;
         background-color: hsl(250, 25%, 19%)
     }
 
@@ -219,13 +234,25 @@
         background-color: hsl(235, 22%, 30%);
     }
 
-
     .form-control:focus {
         color: rgb(0, 0, 0);
     }
 
     #checkboxContainer {
         display: inline-block;
+    }
+
+    .form-check-input {
+        transform: scale(1.5);
+    }
+
+    .form-check-label {
+        margin-left: 10px;
+    }
+
+    #footer {
+        width: 100%;
+        height: 60px;
     }
 </style>
 
