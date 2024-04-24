@@ -28,9 +28,9 @@ const getContribution = async req => {
             // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
             .filter(contribution => {
                if (!req.session.user.faculty) return true
-               else {
+               else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if (req.session.user.role === "MktCoor" && contribution.user.faculty.equals(req.session.user.faculty)) return true
+                  if (req.session.user.role === "MktCoor") return true
                }
             })
       )
