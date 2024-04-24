@@ -20,8 +20,13 @@ var eventList = []
 
 const getContribution = async req => {
    contributionList = await ContributionModel.find()
-      .populate('user')
       .populate('category')
+      .populate({
+         path : 'user',
+         populate : {
+           path : 'role'
+         }
+       })
       .then(async contributions =>
          await contributions
                // Display all when not login for testing, should be false on right side
@@ -30,7 +35,7 @@ const getContribution = async req => {
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if (req.session.user.role === "MktCoor") return true
+                  if ( req.session.user.role.name === "MktCoor") return true
                }
                return false
             })
