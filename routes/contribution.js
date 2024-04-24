@@ -115,7 +115,7 @@ router.get('/', async (req, res) => {
 //       }
 //   });
    
-
+   contributionList.reverse()
    if (role == "Admin" || role == "MktCoor"){
       res.render('contribution/index', { contributionList, role, facultyList});
    }
@@ -131,8 +131,10 @@ router.get('/faculty/:id', async (req, res) => {
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
    if (role == "Admin" || role == "MktCoor") {
+      contributions.reverse()
       res.render('contribution/indexUser', { contributionList: contributions, role })
    } else {
+      contributionList.reverse()
       res.render('contribution/indexUser', {contributionList, role})
    }
 })
@@ -290,6 +292,8 @@ router.get('/showPublish', checkLoginSession, async (req, res) => {
       if (contributionList[index].publish) publishContributions.push(contributionList[index])
    }
 
+   publishContributions.reverse()
+
    res.render('contribution/index', { contributionList: publishContributions, publish: true })
 })
 
@@ -361,6 +365,8 @@ router.post('/search', checkLoginSession, async (req, res) => {
 
    const role = req.session.role;
 
+   contributionList.reverse()
+   
    if (req.session.role == "Admin" || req.session.role == "MktCoor"){
       res.render('contribution/index', { contributionList, role });
    }
@@ -441,6 +447,8 @@ router.post('/filterDate', checkLoginSession, async (req, res) => {
       .filter(contribution => {
          return new Date(contribution.date) > startDate && new Date(contribution.date) < endDate
       }))
+
+   contributionList.reverse()
 
    res.render('contribution/index', { contributionList })
 })
