@@ -71,12 +71,18 @@ router.get('/', async (req, res) => {
 
    const role = req.session.role;
    const facultyList = await FacultyModel.find()
+   var contributionDate = await ContributionModel.find(date);
+   var differeceInDays = (Date.now() - contributionDate)/ (1000*3600*24);
+   var notOver = false;
+   if(differeceInDays < 14){
+      notOver = true;
+   }
 
    if (role == "Admin" || role == "MktCoor"){
-      res.render('contribution/index', { contributionList, role, facultyList });
+      res.render('contribution/index', { contributionList, role, facultyList, notOver });
    }
    else{
-      res.render('contribution/indexUser', { contributionList, role });
+      res.render('contribution/indexUser', { contributionList, role, notOver });
    }
       
    // res.render('contribution/index', { contributionList })
@@ -491,7 +497,7 @@ router.get('/dislike/:id', checkLoginSession, async (req, res) => {
 router.get('/admin-comment/:id', async (req,res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id)
-   const differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
+   var differeceInDays = (Date.now() - contribution.Date)/ (1000*3600*24);
    if (differeceInDays < 14) {
    var email = await ContributionModel.find().populate({
       path: 'user',
