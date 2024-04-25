@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Events</title>
+    <title>Student Contributions</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -40,7 +40,7 @@
         <div class="container" data-aos="fade-up">
             <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
                 <div class="col-xl-15 col-lg-10">
-                    <h1>All Events<span>.</span></h1>
+                    <h1>Student Contributions<span>.</span></h1>
                 </div>
             </div>
     </section>
@@ -49,42 +49,52 @@
         <section class="m-container-main">
             <div class="left">
                 <div class="sidebar">
-                    <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
-                    <div class="dashboard-menu">
-                        <button onclick="location.href='/event/add';" class="createBtn">Create New Event</button>
-                    </div>
+                    <h2 style="color:#ffffff; text-align: center;">Details</h2>
                     <hr style="color: #ffffff; height: 3px;">
-                    <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
+                    <div class="detail-section">
+                        <h3>Email: {{ user.email }}</h3>
+                        <h3>Name: {{ user.name }}</h3>
+                        <h3>Role: {{ user.role.name }}</h3>
+                        <h3>Number of Contributions: {{ numOfContributions }}</h3>
+                    </div>
                 </div>
             </div>
 
             <div class="right">
                 <div class="main-magazine">
-                    <form action="/event/search" method="post" class="search-bar">
+                    <form action="/contribution/search" method="post" class="search-bar">
                         <input type="text" name="keyword" placeholder="Search">
                         <button type="submit"><i class="bi bi-search"></i></button>
                     </form>
-
+    
                     <div class="magazine">
-                        {{#each eventList}}
-                        <article class="article">
-                            <a href="/event/detail/{{_id}}">
-                                <h1>{{ name }}</h1>
-                            </a>
-                            <p>Event Description: {{ description }}</p>
-                            <h2>First Closure Date: {{ formattedFirstClosureDate }}</h2>
-                            <h2>Final Closure Date: {{ formattedFinalClosureDate }}</h2>
-                            <hr style="color: #ffffff; height: 1px;">
-                            <button onclick="location.href='/contribution/add/{{ _id }}'" type="button" class="addingbtn">
-                                Add contribution
-                            </button>
-
-                        </article>
+                        {{#each contributions}}
+                            <article class="article">
+                                <a href="">
+                                    <h1>{{ name }}</h1>
+                                </a>
+                                <p>{{ description }}</p>
+                                <hr style="color: #ffffff; height: 3px;">
+                                <div class="comments">
+                                    <ul class="comments-list">
+                                    </ul>
+                                    <form id="comment-form" class="comment-form" action="" method="post">
+                                        <div class="feedback-container">
+                                            <textarea id="comments" name="emailContent"
+                                                placeholder="Leave feedback..."></textarea>
+                                                <button type="submit" class="publish-btn">Feedback</button>
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </article>
                         {{/each}}
-                        <div id="pagination-container"></div>
+
                     </div>
+                    <div id="pagination-container"></div>
                 </div>
             </div>
+            
         </section>
     </div>
 
@@ -101,32 +111,42 @@
 
     <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-    $(function () {
-        $("#header").load("/sharedhtmls/header.hbs", function () {
-            $('.mobile-nav-toggle').click(function () {
-                $('#navbar').toggleClass('navbar-mobile');
+        $(function () {
+            $("#header").load("/sharedhtmls/header.html", function () {
+                $('.mobile-nav-toggle').click(function () {
+                    $('#navbar').toggleClass('navbar-mobile');
 
-            });
+                });
 
-            $('.dropdown > a').click(function (e) {
-                e.preventDefault();
-                $(this).next('ul').slideToggle();
+                $('.dropdown > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).next('ul').slideToggle();
+                });
             });
+            $("#footer").load("/sharedhtmls/footer.html");
         });
-        $("#footer").load("/sharedhtmls/footer.hbs");
-    });
 
+        $(document).on('keypress', '#comments', function (e) {
+            if (e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+                $(this).closest("form").submit();
+            }
+        });
+
+        //Pagination
         let currentPage = 1;
         const articlesPerPage = 5;
         const articles = document.querySelectorAll('.article');
 
         function paginate() {
+            // Hide all articles
             articles.forEach(article => {
                 article.style.display = 'none';
             });
 
+            // Show only the articles for the current page
             let startIndex = (currentPage - 1) * articlesPerPage;
             let endIndex = startIndex + articlesPerPage;
             for (let i = startIndex; i < endIndex; i++) {
@@ -135,9 +155,11 @@
                 }
             }
 
+            // Remove old page numbers
             let paginationContainer = document.getElementById('pagination-container');
             paginationContainer.innerHTML = '';
 
+            // Add new page numbers
             let totalPages = Math.ceil(articles.length / articlesPerPage);
             for (let i = 1; i <= totalPages; i++) {
                 let btn = document.createElement('button');
@@ -169,6 +191,7 @@
 
     :root {}
 
+    /*hero*/
     #hero {
         width: 100%;
         min-height: auto;
@@ -226,7 +249,6 @@
     }
 
     /* Main Container */
-
     .m-container {
         display: flex;
         flex-flow: column nowrap;
@@ -238,8 +260,10 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+        justify-content: center;
     }
 
+    /*Separated Sections*/
     .left {
         width: 25%;
     }
@@ -249,7 +273,7 @@
         padding-left: 5%;
     }
 
-    /* sidebar */
+    /*Sidebar*/
     .sidebar {
         background-color: hsl(261, 18%, 15%);
         border-radius: 20px;
@@ -257,18 +281,25 @@
         flex-direction: column;
         padding: 15px;
         margin-left: 35px;
-        height: 600ps;
-
+        height: auto;
     }
 
     .sidebar h2 {
         font-size: 20px;
     }
 
+    .detail-section h3{
+        font-size: 15px;
+        color:#ffffff;
+        text-align: left;
+        margin-left: 20px;
+    }
+
     .main-magazine {
         width: 100%;
     }
 
+    /*searchbar*/
     .search-bar {
         width: 100%;
         max-width: auto;
@@ -308,6 +339,7 @@
         margin-right: 10px;
     }
 
+    /*article*/
     .magazine {
         margin-top: 20px;
     }
@@ -318,6 +350,7 @@
         background-color: hsl(261, 18%, 15%);
         width: 100%;
         margin-top: 10px;
+        position: relative;
     }
 
     .article h1 {
@@ -340,6 +373,7 @@
         color: #ffffff;
     }
 
+    /*User Appearance*/
     .posting-user {
         display: flex;
     }
@@ -348,9 +382,36 @@
         font-size: 25px;
         color: #ffffff;
         text-align: left;
-        margin-top: 13px;
+        margin-top: 20px;
     }
 
+    .bi-person {
+        font-size: 40px;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+
+    /*publish-btn (Feedback)*/
+    .publish-btn:hover {
+        background: #bf58ff;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .publish-btn {
+        border: 0;
+        width: 224px;
+        height: 35px;
+        flex-shrink: 0;
+        border-radius: 20px;
+        margin-left: 20px;
+        background: #686bc4;
+        color: #ffffff;
+        transition: .4s;
+        align-items: center;
+    }
+
+    /*Actions (Likes/Dislikes/Comments)*/
     .article-actions {
         display: flex;
         justify-content: space-between;
@@ -362,13 +423,30 @@
         color: #ffffff;
     }
 
+    .dislike-button {
+        cursor: pointer;
+        color: white;
+        margin-left: 20px;
+    }
+
+    .dislike-button:hover {
+        color: #FF69B4;
+    }
+
+    .comment-button {
+        color: #ffffff;
+    }
+
     .like-button:hover {
         color: #FF69B4;
     }
 
-    .article-actions {
-        display: flex;
-        justify-content: space-between;
+    .toggled {
+        color: #FF69B4 !important;
+    }
+
+    .comment-button:hover {
+        color: #80ff7b;
     }
 
     .article-actions .actions {
@@ -376,42 +454,91 @@
         align-items: center;
     }
 
-    .like-button{
+    .like-button,
+    .dislike-button,
+    .comment-button {
         font-size: 24px;
-        /* Adjust size as needed */
         margin-right: 8px;
-        /* Add some space between the icon and the text */
     }
 
-    .like-count {
+    .like-count,
+    .dislike-count {
         font-size: 13px;
         color: #ffffff;
         margin-top: 5px;
     }
 
-    .createBtn {
-        justify-content: center;
-        width: 75%;
-        padding: 8px;
-        background: #686bc4;
-        border: none;
-        border-radius: 50px;
+    .comment-count {
+        font-size: 13px;
         color: #ffffff;
+        margin-top: 8px;
+    }
+
+    /*Comment Section*/
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comments h3 {
+        margin-bottom: 10px;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .comments-block {
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: #f5f5f5;
+        margin-bottom: 10px;
+    }
+
+    .comment-user {
+        display: flex;
+        align-items: center;
+    }
+
+    .comment-user img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .comment-content {
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .comment-form {
         margin-top: 10px;
-        transition: .4s;
     }
 
-    .createBtn:hover {
-        background: #bf58ff;
-        cursor: pointer;
+    .feedback-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    button.createBtn,
-    button.btn-magazine {
-        font-size: 15px;
-        /* Change this to the size you want */
+    .comment-form textarea {
+        flex: 1;
+        margin-right: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+        background: transparent;
+        color: #cac7ff;
     }
 
+    
+
+    /*Pagination-Container*/
     #pagination-container {
         display: flex;
         justify-content: center;
@@ -437,23 +564,6 @@
         color: white;
     }
 
-    .addingbtn {
-        justify-content: center;
-        width: 25%;
-        padding: 8px;
-        background: #686bc4;
-        border: none;
-        border-radius: 50px;
-        margin-top: 10px;
-        transition: .4s;
-        color: #ffffff;
-    }
-
-    .addingbtn:hover{
-        background: #ab5ec9;
-        color: #000000;
-    }
-
     /* Small devices (landscape phones, less than 768px) */
     @media (max-width: 767px) {
         .m-container-main {
@@ -466,14 +576,11 @@
         .right {
             width: 100%;
             padding: 0 15px;
-            /* Adjust padding here */
         }
 
         .left .sidebar {
             width: 90%;
-            /* Adjust width here */
             margin: auto;
-            /* Center the sidebar */
         }
 
         .search-bar {
@@ -491,7 +598,6 @@
             height: 30px;
         }
 
-        /* Adjust other elements as necessary... */
     }
 
     /* Medium devices (tablets, less than 992px) */
@@ -506,22 +612,16 @@
         .right {
             width: 100%;
             padding: 0 15px;
-            /* Adjust padding here */
         }
 
         .search-bar {
             margin-top: 20px;
         }
 
-
         .left .sidebar {
             width: 90%;
-            /* Adjust width here */
             margin: auto;
-            /* Center the sidebar */
         }
-
-        /* Adjust other elements as necessary... */
     }
 </style>
 
