@@ -79,9 +79,10 @@
                     <div class="col-sm-2">
                         <label for="attachFiles" class="col-form-label">Attached Files:</label>
                         <div class="row">
-                            <button type="button" class="downloadAll">
-                                <a href="/contribution/download/{{contribution._id}}">Download All</a>
+                            <button onclick="location.href='/contribution/download/{{contribution._id}}'"  type="button" class="downloadAll">
+                                Download All
                             </button>
+                            {{!-- <a href="/contribution/download/{{contribution._id}}">Download All</a> --}}
                         </div>
                     </div>
 
@@ -132,6 +133,7 @@
         });
         $("#footer").load("/sharedhtmls/footer.hbs");
     });
+    
 </Script>
 <style>
     body {
