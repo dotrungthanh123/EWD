@@ -124,7 +124,7 @@ router.get('/faculty/:id', async (req, res) => {
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
    if (role == "Admin" || role == "MktCoor") {
-      contributions.reverse()
+      contributionList.reverse()
       res.render('contribution/index', { contributionList: contributions, role })
    } else {
       contributionList.reverse()
@@ -380,7 +380,7 @@ router.post('/search', checkLoginSession, async (req, res) => {
       res.render('contribution/index', { contributionList, role });
    }
    else{
-      res.render('contribution/index', { contributionList, role });
+      res.render('contribution/indexUser', { contributionList, role });
    }
 })
 
