@@ -95,6 +95,8 @@ const getContribution = async req => {
       contribution.dislike = dislikeList.length
       contribution.isLike = userState == 1
       contribution.isDislike = userState == 2
+      
+      contribution.view = contribution.viewer.length
    })
 }
 
@@ -133,13 +135,6 @@ router.get('/faculty/:id', async (req, res) => {
 })
 
 router.get('/download/:id', async (req, res) => {
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
    var zip = new AdmZip()
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
