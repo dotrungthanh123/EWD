@@ -1,139 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
     <title>Statistics</title>
-    <!-- Include Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Basic styling -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .chart-container {
-            margin-bottom: 20px;
-        }
-
-        h1, h2 {
-            text-align: center;
-        }
-
-        canvas {
-            border: 1px solid #ccc;
-            background-color: white;
-        }
-    </style>
 </head>
+
 <body>
+    <header id="header" class="fixed-top"></header>
+    <main id="main">
+        <div class="container">
+            <div class="row">
+                <h2 class="text-center text-white">Statistics</h2>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-primary">
+                        <div class="card-body bg-primary text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-random fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>10</h1>
+                                    <h4>Branches</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-primary">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-secondary">
+                        <div class="card-body bg-secondary text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-user-graduate fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>20</h1>
+                                    <h4>Students</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-secondary">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-success">
+                        <div class="card-body bg-success text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-user-tie fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>50</h1>
+                                    <h4>Teachers</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-success">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-danger">
+                        <div class="card-body bg-danger text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-book fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>60</h1>
+                                    <h4>Modules</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-danger">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-warning">
+                        <div class="card-body bg-warning text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-university fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>4</h1>
+                                    <h4>Companies</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-warning">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin-top: 20px">
+                    <div class="card border-info">
+                        <div class="card-body bg-info text-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i class="fa fa-suitcase fa-5x"></i>
+                                </div>
+                                <div class="col-9 text-right">
+                                    <h1>30</h1>
+                                    <h4>Internships</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" target="_blank">
+                            <div class="card-footer bg-light text-info">
+                                <span class="float-left">More details</span>
+                                <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer id="footer"></footer>
 
-<h1>University Statistics Overview</h1>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/sharedhtmls/header.hbs", function () {
+                $('.mobile-nav-toggle').click(function () {
+                    $('#navbar').toggleClass('navbar-mobile');
 
-<!-- Bar chart for general statistics (faculties and events) -->
-<div class="chart-container">
-    <h2>General Chartt</h2>
-    <canvas id="generalStatsChart" width="400" height="200"></canvas>
-</div>
+                });
 
-<!-- Bar chart for faculty contribution counts -->
-<div class="chart-container">
-    <h2>Contributions by Faculty</h2>
-    <canvas id="facultyContributionChart" width="400" height="200"></canvas>
-</div>
+                $('.dropdown > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).next('ul').slideToggle();
+                });
+            });
+            $("#footer").load("/sharedhtmls/footer.hbs");
+        });
 
-<!-- Line chart for published contribution percentages -->
-<div class="chart-container">
-    <h2>Published Contributions Percentage by Faculty</h2>
-    <canvas id="publishedPercentChart" width="400" height="200"></canvas>
-</div>
-
-<!-- Chart.js Script -->
-<script>
-    const ctx1 = document.getElementById('generalStatsChart').getContext('2d');
-    const ctx2 = document.getElementById('facultyContributionChart').getContext('2d');
-    const ctx3 = document.getElementById('publishedPercentChart').getContext('2d');
-
-    // Data for general statistics (faculties and events)
-    const generalStatsData = {
-        labels: ['Faculties', 'Events', 'Users', 'Contribution'], // Labels for faculties and events
-        datasets: [{
-            label: 'Count',
-            data: [{{numFaculties}}, {{numEvents}}, {{numUsers}}, {{numContribution}}], // Number of faculties and events
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-        }]
-    };
-
-    new Chart(ctx1, {
-        type: 'bar', // Bar chart
-        data: generalStatsData,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Data for faculty contributions
-    const facultyNames = [{{#each facultyContributionCount}}{{name}},{{/each}}];
-    const facultyContributions = [{{#each facultyContributionCount}}{{contributions}},{{/each}}];
-
-    const facultyContributionData = {
-        labels: facultyNames,
-        datasets: [{
-            label: 'Contributions',
-            data: facultyContributions,
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-        }]
-    };
-
-    new Chart(ctx2, {
-        type: 'bar', // Bar chart
-        data: facultyContributionData,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Data for published percentages
-    const publishedPercents = [{{#each facultyContributionCount}}{{publishedPercent}},{{/each}}];
-
-    const publishedPercentData = {
-        labels: facultyNames,
-        datasets: [{
-            label: 'Published Contribution Percentage',
-            data: publishedPercents,
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: true,
-            borderWidth: 2,
-            tension: 0.4
-        }]
-    };
-
-    new Chart(ctx3, {
-        type: 'line', // Line chart
-        data: publishedPercentData,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-</script>
+    </script>
 
 </body>
+<style>
+    main {
+        padding-top: 150px;
+    }
+</style>
+
 </html>
