@@ -68,7 +68,7 @@ const getContribution = async req => {
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if ( req.session.user.role.name === "MktCoor") return true
+                  if (req.session.user.role.name === "MktCoor" && req.session.user.role.name === "Guest") return true
                }
                return false
             })
