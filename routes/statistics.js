@@ -13,7 +13,7 @@ router.get('/stats', async (req, res) => {
         const contributions = await ContributionModel.find().populate('user');
         const total = contributions.length;
 
-        const students = await UserModel.find().populate('role');
+        const students = await UserModel.find().populate('role','StudentIT');
         const studentCount = students.length;
 
         for (let i = 0; i < facultyNames.length; i++) {
