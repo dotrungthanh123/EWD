@@ -4,7 +4,8 @@ const UserModel = require('../models/UserModel')
 const RoleModel = require('../models/RoleModel')
 const FacultyModel = require('../models/FacultyModel')
 const ContributionModel = require('../models/ContributionModel')
-const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession } = require('../middlewares/auth');
+const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession, checkLoginSession } = require('../middlewares/auth');
+const { default: mongoose } = require('mongoose');
 
 /* GET users listing. */
 router.get('/', checkAdminSession, async (req, res) => {
@@ -22,24 +23,33 @@ router.get('/detail', async (req, res) => {
 })
 
 router.get('/detail/:id', checkAdminSession, async (req, res) => {
-  const studentId = req.params.id
-
   const user = await UserModel.findById(studentId).populate('role')
   const contributions = await ContributionModel.find({user: user._id})
   res.render("account/detail", {contributions, numOfContributions: contributions.length, user})
 })
 
-router.get('/list', checkAdminSession, async (req,res) => {
+router.get('/list', checkLoginSession, async (req, res) => {
   const studentRole = await RoleModel.findOne({name: 'Student'})
+
+  const role = req.session.user.role.name
+
+  canFilter = role === "Admin" || role === "MktManager"
+
+  if (role === "Student" || role === "Guest") res.redirect('/')
+
   const facultyList = await FacultyModel.find()
-  const studentList = await UserModel.find({role: studentRole._id}).populate('role').populate('faculty')
+  var studentList = await UserModel.find({role: studentRole._id}).populate('role').populate('faculty')
+
+  if (role === "MktCoor") {
+    studentList = studentList.filter(s => s.faculty.id.toString() === req.session.user.faculty)
+  }
 
   studentList.forEach(async student => {
     var contributions = await ContributionModel.find({user: student._id})
     student.numCons = contributions.length
   })
 
-  res.render("student/list", {facultyList, studentList})
+  res.render("student/list", {facultyList, studentList, canFilter})
 })
 
 router.get('/faculty/:id', async (req, res) => {

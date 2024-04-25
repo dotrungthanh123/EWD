@@ -13,7 +13,6 @@ var facultyRouter = require('./routes/faculty');
 var contributionRouter = require('./routes/contribution');
 var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
-var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
 var accountRouter = require('./routes/account')
 var bcrypt = require('bcrypt');
@@ -41,7 +40,7 @@ app.use(session({
 
 //Mongoose
 const mongoose = require('mongoose');
-var uri = "mongodb://0.0.0.0:27017/EnterpriseWebDev";
+var uri = "mongodb+srv://dotrungthanh2300:G2M8VdGSTOEd43HB@database.vprfgee.mongodb.net/?retryWrites=true&w=majority/EnterpriseWebDev";
 var con = mongoose.connect(uri)
   .then(async () => {
     console.log('connect to db succeed')
@@ -128,7 +127,6 @@ app.use('/contribution', contributionRouter.router);
 app.use('/faculty', facultyRouter);
 app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
-app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
 app.use('/account', accountRouter);
 

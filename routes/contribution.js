@@ -68,7 +68,7 @@ const getContribution = async req => {
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if ( req.session.user.role.name === "MktCoor") return true
+                  if (req.session.user.role.name === "MktCoor" && req.session.user.role.name === "Guest") return true
                }
                return false
             })
@@ -95,6 +95,8 @@ const getContribution = async req => {
       contribution.dislike = dislikeList.length
       contribution.isLike = userState == 1
       contribution.isDislike = userState == 2
+      
+      contribution.view = contribution.viewer.length
    })
 }
 
@@ -133,13 +135,6 @@ router.get('/faculty/:id', async (req, res) => {
 })
 
 router.get('/download/:id', async (req, res) => {
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
-   console.log('ASDFKJFKJDSKJDSFJKDSJKSNJKDFSNJFKSD');
    var zip = new AdmZip()
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id);
