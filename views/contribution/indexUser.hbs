@@ -485,6 +485,7 @@
 
     .dislike-button:hover {
         color: #FF69B4;
+        opacity: 0.7;
     }
 
     .comment-button {
@@ -493,6 +494,7 @@
 
     .like-button:hover {
         color: #FF69B4;
+        opacity: 0.7;
     }
 
     .toggled {
@@ -552,21 +554,29 @@
         margin-bottom: 10px;
     }
 
-    .comment-user {
+    .comment-user,
+    .comment-content {
         display: flex;
         align-items: center;
     }
 
-    .comment-user img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+    .comment-username {
+        font-weight: bold;
         margin-right: 10px;
+        color: #ffffff;
     }
 
-    .comment-content {
-        font-size: 13px;
-        margin-top: 5px;
+    .comment-content p {
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        color: #ffffff;
+    }
+
+    .comment-user .commenter {
+        margin-right: 10px;
+        font-size: 30px;
+        color: #ffffff;
     }
 
     .comment-form {
@@ -605,12 +615,6 @@
         cursor: pointer;
     }
 
-    .commenter {
-        font-size: 30px;
-        color: #ffffff;
-        margin-right: 10px;
-    }
-
     /*Pagination-Container*/
     #pagination-container {
         display: flex;
@@ -635,16 +639,6 @@
     #pagination-container button:hover {
         background-color: #ab5ec9;
         color: white;
-    }
-
-    .comment-username {
-        color: #ffffff;
-        font-weight: 700;
-    }
-
-    .comment-content {
-        align-items: center;
-        font-size: 20px;
     }
 
     /* Small devices (landscape phones, less than 768px) */
