@@ -40,7 +40,7 @@ app.use(session({
 
 //Mongoose
 const mongoose = require('mongoose');
-var uri = "mongodb://0.0.0.0:27017/EnterpriseWebDev";
+var uri = "mongodb+srv://dotrungthanh2300:G2M8VdGSTOEd43HB@database.vprfgee.mongodb.net/?retryWrites=true&w=majority/EnterpriseWebDev";
 var con = mongoose.connect(uri)
   .then(async () => {
     console.log('connect to db succeed')
