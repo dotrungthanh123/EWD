@@ -51,17 +51,18 @@
                 <div class="sidebar">
                     <h2 style="color:#ffffff; text-align: center;">Filter</h2>
                     <div class="filter-menu">
-                        <button onclick="location.href='/contribution'" type="button" class="btn-magazine">
+                        <button onclick="location.href='/user/list'" type="button" class="btn-magazine">
                             All Students
                         </button>
 
-
-                        {{#each facultyList}}
-                        <button onclick="location.href='/user/faculty/{{ _id }}'" type="button"
-                            class="btn-magazine">
-                            {{ name }} Students
-                        </button>
-                        {{/each}}
+                        {{#if canFilter}}
+                            {{#each facultyList}}
+                            <button onclick="location.href='/user/faculty/{{ _id }}'" type="button"
+                                class="btn-magazine">
+                                {{ name }} Students
+                            </button>
+                            {{/each}}    
+                        {{/if}}
                     </div>
                 </div>
             </div>

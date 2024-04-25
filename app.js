@@ -13,7 +13,6 @@ var facultyRouter = require('./routes/faculty');
 var contributionRouter = require('./routes/contribution');
 var eventRouter = require('./routes/event')
 var categoryRouter = require('./routes/category')
-var studentRouter = require('./routes/student')
 var statisticRouter = require('./routes/statistics')
 var accountRouter = require('./routes/account')
 var bcrypt = require('bcrypt');
@@ -128,7 +127,6 @@ app.use('/contribution', contributionRouter.router);
 app.use('/faculty', facultyRouter);
 app.use('/event', eventRouter);
 app.use('/category', categoryRouter)
-app.use('/student', studentRouter)
 app.use('/statistics', statisticRouter)
 app.use('/account', accountRouter);
 
