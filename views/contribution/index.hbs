@@ -84,7 +84,11 @@
                             <input type="checkbox" class="articleCheckbox" />
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                                <h2 class="Username">{{user.username}}</h2>
+                            {{#if anonymous}}
+                                <h2 class="Username">Anonymous</h1>
+                            {{else}}
+                                <h2 class="Username">{{ user.username }}</h1>
+                            {{/if}}
                             </div>
                             <p>{{description}}</p>
                             <div class="article-actions">
@@ -149,6 +153,7 @@
 
     <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
     $(function () {
         $("#header").load("/sharedhtmls/header.hbs", function () {
@@ -164,6 +169,70 @@
         });
         $("#footer").load("/sharedhtmls/footer.hbs");
     });
+
+    const updatePostStats = {
+            'like': function (postId) {
+                document.querySelector('#likes-count-' + postId).textContent++
+            },
+            'dislike': function (postId) {
+                document.querySelector('#dislikes-count-' + postId).textContent++
+            },
+            'unlike': function (postId) {
+                document.querySelector('#likes-count-' + postId).textContent--
+            },
+            'undislike': function (postId) {
+                document.querySelector('#dislikes-count-' + postId).textContent--
+            }
+        };
+
+        const likes = document.querySelectorAll('.like-button')
+        const dislikes = document.querySelectorAll('.dislike-button')
+
+        Array.from(likes).forEach(like => like.addEventListener('click', function () {
+            const postId = event.target.dataset.postId;
+            const likeButton = event.target
+            const index = Array.from(likes).indexOf(likeButton)
+            const dislikeButton = dislikes[index]
+            axios.post('contribution/like/' + postId);
+            if (this.classList.contains('bi-heart')) {
+                this.classList.remove('bi-heart');
+                this.classList.add('bi-heart-fill');
+                // If dislike button is full, empty it
+                updatePostStats['like'](postId)
+                if (dislikeButton.classList.contains('bi-heartbreak-fill')) {
+                    dislikeButton.classList.remove('bi-heartbreak-fill');
+                    dislikeButton.classList.add('bi-heartbreak');
+                    updatePostStats['undislike'](postId)
+                }
+            } else {
+                this.classList.remove('bi-heart-fill');
+                this.classList.add('bi-heart');
+                updatePostStats['unlike'](postId)
+            }
+        }))
+
+        Array.from(dislikes).forEach(dislike => dislike.addEventListener('click', function () {
+            const postId = event.target.dataset.postId;
+            const dislikeButton = event.target
+            const index = Array.from(dislikes).indexOf(dislikeButton)
+            const likeButton = likes[index]
+            axios.post('contribution/dislike/' + postId);
+            if (this.classList.contains('bi-heartbreak')) {
+                this.classList.remove('bi-heartbreak');
+                this.classList.add('bi-heartbreak-fill');
+                // If like button is full, empty it
+                updatePostStats['dislike'](postId)
+                if (likeButton.classList.contains('bi-heart-fill')) {
+                    likeButton.classList.remove('bi-heart-fill');
+                    likeButton.classList.add('bi-heart');
+                    updatePostStats['unlike'](postId)
+                }
+            } else {
+                this.classList.remove('bi-heartbreak-fill');
+                this.classList.add('bi-heartbreak');
+                updatePostStats['undislike'](postId)
+            }
+        }))
 
         $(document).on('keypress', '#contribution', function (e) {
             if (e.which === 13 && !e.shiftKey) {

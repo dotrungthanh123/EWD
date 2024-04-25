@@ -47,7 +47,7 @@
 
     <div class="m-container">
         <section class="m-container-main">
-            {{!-- <div class="left">
+            <div class="left">
                 <div class="sidebar">
                     <h2 style="color:#ffffff; text-align: center;">Filter</h2>
                     <div class="filter-menu">
@@ -57,14 +57,14 @@
 
 
                         {{#each facultyList}}
-                        <button onclick="location.href='/contribution/faculty/{{ _id }}'" type="button"
+                        <button onclick="location.href='/user/faculty/{{ _id }}'" type="button"
                             class="btn-magazine">
                             {{ name }} Students
                         </button>
                         {{/each}}
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="right">
                 <div class="main-magazine">
@@ -79,13 +79,12 @@
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
                             </div>
-                            <a href="">
+                            <a href="/user/detail/{{ _id }}">
                                 <h1>Name: {{name}}</h1>
                             </a>
                             <p>Email: {{email}}</p>
-                            <p>Faculty: {{faculty}}</p>
-                            <p>Number of Contributions: {{Contributions.Length}}</p>
-                            {{!--<button type="submit" class="published-btn">Published</button> --}}
+                            <p>Faculty: {{faculty.name}}</p>
+                            <p>Number of Contributions: {{ numCons }}</p>
                         </article>
                         {{/each}}
                         <div id="pagination-container"></div>
