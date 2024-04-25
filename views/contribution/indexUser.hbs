@@ -47,95 +47,111 @@
 
     <div class="m-container">
         <section class="m-container-main">
-            <div class="main-magazine">
-                <form action="/contribution/search" method="post" class="search-bar">
-                    <input type="text" name="keyword" placeholder="Search">
-                    <button type="submit"><i class="bi bi-search"></i></button>
-                </form>
+            <div class="left">
+                <div class="sidebar">
+                    <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
+                    <div class="dashboard-menu">
+                        <button id="selectBtn" class="selectBtn">Select</button>
+                        <button id="submitBtn" class="submitBtn">Publish Selected Articles</button>
+                        <button id="downloadBtn" class="downloadBtn">Download CSV Files</button>
+                    </div>
+                    <hr style="color: #ffffff; height: 3px;">
+                    <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
+                </div>
+            </div>
 
-                <div class="magazine">
-                    {{#each contributionList}}
-                    <article class="article">
-                        <a href="/contribution/detail/{{_id}}">
-                            <h1>{{ name }}</h1>
-                        </a>
-                        <div class="posting-user">
-                            <i class="bi bi-person"></i>
-                            {{#if anonymous}}
-                            <h2 class="Username">Anonymous</h1>
-                                {{else}}
-                                <h2 class="Username">{{ user.username }}</h1>
-                                    {{/if}}
-                        </div>
-                        <p>{{ description }}</p>
-                        <div class="article-actions">
-                            <div class="actions">
-                                {{#if isLike}}
-                                <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')"
-                                    id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
-                                {{else}}
-                                <i class="bi bi-heart like-button" onclick="react(event, 'like')"
-                                    id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
-                                {{/if}}
+            <div class="right">
+                <div class="main-magazine">
+                    <form action="/contribution/search" method="post" class="search-bar">
+                        <input type="text" name="keyword" placeholder="Search">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
 
-                                {{#if isDislike}}
-                                <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')"
-                                    id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
-                                {{else}}
-                                <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
-                                    id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
-                                {{/if}}
+                    <div class="magazine">
+                        {{#each contributionList}}
+                        <article class="article">
+                            <a href="/contribution/detail/{{_id}}">
+                                <h1>{{ name }}</h1>
+                            </a>
+                            <div class="posting-user">
+                                <i class="bi bi-person"></i>
+                                {{#if anonymous}}
+                                <h2 class="Username">Anonymous</h1>
+                                    {{else}}
+                                    <h2 class="Username">{{ user.username }}</h1>
+                                        {{/if}}
                             </div>
-                            {{!-- <div class="actions">
-                                <i class="bi bi-chat comment-button"></i>
-                                <h5 class="comment-count">0</h5>
-                            </div> --}}
-                        </div>
-                        <hr style="color: #ffffff; height: 1px;">
-                        <div class="comments">
-                            <h3 style="font-size: 15px;">Comments</h3>
-                            <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
-                                method="post">
-                                <div class="feedback-container">
-                                    <textarea id="comments" name="content" placeholder="Leave a comment..."></textarea>
-                                    <a href="/contribution/advcomments/{{_id}}"><button
-                                            type="submit">Submit</button></a>
-                                </div>
-                            </form>
+                            <p>{{ description }}</p>
+                            <div class="article-actions">
+                                <div class="actions">
+                                    {{#if isLike}}
+                                    <i class="bi bi-heart-fill like-button" onclick="react(event, 'like')"
+                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                    {{else}}
+                                    <i class="bi bi-heart like-button" onclick="react(event, 'like')"
+                                        id="likes-count-{{ _id }}" data-post-id="{{ _id }}">{{ like }}</i>
+                                    {{/if}}
 
-                            {{#each advcomment}}
-                            <div class="comment">
-                                <div
-                                    class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
-                                    <div class="d-flex flex-row align-items-center feed-text px-2">
+                                    {{#if isDislike}}
+                                    <i class="bi bi-heartbreak-fill dislike-button" onclick="react(event, 'dislike')"
+                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                    {{else}}
+                                    <i class="bi bi-heartbreak dislike-button" onclick="react(event, 'dislike')"
+                                        id="dislikes-count-{{ _id }}" data-post-id="{{ _id }}">{{ dislike }}</i>
+                                    {{/if}}
+                                </div>
+                                {{!-- <div class="actions">
+                                    <i class="bi bi-chat comment-button"></i>
+                                    <h5 class="comment-count">0</h5>
+                                </div> --}}
+                            </div>
+                            <hr style="color: #ffffff; height: 1px;">
+                            <div class="comments">
+                                <h3 style="font-size: 15px;">Comments</h3>
+                                <form id="comment-form" class="comment-form" action="/contribution/advcomments/{{_id}}"
+                                    method="post">
+                                    <div class="feedback-container">
+                                        <textarea id="comments" name="content"
+                                            placeholder="Leave a comment..."></textarea>
+                                        <a href="/contribution/advcomments/{{_id}}"><button
+                                                type="submit">Submit</button></a>
+                                    </div>
+                                </form>
+
+                                {{#each advcomment}}
+                                <div class="comment">
+                                    <div
+                                        class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+                                        <div class="d-flex flex-row align-items-center feed-text px-2">
+                                            <div class="comment-user">
+                                                <i class="bi bi-person commenter"></i>
+                                                <span class="comment-username">{{ userId.username }}: </span>
+                                            </div>
+                                            <div class="comment-content">
+                                                <p class="mb-0">{{ this.content }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+
+                                {{!-- <ul class="comments-list text-white mt-3">
+                                    <li class="comment-block">
                                         <div class="comment-user">
-                                            <i class="bi bi-person commenter"></i>
-                                            <span class="comment-username">{{ userId.username }}: </span>
+                                            <img class="avatar" src="assets\img\testimonials\circle-user-7-512.webp">
+                                            <span class="username">PixelPioneer88</span>
                                         </div>
                                         <div class="comment-content">
-                                            <p class="mb-0">{{ this.content }}</p>
+                                            <p>Here's the comment text...</p>
                                         </div>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul> --}}
                             </div>
-                            {{/each}}
-
-                            {{!-- <ul class="comments-list text-white mt-3">
-                                <li class="comment-block">
-                                    <div class="comment-user">
-                                        <img class="avatar" src="assets\img\testimonials\circle-user-7-512.webp">
-                                        <span class="username">PixelPioneer88</span>
-                                    </div>
-                                    <div class="comment-content">
-                                        <p>Here's the comment text...</p>
-                                    </div>
-                                </li>
-                            </ul> --}}
-                        </div>
-                    </article>
-                    {{/each}}
+                        </article>
+                        {{/each}}
+                    </div>
+                    <div id="pagination-container"></div>
                 </div>
-                <div id="pagination-container"></div>
             </div>
         </section>
     </div>
@@ -366,11 +382,111 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+    }
+
+    /*Sidebar*/
+    .sidebar {
+        background-color: hsl(261, 18%, 15%);
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        margin-left: 35px;
+        height: auto;
+    }
+
+    .sidebar h2 {
+        font-size: 20px;
+    }
+
+    .btn-magazine {
         justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .btn-magazine:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    /*Sidebar buttons*/
+    .submitBtn {
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .submitBtn:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    .downloadBtn {
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .downloadBtn:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    button#selectBtn,
+    button#submitBtn,
+    button.btn-magazine {
+        font-size: 15px;
+        /* Change this to the size you want */
+    }
+
+    .selectBtn {
+        justify-content: center;
+        width: 75%;
+        padding: 8px;
+        background: #686bc4;
+        border: none;
+        border-radius: 50px;
+        color: #ffffff;
+        margin-top: 10px;
+        transition: .4s;
+    }
+
+    .selectBtn:hover {
+        background: #bf58ff;
+        cursor: pointer;
+    }
+
+    /*Separated Sections*/
+    .left {
+        width: 25%;
+    }
+
+    .right {
+        width: 70%;
+        padding-left: 5%;
     }
 
     .main-magazine {
-        width: 90%;
+        width: 100%;
     }
 
     /*searchbar*/
@@ -664,6 +780,17 @@
             height: 30px;
         }
 
+        .left,
+        .right {
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .left .sidebar {
+            width: 90%;
+            margin: auto;
+        }
+
     }
 
     /* Medium devices (tablets, less than 992px) */
@@ -676,6 +803,17 @@
 
         .search-bar {
             margin-top: 20px;
+        }
+
+        .left,
+        .right {
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .left .sidebar {
+            width: 90%;
+            margin: auto;
         }
 
     }
