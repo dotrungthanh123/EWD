@@ -62,10 +62,10 @@
                         <div class="posting-user">
                             <i class="bi bi-person"></i>
                             {{#if anonymous}}
-                                <h2 class="Username">Anonymous</h1>
-                            {{else}}
+                            <h2 class="Username">Anonymous</h1>
+                                {{else}}
                                 <h2 class="Username">{{ user.username }}</h1>
-                            {{/if}}
+                                    {{/if}}
                         </div>
                         <p>{{ description }}</p>
                         <div class="article-actions">
@@ -105,10 +105,12 @@
 
                             {{#each advcomment}}
                             <div class="comment">
-                                <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+                                <div
+                                    class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
                                     <div class="d-flex flex-row align-items-center feed-text px-2">
                                         <div class="comment-user">
-                                            <span class="username">{{ userId.username }}: </span>
+                                            <i class="bi bi-person commenter"></i>
+                                            <span class="comment-username">{{ userId.username }}: </span>
                                         </div>
                                         <div class="comment-content">
                                             <p class="mb-0">{{ this.content }}</p>
@@ -153,20 +155,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-    $(function () {
-        $("#header").load("/sharedhtmls/header.hbs", function () {
-            $('.mobile-nav-toggle').click(function () {
-                $('#navbar').toggleClass('navbar-mobile');
+        $(function () {
+            $("#header").load("/sharedhtmls/header.hbs", function () {
+                $('.mobile-nav-toggle').click(function () {
+                    $('#navbar').toggleClass('navbar-mobile');
 
-            });
+                });
 
-            $('.dropdown > a').click(function (e) {
-                e.preventDefault();
-                $(this).next('ul').slideToggle();
+                $('.dropdown > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).next('ul').slideToggle();
+                });
             });
+            $("#footer").load("/sharedhtmls/footer.hbs");
         });
-        $("#footer").load("/sharedhtmls/footer.hbs");
-    });
 
         $(document).on('keypress', '#comments', function (e) {
             if (e.which === 13 && !e.shiftKey) {
@@ -603,6 +605,12 @@
         cursor: pointer;
     }
 
+    .commenter {
+        font-size: 30px;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+
     /*Pagination-Container*/
     #pagination-container {
         display: flex;
@@ -627,6 +635,16 @@
     #pagination-container button:hover {
         background-color: #ab5ec9;
         color: white;
+    }
+
+    .comment-username {
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .comment-content {
+        align-items: center;
+        font-size: 20px;
     }
 
     /* Small devices (landscape phones, less than 768px) */
