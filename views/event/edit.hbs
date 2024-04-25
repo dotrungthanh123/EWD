@@ -101,6 +101,11 @@
     const finalClosureDateInput = document.getElementById('finalClosureDate');
     firstClosureDateInput.min = today;
 
+    resetButton.addEventListener('click', function () {
+        const imagePreview = document.getElementById('file-preview');
+        imagePreview.innerHTML = '';
+    });
+
     submitButton.addEventListener('click', function (event) {
         const firstClosureDate = firstClosureDateInput.value;
         const finalClosureDate = finalClosureDateInput.value;
@@ -125,6 +130,7 @@
             return;
         }
     });
+
     $(function () {
         $("#header").load("/sharedhtmls/header.hbs", function () {
             $('.mobile-nav-toggle').click(function () {
