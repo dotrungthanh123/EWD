@@ -65,14 +65,10 @@ const getContribution = async req => {
                // Display all when not login for testing, should be false on right side
             // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
             .filter(contribution => {
-               if (req.session.user.role.name.includes("Guest")) {
-                  // If user is a Guest, they can only see contributions from their faculty
-                  return contribution.user.faculty.equals(req.session.user.faculty);
-              } 
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if (req.session.user.role.name === "MktCoor") return true
+                  if (req.session.user.role.name === "MktCoor" || req.session.user.role.name === "Guest") return true
                }
                return false
             })
@@ -261,7 +257,7 @@ function convertDateFormat(dateObj) {
 
 router.get('/edit/:id', checkMultipleSession(['Student', 'MktCoor']),  async (req, res) => {
    var id = req.params.id;
-   var contribution = await ContributionModel.findById(id);
+   var contribution = await ContributionModel.findById(id)
    res.render('contribution/edit', { contribution });
 })
 
@@ -450,6 +446,9 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
    let contribution = await ContributionModel.findById(id)
     .populate('user')
     .populate('event');
+
+   const canEdit = contribution.user._id.toString() === req.session.user._id
+
    if (!contribution.viewer.includes(req.session.user._id)) {
       contribution.viewer.push(req.session.user._id)
    }
@@ -458,7 +457,7 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
 
    await ContributionModel.findByIdAndUpdate(id, contribution)
 
-   res.render("contribution/detail", { contribution })
+   res.render("contribution/detail", { contribution, canEdit })
 })
 
 router.post('/filterDate', checkLoginSession, async (req, res) => {

@@ -94,12 +94,9 @@
                 </div>
                 <div class="form-group row justify-content-end">
                     <div class="col-sm-12 mt-3 text-center box-action">
-                        <!-- start if -->
-                        <a href="/contribution/edit/{{contribution._id}}" class="col-sm-2 btn btn-primary">Edit</a>
-                        <!-- end if -->
-                        <!-- start else -->
-                        <button type="comment" class="col-sm-2 btn btn-secondary">Comment</button>
-                        <!-- end else -->
+                        {{#if canEdit}}
+                            <a href="/contribution/edit/{{contribution._id}}" class="col-sm-2 btn btn-primary">Edit</a>
+                        {{/if}}
                     </div>
                 </div>
             </form>
