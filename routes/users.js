@@ -53,13 +53,20 @@ router.get('/list', checkLoginSession, async (req, res) => {
   res.render("student/list", {facultyList, studentList, canFilter})
 })
 
-router.get('/faculty/:id', async (req, res) => {
-  const facultyId = req.params.id
-  const studentRole = await RoleModel.findOne({name: 'Student'})
-
-  const studentList = await UserModel.find({faculty: facultyId, role: studentRole._id}).populate('role').populate('faculty')
+router.post('/search', checkMultipleSession(['Admin', 'MktCoor']), async (req, res) => {
+  var keyword = req.body.keyword;
+  var studentList
+  if (!req.session.user.faculty) {
+    studentList = await UserModel.find({ name: new RegExp(keyword, "i")}).populate('role').populate('faculty')
+  } else {
+    studentList = await UserModel.find({ name: new RegExp(keyword, "i"), faculty: req.session.user.faculty }).populate('role').populate('faculty')
+  }
+  const role = req.session.user.role.name
+  
+  canFilter = role === "Admin" || role === "MktManager"
   const facultyList = await FacultyModel.find()
-  res.render("student/list", {facultyList, studentList})
+
+  res.render("student/list", {facultyList, studentList, canFilter})
 })
 
 module.exports = router;
