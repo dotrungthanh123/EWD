@@ -266,7 +266,7 @@
             }
         });
 
-        document.getElementById('selectBtn').addEventListener('click', function () {
+        {{!-- document.getElementById('selectBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('.articleCheckbox');
             const publishButton = document.querySelectorAll('.publish-btn');
             if (this.textContent === 'Select') {
@@ -290,9 +290,9 @@
                 this.textContent = 'Select';
                 this.style.backgroundColor = '#686bc4';
             }
-        });
+        }); --}}
 
-        document.getElementById('submitBtn').addEventListener('click', function () {
+        {{!-- document.getElementById('submitBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('.articleCheckbox');
             const checkedArticles = Array.from(checkboxes)
                 .filter(checkbox => checkbox.checked)
@@ -318,7 +318,7 @@
             });
 
             location.reload();
-        });
+        }); --}}
 
         let currentPage = 1;
         const articlesPerPage = 5;
