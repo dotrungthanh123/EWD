@@ -65,10 +65,14 @@ const getContribution = async req => {
                // Display all when not login for testing, should be false on right side
             // .filter(contribution => req.session.user ? contribution.user.faculty.equals(req.session.user.faculty) : true)
             .filter(contribution => {
+               if (req.session.user.role.name.includes("Guest")) {
+                  // If user is a Guest, they can only see contributions from their faculty
+                  return contribution.user.faculty.equals(req.session.user.faculty);
+              } 
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if (req.session.user.role.name === "MktCoor" && req.session.user.role.name === "Guest") return true
+                  if (req.session.user.role.name === "MktCoor") return true
                }
                return false
             })
@@ -365,7 +369,22 @@ router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
 
 router.post('/search', checkLoginSession, async (req, res) => {
    var keyword = req.body.keyword;
-   var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") });
+   var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") })
+      .populate('category')
+      .populate({
+         path: 'advcomment',
+         populate: {
+            path: 'userId',
+            select: 'username',
+         },
+      })
+      .populate({
+         path: 'user',
+         populate: {
+         path: 'role',
+         select: 'name'
+         }
+      });
 
    const role = req.session.role;
 
