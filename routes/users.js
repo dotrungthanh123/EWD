@@ -45,10 +45,10 @@ router.get('/list', checkLoginSession, async (req, res) => {
     studentList = studentList.filter(s => s.faculty.id.toString() === req.session.user.faculty)
   }
 
-  studentList.forEach(async student => {
-    var contributions = await ContributionModel.find({user: student._id})
-    student.numCons = contributions.length
-  })
+  for (index in studentList) {
+    var contributions = await ContributionModel.find({user: studentList[index]._id})
+    studentList[index].numCons = contributions.length
+  }
 
   res.render("student/list", {facultyList, studentList, canFilter})
 })
@@ -65,6 +65,11 @@ router.post('/search', checkMultipleSession(['Admin', 'MktCoor']), async (req, r
   
   canFilter = role === "Admin" || role === "MktManager"
   const facultyList = await FacultyModel.find()
+
+  for (index in studentList) {
+    var contributions = await ContributionModel.find({user: studentList[index]._id})
+    studentList[index].numCons = contributions.length
+  }
 
   res.render("student/list", {facultyList, studentList, canFilter})
 })
