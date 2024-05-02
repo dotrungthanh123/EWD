@@ -111,7 +111,7 @@ router.get('/', async (req, res) => {
    const facultyList = await FacultyModel.find()
    
    contributionList.reverse()
-   if (role == "Admin" || role == "MktCoor"){
+   if (role == "Admin" || role == "MktCoor" || role == "MktManager"){
       res.render('contribution/index', { contributionList, role, facultyList});
    }
    else{
@@ -125,7 +125,7 @@ router.get('/faculty/:id', async (req, res) => {
    const id = new mongoose.Types.ObjectId(req.params.id)
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
-   if (role == "Admin" || role == "MktCoor") {
+   if (role == "Admin" || role == "MktCoor" || role == "MktManager") {
       contributionList.reverse()
       res.render('contribution/index', { contributionList: contributions, role })
    } else {
@@ -390,7 +390,7 @@ router.post('/search', checkLoginSession, async (req, res) => {
 
    contributionList.reverse()
    
-   if (req.session.role == "Admin" || req.session.role == "MktCoor"){
+   if (req.session.role == "Admin" || req.session.role == "MktCoor" || req.session.role == "MktManager"){
       res.render('contribution/index', { contributionList, role });
    }
    else{
