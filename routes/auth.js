@@ -191,7 +191,7 @@ router.get('/', (req, res) => {
     console.log('username: ', username);
 });
 
-router.get('/logout', checkNotLoggedIn, (req, res) => {
+router.get('/logout', checkLoginSession, (req, res) => {
     req.session.destroy();
     res.redirect('/auth/login');
 })

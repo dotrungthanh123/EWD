@@ -4,7 +4,7 @@ const UserModel = require('../models/UserModel')
 const RoleModel = require('../models/RoleModel')
 const FacultyModel = require('../models/FacultyModel')
 const ContributionModel = require('../models/ContributionModel')
-const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession, checkLoginSession } = require('../middlewares/auth');
+const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession, checkLoginSession, checkMultipleSession } = require('../middlewares/auth');
 const { default: mongoose } = require('mongoose');
 
 /* GET users listing. */
@@ -22,7 +22,8 @@ router.get('/detail', async (req, res) => {
   }
 })
 
-router.get('/detail/:id', checkAdminSession, async (req, res) => {
+router.get('/detail/:id', checkMultipleSession(["MktCoor", "Admin"]), async (req, res) => {
+  const studentId = req.params.id
   const user = await UserModel.findById(studentId).populate('role')
   const contributions = await ContributionModel.find({user: user._id})
   res.render("account/detail", {contributions, numOfContributions: contributions.length, user})
@@ -44,21 +45,33 @@ router.get('/list', checkLoginSession, async (req, res) => {
     studentList = studentList.filter(s => s.faculty.id.toString() === req.session.user.faculty)
   }
 
-  studentList.forEach(async student => {
-    var contributions = await ContributionModel.find({user: student._id})
-    student.numCons = contributions.length
-  })
+  for (index in studentList) {
+    var contributions = await ContributionModel.find({user: studentList[index]._id})
+    studentList[index].numCons = contributions.length
+  }
 
   res.render("student/list", {facultyList, studentList, canFilter})
 })
 
-router.get('/faculty/:id', async (req, res) => {
-  const facultyId = req.params.id
-  const studentRole = await RoleModel.findOne({name: 'Student'})
-
-  const studentList = await UserModel.find({faculty: facultyId, role: studentRole._id}).populate('role').populate('faculty')
+router.post('/search', checkMultipleSession(['Admin', 'MktCoor']), async (req, res) => {
+  var keyword = req.body.keyword;
+  var studentList
+  if (!req.session.user.faculty) {
+    studentList = await UserModel.find({ name: new RegExp(keyword, "i")}).populate('role').populate('faculty')
+  } else {
+    studentList = await UserModel.find({ name: new RegExp(keyword, "i"), faculty: req.session.user.faculty }).populate('role').populate('faculty')
+  }
+  const role = req.session.user.role.name
+  
+  canFilter = role === "Admin" || role === "MktManager"
   const facultyList = await FacultyModel.find()
-  res.render("student/list", {facultyList, studentList})
+
+  for (index in studentList) {
+    var contributions = await ContributionModel.find({user: studentList[index]._id})
+    studentList[index].numCons = contributions.length
+  }
+
+  res.render("student/list", {facultyList, studentList, canFilter})
 })
 
 module.exports = router;

@@ -66,6 +66,19 @@
 
                     </div>
                     <hr style="color: #ffffff; height: 3px;">
+                    <h2 style="color:#ffffff; text-align: center;">Date Filter</h2>
+
+                    <form class="date-filter" action="/contribution/filterDate" method="POST">
+                        <label for="startDate" style="color:#ffffff">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" required>
+
+                        <label for="endDate" style="color:#ffffff">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" required>
+
+                        <input type="submit" value="Filter Date" class="btn-magazine">
+                    </form>
+
+                    <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
                         <button id="downloadBtn" class="downloadBtn">Download CSV Files</button>
@@ -90,11 +103,11 @@
                             </a>
                             <div class="posting-user">
                                 <i class="bi bi-person"></i>
-                            {{#if anonymous}}
+                                {{#if anonymous}}
                                 <h2 class="Username">Anonymous</h1>
-                            {{else}}
-                                <h2 class="Username">{{ user.username }}</h1>
-                            {{/if}}
+                                    {{else}}
+                                    <h2 class="Username">{{ user.username }}</h1>
+                                        {{/if}}
                             </div>
                             <p>{{description}}</p>
                             <div class="article-actions">
@@ -117,8 +130,7 @@
                                 </div>
 
                                 <div class="actions">
-                                    <i class="bi bi-chat"></i>
-                                    <h5 class="comment-count">{{ view }}</h5>
+                                    <h5 class="bi bi-eye">{{ view }}</h5>
                                 </div>
                             </div>
 
@@ -133,11 +145,12 @@
                             <div class="comments">
                                 <ul class="comments-list">
                                 </ul>
-                                <form id="comment-form" class="comment-form" action="/contribution/feedback/{{_id}}" method="post">
+                                <form id="comment-form" class="comment-form" action="/contribution/feedback/{{_id}}"
+                                    method="post">
                                     <div class="feedback-container">
                                         <textarea id="comments" name="emailContent"
                                             placeholder="Leave feedback..."></textarea>
-                                            <button type="submit" class="publish-btn">Feedback</button>
+                                        <button type="submit" class="publish-btn">Feedback</button>
                                         </a>
                                     </div>
                                 </form>
@@ -164,23 +177,24 @@
     <script src="/assets/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
-    $(function () {
-        $("#header").load("/sharedhtmls/header.hbs", function () {
-            $('.mobile-nav-toggle').click(function () {
-                $('#navbar').toggleClass('navbar-mobile');
+        $(function () {
+            $("#header").load("/sharedhtmls/header.hbs", function () {
+                $('.mobile-nav-toggle').click(function () {
+                    $('#navbar').toggleClass('navbar-mobile');
 
-            });
+                });
 
-            $('.dropdown > a').click(function (e) {
-                e.preventDefault();
-                $(this).next('ul').slideToggle();
+                $('.dropdown > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).next('ul').slideToggle();
+                });
             });
+            $("#footer").load("/sharedhtmls/footer.hbs");
         });
-        $("#footer").load("/sharedhtmls/footer.hbs");
-    });
 
-    const updatePostStats = {
+        const updatePostStats = {
             'like': function (postId) {
                 document.querySelector('#likes-count-' + postId).textContent++
             },
@@ -251,7 +265,7 @@
             }
         });
 
-        document.getElementById('selectBtn').addEventListener('click', function () {
+        {{!-- document.getElementById('selectBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('.articleCheckbox');
             const publishButton = document.querySelectorAll('.publish-btn');
             if (this.textContent === 'Select') {
@@ -275,9 +289,9 @@
                 this.textContent = 'Select';
                 this.style.backgroundColor = '#686bc4';
             }
-        });
+        }); --}}
 
-        document.getElementById('submitBtn').addEventListener('click', function () {
+        {{!-- document.getElementById('submitBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('.articleCheckbox');
             const checkedArticles = Array.from(checkboxes)
                 .filter(checkbox => checkbox.checked)
@@ -303,20 +317,19 @@
             });
 
             location.reload();
-        });
+        }); --}}
 
-        //Pagination
         let currentPage = 1;
         const articlesPerPage = 5;
         const articles = document.querySelectorAll('.article');
 
+        console.log(articles.length);
+
         function paginate() {
-            // Hide all articles
             articles.forEach(article => {
                 article.style.display = 'none';
             });
 
-            // Show only the articles for the current page
             let startIndex = (currentPage - 1) * articlesPerPage;
             let endIndex = startIndex + articlesPerPage;
             for (let i = startIndex; i < endIndex; i++) {
@@ -325,11 +338,9 @@
                 }
             }
 
-            // Remove old page numbers
             let paginationContainer = document.getElementById('pagination-container');
             paginationContainer.innerHTML = '';
 
-            // Add new page numbers
             let totalPages = Math.ceil(articles.length / articlesPerPage);
             for (let i = 1; i <= totalPages; i++) {
                 let btn = document.createElement('button');
@@ -342,7 +353,9 @@
             }
         }
 
-        paginate();
+        document.addEventListener('DOMContentLoaded', (event) => {
+            paginate();
+        });
     </script>
 
 </body>
@@ -579,7 +592,7 @@
         color: #ffffff;
         margin-right: 10px;
     }
-    
+
     /*Publish-btn*/
     .publish-btn:hover {
         background: #bf58ff;
@@ -600,7 +613,7 @@
         align-items: center;
     }
 
-    .published-btn{
+    .published-btn {
         border: 0;
         width: 224px;
         height: 35px;
@@ -799,6 +812,11 @@
         margin-top: 5px;
     }
 
+    .date-filter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
     /* Small devices (landscape phones, less than 768px) */
     @media (max-width: 767px) {

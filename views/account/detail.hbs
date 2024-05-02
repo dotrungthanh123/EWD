@@ -70,7 +70,7 @@
                     <div class="magazine">
                         {{#each contributions}}
                             <article class="article">
-                                <a href="">
+                                <a href="/contribution/detail/{{_id}}">
                                     <h1>{{ name }}</h1>
                                 </a>
                                 <p>{{ description }}</p>
@@ -114,7 +114,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(function () {
-            $("#header").load("/sharedhtmls/header.html", function () {
+            $("#header").load("/sharedhtmls/header.hbs", function () {
                 $('.mobile-nav-toggle').click(function () {
                     $('#navbar').toggleClass('navbar-mobile');
 
@@ -125,7 +125,7 @@
                     $(this).next('ul').slideToggle();
                 });
             });
-            $("#footer").load("/sharedhtmls/footer.html");
+            $("#footer").load("/sharedhtmls/footer.hbs");
         });
 
         $(document).on('keypress', '#comments', function (e) {

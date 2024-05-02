@@ -49,9 +49,27 @@
         <section class="m-container-main">
             <div class="left">
                 <div class="sidebar">
+                    <h2 style="color:#ffffff; text-align: center;">Filter</h2>
+                    <div class="filter-menu">
+                        <button onclick="location.href='/contribution'" type="button" class="btn-magazine">
+                            All Contributions
+                        </button>
+                        
+                        {{#if facultyList}}
+                        {{#each facultyList}}
+                        <button onclick="location.href='/contribution/faculty/{{ _id }}'" type="button"
+                            class="btn-magazine">
+                            {{ name }} Contributions
+                        </button>
+                        {{/each}}
+                        {{/if}}
+
+                    </div>
+                    <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Dashboard</h2>
                     <div class="dashboard-menu">
-                        <a href="/contribution/exportcsv"><button id="downloadBtn" class="downloadBtn">Download CSV Files</button></a>
+                        <a href="/contribution/exportcsv"><button id="downloadBtn" class="downloadBtn">Download CSV
+                                Files</button></a>
                     </div>
                     <hr style="color: #ffffff; height: 3px;">
                     <h2 style="color:#ffffff; text-align: center;">Logged in as {{ role }}</h2>
@@ -104,8 +122,7 @@
                                 </div> --}}
 
                                 <div class="actions">
-                                    <i class="bi bi-chat"></i>
-                                    <h5 class="comment-count">{{ view }}</h5>
+                                    <h5 class="bi bi-eye">{{ view }}</h5>
                                 </div>
                             </div>
                             <hr style="color: #ffffff; height: 1px;">

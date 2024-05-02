@@ -68,7 +68,7 @@ const getContribution = async req => {
                if (!req.session.user.faculty) return true
                else if (contribution.user.faculty.equals(req.session.user.faculty)) {
                   if (contribution.user._id.equals(req.session.user._id) || contribution.publish) return true
-                  if (req.session.user.role.name === "MktCoor" && req.session.user.role.name === "Guest") return true
+                  if (req.session.user.role.name === "MktCoor" || req.session.user.role.name === "Guest") return true
                }
                return false
             })
@@ -111,7 +111,7 @@ router.get('/', async (req, res) => {
    const facultyList = await FacultyModel.find()
    
    contributionList.reverse()
-   if (role == "Admin" || role == "MktCoor"){
+   if (role == "Admin" || role == "MktCoor" || role == "MktManager"){
       res.render('contribution/index', { contributionList, role, facultyList});
    }
    else{
@@ -125,7 +125,7 @@ router.get('/faculty/:id', async (req, res) => {
    const id = new mongoose.Types.ObjectId(req.params.id)
    const contributions = contributionList.filter(contribution => contribution.user.faculty.equals(id))
    const role = req.session.role
-   if (role == "Admin" || role == "MktCoor") {
+   if (role == "Admin" || role == "MktCoor" || role == "MktManager") {
       contributionList.reverse()
       res.render('contribution/index', { contributionList: contributions, role })
    } else {
@@ -256,8 +256,11 @@ function convertDateFormat(dateObj) {
 
 router.get('/edit/:id', checkMultipleSession(['Student', 'MktCoor']),  async (req, res) => {
    var id = req.params.id;
-   var contribution = await ContributionModel.findById(id);
-   res.render('contribution/edit', { contribution });
+   var contribution = await ContributionModel.findById(id)
+
+   fileList = contribution.path
+
+   res.render('contribution/edit', { contribution, fileList });
 })
 
 router.post('/edit/:id', checkStudentSession, formMiddleWare, async (req, res) => {
@@ -265,6 +268,7 @@ router.post('/edit/:id', checkStudentSession, formMiddleWare, async (req, res) =
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
+      anonymous: req.fields.anonymous ? true : false,
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : []
    }
    await ContributionModel.findByIdAndUpdate(id, contribution);
@@ -364,13 +368,28 @@ router.post('/advcomments/:id', checkLoginSession, async (req, res) => {
 
 router.post('/search', checkLoginSession, async (req, res) => {
    var keyword = req.body.keyword;
-   var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") });
+   var contributionList = await ContributionModel.find({ name: new RegExp(keyword, "i") })
+      .populate('category')
+      .populate({
+         path: 'advcomment',
+         populate: {
+            path: 'userId',
+            select: 'username',
+         },
+      })
+      .populate({
+         path: 'user',
+         populate: {
+         path: 'role',
+         select: 'name'
+         }
+      });
 
    const role = req.session.role;
 
    contributionList.reverse()
    
-   if (req.session.role == "Admin" || req.session.role == "MktCoor"){
+   if (req.session.role == "Admin" || req.session.role == "MktCoor" || req.session.role == "MktManager"){
       res.render('contribution/index', { contributionList, role });
    }
    else{
@@ -430,6 +449,9 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
    let contribution = await ContributionModel.findById(id)
     .populate('user')
     .populate('event');
+
+   const canEdit = contribution.user._id.toString() === req.session.user._id
+
    if (!contribution.viewer.includes(req.session.user._id)) {
       contribution.viewer.push(req.session.user._id)
    }
@@ -438,7 +460,9 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
 
    await ContributionModel.findByIdAndUpdate(id, contribution)
 
-   res.render("contribution/detail", { contribution })
+   const fileList = contribution.path
+
+   res.render("contribution/detail", { contribution, canEdit, fileList })
 })
 
 router.post('/filterDate', checkLoginSession, async (req, res) => {
