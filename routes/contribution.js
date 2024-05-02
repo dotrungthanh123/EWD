@@ -266,6 +266,7 @@ router.post('/edit/:id', checkStudentSession, formMiddleWare, async (req, res) =
    const contribution = {
       name: req.fields.name[0],
       description: req.fields.description[0],
+      anonymous: req.fields.anonymous ? true : false,
       path: req.files.userfile ? req.files.userfile.map((userfile) => userfile.newFilename) : []
    }
    await ContributionModel.findByIdAndUpdate(id, contribution);
