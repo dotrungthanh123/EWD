@@ -133,7 +133,7 @@ router.post('/register', checkAdminSession, checkLoginSession, async (req, res) 
     }
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', checkNotLoggedIn, (req, res) => {
     res.render('auth/login', { layout: 'loginLayout' })
 })
 

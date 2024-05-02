@@ -3,10 +3,11 @@ var router = express.Router();
 var ContributionModel = require('../models/ContributionModel');
 var UserModel = require('../models/UserModel')
 var FacultyModel = require('../models/FacultyModel')
-var EventModel = require('../models/EventModel')
+var EventModel = require('../models/EventModel');
+const { checkLoginSession } = require('../middlewares/auth');
 
 
-router.get('/stats', async (req, res) => {
+router.get('/stats', checkLoginSession, async (req, res) => {
     try {
         const facultyContributionCount = [];
         const facultyNames = await FacultyModel.find();
