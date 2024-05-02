@@ -71,12 +71,12 @@
                             <label class="custom-file-label" for="attachFiles">Choose file(s)</label>
                         </div>
                         <div id="file-preview" class="form-control mt-1">
-                            {{!-- for --}}
-                            <a href="" class=" row text-white">
-                                <i class="fa fa-file fa-3x col-sm-1"></i>
-                                <div class="col-sm-11 mt-3">File name</div>
-                            </a>
-                            {{!-- end for --}}
+                            {{#each fileList}}
+                                <a href="" class=" row text-white">
+                                    <i class="fa fa-file fa-3x col-sm-1"></i>
+                                    <div class="col-sm-11 mt-3">{{ this }}</div>
+                                </a>
+                            {{/each}}
                         </div>
                     </div>
                 </div>
@@ -124,6 +124,9 @@
             }
         });
     });
+    }
+    )
+
     function getExtension(filename) {
         var parts = filename.split('.');
         return parts[parts.length - 1];
@@ -171,24 +174,32 @@
     function previewFile() {
         const fileInput = document.getElementById('attachFiles');
         const filePreview = document.getElementById('file-preview');
-        const files = fileInput.files;
+
+        var files = fileInput.files;
+
+        for (var i = 0, l = files.length; i < l; i++) {
+            list.items.add(files[i]);
+        }
+
+        fileInput.files = list.files;
 
         if (files.length > 0) {
-            const file = files[0];
-            const previewContainer = document.createElement('div');
-            previewContainer.classList.add('preview-item');
+            Array.from(files).forEach(file => {
+                var previewContainer = document.createElement('div');
+                previewContainer.classList.add('preview-item');
 
-            const iconElement = document.createElement('i');
-            iconElement.classList.add('fa', 'fa-file');
-            iconElement.style.fontSize = '24px';
+                var iconElement = document.createElement('i');
+                iconElement.classList.add('fa', 'fa-file');
+                iconElement.style.fontSize = '24px';
 
-            const filenameSpan = document.createElement('span');
-            filenameSpan.textContent = " " + file.name;
+                var filenameSpan = document.createElement('span');
+                filenameSpan.textContent = " " + file.name;
 
-            previewContainer.appendChild(iconElement);
-            previewContainer.appendChild(filenameSpan);
+                previewContainer.appendChild(iconElement);
+                previewContainer.appendChild(filenameSpan);
 
-            filePreview.appendChild(previewContainer);
+                filePreview.appendChild(previewContainer);
+            })
         } else {
             filePreview.innerHTML = '';
         }

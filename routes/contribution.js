@@ -258,7 +258,10 @@ function convertDateFormat(dateObj) {
 router.get('/edit/:id', checkMultipleSession(['Student', 'MktCoor']),  async (req, res) => {
    var id = req.params.id;
    var contribution = await ContributionModel.findById(id)
-   res.render('contribution/edit', { contribution });
+
+   fileList = contribution.path
+
+   res.render('contribution/edit', { contribution, fileList });
 })
 
 router.post('/edit/:id', checkStudentSession, formMiddleWare, async (req, res) => {
@@ -458,7 +461,9 @@ router.get('/detail/:id', checkLoginSession, async (req, res) => {
 
    await ContributionModel.findByIdAndUpdate(id, contribution)
 
-   res.render("contribution/detail", { contribution, canEdit })
+   const fileList = contribution.path
+
+   res.render("contribution/detail", { contribution, canEdit, fileList })
 })
 
 router.post('/filterDate', checkLoginSession, async (req, res) => {

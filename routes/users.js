@@ -4,7 +4,7 @@ const UserModel = require('../models/UserModel')
 const RoleModel = require('../models/RoleModel')
 const FacultyModel = require('../models/FacultyModel')
 const ContributionModel = require('../models/ContributionModel')
-const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession, checkLoginSession } = require('../middlewares/auth');
+const { checkMktCoordinatorSession, checkAdminSession, checkMktManagerSession, checkStudentSession, checkLoginSession, checkMultipleSession } = require('../middlewares/auth');
 const { default: mongoose } = require('mongoose');
 
 /* GET users listing. */
@@ -22,7 +22,8 @@ router.get('/detail', async (req, res) => {
   }
 })
 
-router.get('/detail/:id', checkAdminSession, async (req, res) => {
+router.get('/detail/:id', checkMultipleSession(["MktCoor", "Admin"]), async (req, res) => {
+  const studentId = req.params.id
   const user = await UserModel.findById(studentId).populate('role')
   const contributions = await ContributionModel.find({user: user._id})
   res.render("account/detail", {contributions, numOfContributions: contributions.length, user})

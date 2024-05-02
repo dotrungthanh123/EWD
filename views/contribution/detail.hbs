@@ -93,10 +93,12 @@
 
                     <div class="col-sm-10">
                         <div id="file-preview" class="form-control mt-1">
-                            <a href="" class=" row text-white">
-                                <i class="fa fa-file fa-3x col-sm-1"></i>
-                                <div class="col-sm-11 mt-3">File name</div>
-                            </a>
+                            {{#each fileList}}
+                                <a href="" class=" row text-white">
+                                    <i class="fa fa-file fa-3x col-sm-1"></i>
+                                    <div class="col-sm-11 mt-3">{{this}}</div>
+                                </a>
+                            {{/each}}
                         </div>
                     </div>
                 </div>
