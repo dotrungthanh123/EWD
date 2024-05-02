@@ -70,7 +70,13 @@
                                 onchange="previewFile()">
                             <label class="custom-file-label" for="attachFiles">Choose file(s)</label>
                         </div>
-                        <div id="file-preview" class="form-control mt-1 "> </div>
+                        <div id="file-preview" class="form-control mt-1">
+                            <a href="" class=" row text-white">
+                                <i class="fa fa-file fa-3x col-sm-1"></i>
+                                <div class="col-sm-11 mt-3">File name</div>
+                            </a>
+                        </div>
+                    </div>
                     </div>
                 </div>
 
@@ -161,31 +167,6 @@
         $("#footer").load("/sharedhtmls/footer.hbs");
     });
 
-    function previewFile() {
-        const fileInput = document.getElementById('attachFiles');
-        const filePreview = document.getElementById('file-preview');
-        const files = fileInput.files;
-
-        if (files.length > 0) {
-            const file = files[0];
-            const previewContainer = document.createElement('div');
-            previewContainer.classList.add('preview-item');
-
-            const iconElement = document.createElement('i');
-            iconElement.classList.add('fa', 'fa-file');
-            iconElement.style.fontSize = '24px';
-
-            const filenameSpan = document.createElement('span');
-            filenameSpan.textContent = " " + file.name;
-
-            previewContainer.appendChild(iconElement);
-            previewContainer.appendChild(filenameSpan);
-
-            filePreview.appendChild(previewContainer);
-        } else {
-            filePreview.innerHTML = '';
-        }
-    }
 
     function onReset() {
         const filePreview = document.getElementById('file-preview');
