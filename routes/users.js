@@ -74,4 +74,13 @@ router.post('/search', checkMultipleSession(['Admin', 'MktCoor']), async (req, r
   res.render("student/list", {facultyList, studentList, canFilter})
 })
 
+router.get('/faculty/:id', async (req, res) => {
+  const facultyId = req.params.id
+  const studentRole = await RoleModel.findOne({name: 'Student'})
+
+  const studentList = await UserModel.find({faculty: facultyId, role: studentRole._id}).populate('role').populate('faculty')
+  const facultyList = await FacultyModel.find()
+  res.render("student/list", {facultyList, studentList})
+})
+
 module.exports = router;

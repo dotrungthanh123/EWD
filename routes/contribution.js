@@ -77,27 +77,28 @@ const getContribution = async req => {
          console.log(err);
       })
 
-   await contributionList.forEach(async contribution => {
-      var userState = 0
-
-      let reactionList = await ReactionModel.find().then(
-         list => list.filter(react => {
-            const flag = react._id.contribution.equals(contribution._id) && react.state != 0
-            if (flag && react._id.user.equals(req.session.user._id)) userState = react.state
-            return flag
-         })
-      )
-
-      likeList = reactionList.filter(react => react.state == 1)
-      dislikeList = reactionList.filter(react => react.state == 2)
-
-      contribution.like = likeList.length
-      contribution.dislike = dislikeList.length
-      contribution.isLike = userState == 1
-      contribution.isDislike = userState == 2
-      
-      contribution.view = contribution.viewer.length
-   })
+      for (index in contributionList) {
+         var contribution = contributionList[index]
+         var userState = 0
+   
+         let reactionList = await ReactionModel.find().then(
+            list => list.filter(react => {
+               const flag = react._id.contribution.equals(contribution._id) && react.state != 0
+               if (flag && react._id.user.equals(req.session.user._id)) userState = react.state
+               return flag
+            })
+         )
+   
+         likeList = reactionList.filter(react => react.state == 1)
+         dislikeList = reactionList.filter(react => react.state == 2)
+   
+         contribution.like = likeList.length
+         contribution.dislike = dislikeList.length
+         contribution.isLike = userState == 1
+         contribution.isDislike = userState == 2
+         
+         contribution.view = contribution.viewer.length
+      }
 }
 
 const getEvent = async () => {
@@ -198,7 +199,6 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       event: req.fields.event[0],
       advcomment: []
    }  
-
    await ContributionModel.create(contribution);
 
    const transporter = nodemailer.createTransport({
@@ -388,7 +388,8 @@ router.post('/search', checkLoginSession, async (req, res) => {
 
    const role = req.session.role;
 
-   await contributionList.forEach(async contribution => {
+   for (index in contributionList) {
+      var contribution = contributionList[index]
       var userState = 0
 
       let reactionList = await ReactionModel.find().then(
@@ -408,7 +409,7 @@ router.post('/search', checkLoginSession, async (req, res) => {
       contribution.isDislike = userState == 2
       
       contribution.view = contribution.viewer.length
-   })
+   }
 
    contributionList.reverse()
    
