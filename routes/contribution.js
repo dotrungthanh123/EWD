@@ -213,7 +213,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    if(req.session.faculty == "IT"){
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'itszombie2019@gmail.com',
+         to: 'manh9403@gmail.com',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -221,7 +221,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    } else if (req.session.faculty == "Business") {
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'itszombie2016@gmail.com',
+         to: 'manh9403@gmail.com',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -229,7 +229,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    } else {
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'anhndgch210098@fpt.edu.vn',
+         to: 'manh9403@gmail.com',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -384,6 +384,28 @@ router.post('/search', checkLoginSession, async (req, res) => {
          select: 'name'
          }
       });
+
+      contributionList.forEach(async contribution => {
+         var userState = 0
+   
+         let reactionList = await ReactionModel.find().then(
+            list => list.filter(react => {
+               const flag = react._id.contribution.equals(contribution._id) && react.state != 0
+               if (flag && react._id.user.equals(req.session.user._id)) userState = react.state
+               return flag
+            })
+         )
+   
+         likeList = reactionList.filter(react => react.state == 1)
+         dislikeList = reactionList.filter(react => react.state == 2)
+   
+         contribution.like = likeList.length
+         contribution.dislike = dislikeList.length
+         contribution.isLike = userState == 1
+         contribution.isDislike = userState == 2
+         
+         contribution.view = contribution.viewer.length
+      })
 
    const role = req.session.role;
 
