@@ -208,6 +208,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
          pass: 'akaj nngk lcyk ldnl',
       },
    });
+
    var mailOptions = '';
 
    if(req.session.faculty == "IT"){

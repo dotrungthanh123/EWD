@@ -145,7 +145,7 @@ router.post('/login', async (req, res) => {
                 error: 'Username and password are required.'
             });
         }
-        const user = await UserModel.findOne({ username }).populate('role', 'name').populate('faculty', 'name');
+        const user = await UserModel.findOne({ username }).populate('role', 'name');
         if (!user) {
             return res.status(401).render('auth/login', {
                 error: 'Invalid username or password.'
@@ -157,9 +157,7 @@ router.post('/login', async (req, res) => {
                 error: 'Invalid username or password.'
             });
         }
-        const faculty = user.faculty.name;
         const role = user.role.name;
-        req.session.faculty = faculty;
         req.session.role = role;
         req.session.username = user.username;
         req.session.user = user;
