@@ -7,7 +7,7 @@ const moment = require('moment');
 
 router.get('/', checkLoginSession, async (req, res) => {
     var eventList = await EventModel.find({}).then(events => events.filter(event => {
-        var startDate = new Date(event.finalClosureDate)
+        var startDate = new Date(event.firstClosureDate)
         startDate.setDate(startDate.getDate() + 1)
 
         return Date.now() < startDate

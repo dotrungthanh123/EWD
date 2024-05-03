@@ -203,10 +203,6 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
 
    const event = EventModel.findById(req.fields.event[0])
 
-   var startDate = new Date(event.finalClosureDate)
-   startDate.setDate(startDate.getDate() + 1)
-
-   if (startDate > Date.now()) {
       await ContributionModel.create(contribution);
 
    const transporter = nodemailer.createTransport({
@@ -249,7 +245,6 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       console.log('Email sent: ' + info.response);
       // res.redirect('/contribution')
    });
-   }
 
    res.redirect('/contribution')
 })
