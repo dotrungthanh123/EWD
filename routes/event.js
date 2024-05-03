@@ -6,7 +6,12 @@ const {formMiddleWare} = require('./contribution')
 const moment = require('moment');
 
 router.get('/', checkLoginSession, async (req, res) => {
-    var eventList = await EventModel.find({});
+    var eventList = await EventModel.find({}).filter(event => {
+        var startDate = new Date(event.finalClosureDate)
+        startDate.setDate(endDate.getDate() + 1)
+
+        return Date.now() < startDate
+    });
     //if (req.session.role == "mktmanager" || req.session.role == "mktcoordinator")
     const formattedEvents = eventList.map(event => ({
         ...event.toObject(),

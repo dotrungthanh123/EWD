@@ -5,6 +5,7 @@ const AdvCommentModel = require('../models/AdvCommentModel');
 const CategoryModel = require('../models/CategoryModel');
 const ReactionModel = require('../models/ReactionModel')
 const FacultyModel = require('../models/FacultyModel')
+const EventModel = require('../models/EventModel')
 const nodemailer = require('nodemailer');
 const { formidable } = require('formidable')
 const AdmZip = require('adm-zip');
@@ -199,7 +200,14 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       event: req.fields.event[0],
       advcomment: []
    }  
-   await ContributionModel.create(contribution);
+
+   const event = EventModel.findById(req.fields.event[0])
+
+   var startDate = new Date(event.finalClosureDate)
+   startDate.setDate(startDate.getDate() + 1)
+
+   if (startDate > Date.now()) {
+      await ContributionModel.create(contribution);
 
    const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -241,6 +249,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
       console.log('Email sent: ' + info.response);
       // res.redirect('/contribution')
    });
+   }
 
    res.redirect('/contribution')
 })
