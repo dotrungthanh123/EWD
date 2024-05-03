@@ -14,6 +14,7 @@ const { default: mongoose } = require('mongoose');
 const stringify = require('csv-stringify').stringify
 const {checkLoginSession, checkAdminSession, checkStudentSession, checkMktCoordinatorSession, checkMktManagerSession, checkStudentOrMktCoordinatorSession, checkRoles, checkMultipleSession} = require('../middlewares/auth');
 const moment = require('moment');
+const UserModel = require('../models/UserModel');
 
 var contributionList = []
 var eventList = []
@@ -200,7 +201,8 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    }  
 
    await ContributionModel.create(contribution);
-
+   console.log("contribution.name: ", contribution.name);
+   console.log("contribution.user: ", contribution.user);
    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -208,13 +210,18 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
          pass: 'akaj nngk lcyk ldnl',
       },
    });
-
+   const username = req.session.username;
+   console.log("username: ", username);
    var mailOptions = '';
+   const user = await UserModel.findOne({ username }).populate('faculty', 'name');
+   const faculty = user.faculty.name;
+   req.session.faculty = faculty;
+   console.log("req.session.faculty: ", req.session.faculty);
 
    if(req.session.faculty == "IT"){
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'manh9403@gmail.com',
+         to: 'itszombie2019@gmail.com',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -222,7 +229,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    } else if (req.session.faculty == "Business") {
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'manh9403@gmail.com',
+         to: 'itszombie2016@gmail.com',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -230,7 +237,7 @@ router.post('/add', checkStudentSession, formMiddleWare, async (req, res) => {
    } else {
       mailOptions = {
          from: 'ringotowntest@gmail.com',
-         to: 'manh9403@gmail.com',
+         to: 'anhndgch210098@fpt.edu.vn',
          subject: 'New submission',
          text: `You are receiving this because a student of your faculty have submitted a nwe contribution, please check in before 
                14 days from the day you receive this email to response to students.`,
@@ -385,28 +392,6 @@ router.post('/search', checkLoginSession, async (req, res) => {
          select: 'name'
          }
       });
-
-      contributionList.forEach(async contribution => {
-         var userState = 0
-   
-         let reactionList = await ReactionModel.find().then(
-            list => list.filter(react => {
-               const flag = react._id.contribution.equals(contribution._id) && react.state != 0
-               if (flag && react._id.user.equals(req.session.user._id)) userState = react.state
-               return flag
-            })
-         )
-   
-         likeList = reactionList.filter(react => react.state == 1)
-         dislikeList = reactionList.filter(react => react.state == 2)
-   
-         contribution.like = likeList.length
-         contribution.dislike = dislikeList.length
-         contribution.isLike = userState == 1
-         contribution.isDislike = userState == 2
-         
-         contribution.view = contribution.viewer.length
-      })
 
    const role = req.session.role;
 
